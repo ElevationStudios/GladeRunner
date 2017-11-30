@@ -11,10 +11,11 @@ import com.elevationstudios.framework.Screen;
 import android.graphics.Color;
 import android.util.Log;
 import java.util.List;
+import java.util.Random;
 
 public class GameScreen extends Screen {
 
-    private static Pixmap background;
+    private Pixmap background;
 
     private static Pixmap dieButton;
     private int dieButtonXPos;
@@ -60,8 +61,9 @@ public class GameScreen extends Screen {
 
     private float ninjaScale = 0.3f;
 
-    private Obstacle obstacle;
+    private Obstacle[] obstacle;
     private float timer;
+    private Random r;
 
     public GameScreen(Game game) {
         super(game);
@@ -87,6 +89,9 @@ public class GameScreen extends Screen {
         returnButton = g.newPixmap("returnButton.png", Graphics.PixmapFormat.ARGB4444);
         returnButtonXPos = playButtonXPos;
         returnButtonYPos = playButtonYPos + 10 + playButton.getHeight();
+
+        obstacle = new Obstacle[5];
+        r = new Random();
 
         ninja = new Ninja();
         ninja.PrepareAssets(g);
@@ -178,7 +183,8 @@ public class GameScreen extends Screen {
         //g.drawPixmap(playButton, playXPos, playYPos);
 
         //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
-        CheckCollision();
+        for (int i = 0; i < obstacle.length; i++)
+            CheckCollision();
     }
 
 
@@ -265,8 +271,13 @@ public class GameScreen extends Screen {
     }
 
     public void DrawObstacles(Graphics g){
-        if (obstacle != null)
-            g.drawRect(obstacle.xLocation, obstacle.yLocation - obstacle.boxHeight / 2, obstacle.boxWidth, obstacle.boxHeight, Color.BLACK);
+        for (int i = 0; i < obstacle.length; i++)
+        if (obstacle[i] != null) {
+            g.drawPixmapScaled(obstacle[i].objectPix,
+                    obstacle[i].xLocation, obstacle[i].yLocation,
+                    obstacle[i].boxHeightScale);
+        }
+
     }
 
     public void Jump(){
@@ -297,31 +308,59 @@ public class GameScreen extends Screen {
 
     public void UpdateObstacles(float deltaTime, Graphics g){
         timer += deltaTime;
-        if (obstacle != null)
-            obstacle.xLocation -= g.getWidth() *2/3 * deltaTime;
-        if (timer >= 5)
+        for (int i = 0; i < obstacle.length; i++)
+        {
+            if (obstacle[i] != null)
+                obstacle[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
+
+        }
+        if (timer >= 1 )
         {
             timer = 0;
-            obstacle = new Obstacle(g);
+            for (int i = 0; i < obstacle.length; i++)
+            {
+                if (obstacle[i] == null)
+                {
+                    obstacle[i] = new Obstacle(g, r.nextBoolean());
+                    break;
+                }
+            }
             Log.d("GameScreen", "Spawned new box");
         }
 
     }
 
     public void CheckCollision(){
-        if (obstacle != null) {
-            if ((obstacle.xLocation < (ninjaXPos+ninja.sprite[1][0].getWidth()*ninjaScale/2)) &&
-                    (obstacle.xLocation > (ninjaXPos-ninja.sprite[1][0].getWidth()*ninjaScale/2)) &&
-                    ninja.getState() == Ninja.State.Ground){
-                if(ninja.getAction() == Ninja.Action.Idle)
-                {//obstacle.yLocation < ninjaYPos + ninja.sprite[1][0].getHeight()/2) {
-                    ninja.takeDamage(25);
-                    obstacle = null;
-                } else {
-                    obstacle = null;
+        for (int i = 0; i < obstacle.length; i++)
+        {
+            //Check if obstacle exists
+            if (obstacle[i] != null)
+            {
+                //Check if off screen
+                if (obstacle[i].xLocation <= -obstacle[i].boxWidth*2)
+                {
+                    obstacle[i] = null;
+                    break;
+                }
+                //Check if touching player
+                if ((obstacle[i].xLocation < (ninjaXPos + ninja.sprite[1][0].getWidth() * ninjaScale / 2)) &&
+                        (obstacle[i].xLocation > (ninjaXPos - ninja.sprite[1][0].getWidth() * ninjaScale / 2)))
+                {
+                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
+                    {
+                        ninja.takeDamage(25);
+                        obstacle[i] = null;
+                    }
+                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
+                    {
+                        ninja.takeDamage(25);
+                        obstacle[i] = null;
+                    }
                 }
             }
         }
+
+        //Against else
     }
 
 }
