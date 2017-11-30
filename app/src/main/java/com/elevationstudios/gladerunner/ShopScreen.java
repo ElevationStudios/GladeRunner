@@ -146,7 +146,9 @@ public class ShopScreen extends Screen {
     }
 
     @Override
-    public void pause(){}
+    public void pause(){
+        Settings.save(game.getFileIO());
+    }
 
     @Override
     public void resume(){
