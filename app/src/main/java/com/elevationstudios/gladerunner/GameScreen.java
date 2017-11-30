@@ -56,7 +56,7 @@ public class GameScreen extends Screen {
     private int ninjaYVelocity;
     private int groundYPos;
 
-    private int gravity = -2;
+    private int gravity = -3;
     private int jumpStrength = 35;
 
     private float ninjaScale = 0.3f;
@@ -218,7 +218,7 @@ public class GameScreen extends Screen {
                 Color.rgb(239, 207, 112));
 
         //gold
-        g.drawText("Gold: 5000g", g.getWidth()*1/20, uiBarHeight/2+11, 24);
+        g.drawText("Gold: " + Settings.gold+ "g", g.getWidth()*1/20, uiBarHeight/2+11, 24);
 
         //health bar outline
         g.drawRect(g.getWidth()*4/20-uiHealthbarOutline,
@@ -343,8 +343,8 @@ public class GameScreen extends Screen {
                     break;
                 }
                 //Check if touching player
-                if ((obstacle[i].xLocation < (ninjaXPos + ninja.sprite[1][0].getWidth() * ninjaScale / 2)) &&
-                        (obstacle[i].xLocation > (ninjaXPos - ninja.sprite[1][0].getWidth() * ninjaScale / 2)))
+                if ((obstacle[i].xLocation < (ninjaXPos + Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)) &&
+                        (obstacle[i].xLocation > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)))
                 {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
                     {

@@ -35,7 +35,7 @@ public class ShopScreen extends Screen {
     private int shopTextYPos;
     private float shopTextFontSize;
 
-    private String playerMoney;
+    private int playerMoney;
     private String priceText;
     private int moneyXPos;
     private int moneyYPos;
@@ -68,7 +68,7 @@ public class ShopScreen extends Screen {
         shopTextYPos = g.getHeight() * 1/10 + (int) shopTextFontSize / 2;
 
         moneyFontSize = 80.f;
-        playerMoney = "$" + Integer.toString(1000);
+        playerMoney = Settings.gold;
         moneyXPos = 0;
         moneyYPos = (int) moneyFontSize;
         buyFontSize = 40.f;
@@ -115,6 +115,7 @@ public class ShopScreen extends Screen {
                         buyButton.getWidth(), buyButton.getHeight())){
                     //this is where you change screen
                     Log.d("ShopScreen", "Clicked Buy button");
+                    playerMoney-=100;
                     return;
                 }
 
@@ -133,7 +134,7 @@ public class ShopScreen extends Screen {
         g.drawPixmap(playButton, playXPos, playYPos);
         g.drawPixmap(optionButton, optionXPos, optionYPos);
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
-        g.drawText(playerMoney, moneyXPos, moneyYPos, moneyFontSize);
+        g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 
         for (int i = 0; i < 5; i++)
         {
@@ -147,6 +148,11 @@ public class ShopScreen extends Screen {
 
     @Override
     public void pause(){
+        Settings.gold = playerMoney;
+
+        //  Update bought stats
+        // Settings.boughtItems;
+
         Settings.save(game.getFileIO());
     }
 

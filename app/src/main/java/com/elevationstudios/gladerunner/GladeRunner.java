@@ -11,7 +11,7 @@ public class GladeRunner extends AndroidGame {
     @Override
     public Screen getStartScreen(){
         Log.d("GladeRunner.java", "Starting up");
-        return new MainMenuScreen(this);
+        return new LoadingScreen(this);
     }
 
 

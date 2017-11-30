@@ -12,7 +12,7 @@ import java.io.OutputStreamWriter;
 public class Settings {
 public static boolean soundEnabled = true;
 
-    public static int gold = 0;
+    public static int gold = 500;
 
     //keeps track of what we just earned
     public static int lastRunGold = 0;
