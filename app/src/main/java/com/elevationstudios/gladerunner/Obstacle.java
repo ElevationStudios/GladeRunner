@@ -14,19 +14,29 @@ public class Obstacle {
     public int yLocation;
     public float boxHeightScale;
     public int boxWidth;
+    public int boxHeight;
     public boolean isUp;
     public Pixmap objectPix;
 
     public Obstacle(Graphics g, boolean up) {
-        objectPix = g.newPixmap("rocks.png", Graphics.PixmapFormat.RGB565);
         isUp = up;
         xLocation = g.getWidth();
         if (!isUp)
-            yLocation = (int)(g.getHeight()*0.78);
+        {
+            yLocation = (int) (g.getHeight() * 0.78);
+            objectPix = g.newPixmap("rocks.png", Graphics.PixmapFormat.RGB565);
+            boxWidth = g.getHeight() / 7;
+            boxHeight = boxWidth;
+        }
         else
-            yLocation = (int)(g.getHeight()*0.63);
-        boxWidth = g.getHeight() / 7;
-        boxHeightScale = (float)boxWidth / (float) objectPix.getWidth();
+        {
+            yLocation = (int) (g.getHeight() * 0.54);
+            objectPix = g.newPixmap("spikes.png", Graphics.PixmapFormat.RGB565);
+            boxWidth = g.getHeight() / 5;
+            boxHeight = boxWidth;
+        }
+
+        boxHeightScale = (float)boxHeight / (float) objectPix.getHeight();
 
     }
 }
