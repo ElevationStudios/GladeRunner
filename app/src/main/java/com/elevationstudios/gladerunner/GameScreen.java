@@ -67,7 +67,7 @@ public class GameScreen extends Screen {
 
     private int points = 0;
     private int moneyEarned = 0;
-    private int initialMoney = Settings.gold;
+    private int initialMoney = 0;//
 
     public GameScreen(Game game) {
         super(game);
@@ -103,6 +103,8 @@ public class GameScreen extends Screen {
         ninjaXPos = (int) (game.getGraphics().getWidth() * 0.1);
         ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
+
+        initialMoney = Settings.gold;
     }
 
     @Override
@@ -115,7 +117,7 @@ public class GameScreen extends Screen {
 
                 if (!isPaused) {
                     if (inBounds(event, dieButtonXPos, dieButtonYPos,
-                            game.getGraphics().getWidth() - (game.getGraphics().getWidth()-pauseButtonXPos) - 1,
+                            game.getGraphics().getWidth() - (game.getGraphics().getWidth()-pauseButtonXPos*2) - 1,
                             uiBarHeight-1)) {
                         ninja.takeDamage(25);
                         Log.d("GameScreen", "Clicked Die button");
@@ -163,6 +165,12 @@ public class GameScreen extends Screen {
                 if(knife == null) {
                     Log.d("Knife", "Spawned knife");
                     knife = new Knife(this);
+                    knife.yLocation = ninjaYPos;
+                    if (ninja.getState() == Ninja.State.Jump) {
+                        knife.isUp = true;
+                    } else{
+                        knife.isUp = false;
+                    }
                 }
             }
         }
@@ -294,7 +302,6 @@ public class GameScreen extends Screen {
         if(knife != null) {
             knife.xLocation += g.getWidth() * 2 / 3 * deltaTime;
             if(knife.xLocation >= game.getGraphics().getWidth()) {
-                Log.d("Knife", "Knife has despawned");
                 knife = null;
             }
         }
@@ -376,16 +383,16 @@ public class GameScreen extends Screen {
     }
 
     public void UpdateHealthSpawn(float deltaTime, Graphics g){
-        timer += deltaTime;
+        hpTimer += deltaTime;
         for (int i = 0; i < hpPickup.length; i++)
         {
             if (hpPickup[i] != null)
                 hpPickup[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
 
         }
-        if (timer >= 1 )
+        if (hpTimer >= 2.5 )
         {
-            timer = 0;
+            hpTimer = 0;
             for (int i = 0; i < hpPickup.length; i++)
             {
                 if (hpPickup[i] == null)
@@ -420,6 +427,19 @@ public class GameScreen extends Screen {
                     } else {
                         moneyEarned += 5;
                     }
+                    break;
+                }
+                if(knife!=null) {
+                    if ((obstacle[i].xLocation < (knife.xLocation + knife.objectPix.getWidth() * 0.25f)) &&
+                            (obstacle[i].xLocation > (knife.xLocation)) &&
+                            (knife.isUp == obstacle[i].isUp)) {
+                        Log.d("GameScreen.java", "Knife hit");
+                        obstacle[i] = null;
+                        knife = null;
+                        moneyEarned += 100;
+                        Log.d("GameScreen.java", "Knife deleted");
+                        break;
+                    }
                 }
             }
 
@@ -442,11 +462,9 @@ public class GameScreen extends Screen {
                     if (!hpPickup[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
-                    } else if (hpPickup[i].isUp && ninja.getState() != Ninja.State.Slide) {
+                    } else if (hpPickup[i].isUp && ninja.getState() == Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
-                    } else {
-                        moneyEarned += 5;
                     }
                 }
             }

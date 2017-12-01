@@ -16,13 +16,14 @@ public class HealthPickup {
     public HealthPickup(Graphics g, boolean up) {
 
         isUp = up;
+        xLocation = g.getWidth();
         if (!isUp)
         {
             yLocation = (int) (g.getHeight() * 0.78);
         }
         else
         {
-            yLocation = (int) (g.getHeight() * 0.54);
+            yLocation = (int) (g.getHeight() * 0.64);
         }
 
         objectPix = g.newPixmap("health.png", Graphics.PixmapFormat.RGB565);
