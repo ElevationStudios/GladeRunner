@@ -26,7 +26,7 @@ public class MainMenuScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
+        //background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
         playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
 
         playXPos = g.getWidth()*3/4-playButton.getWidth()/2;
@@ -64,14 +64,16 @@ public class MainMenuScreen extends Screen {
     @Override
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
-        g.drawPixmap(background, 0, 0);
+        g.drawPixmap(Assets.background, 0, 0);
         g.drawPixmap(playButton, playXPos, playYPos);
 
         //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
     }
 
     @Override
-    public void pause(){}
+    public void pause(){
+        Settings.save(game.getFileIO());
+    }
 
     @Override
     public void resume(){

@@ -25,7 +25,7 @@ public class OptionsScreen extends Screen {
     private int testX;
     private int testY;
 
-    private boolean enableSFX = true;
+    private boolean enableSFX = Settings.soundEnabled;
 
     public OptionsScreen(Game game) {
         super(game);
@@ -95,7 +95,8 @@ public class OptionsScreen extends Screen {
 
     @Override
     public void pause() {
-
+        Settings.soundEnabled = enableSFX;
+        Settings.save(game.getFileIO());
     }
 
     @Override
