@@ -120,8 +120,7 @@ public class GameScreen extends Screen {
                     if (inBounds(event, dieButtonXPos, dieButtonYPos,
                             uiBarHeight-1,
                             uiBarHeight-1)) {
-                        //ninja.takeDamage(25);
-                        game.showAchievements();
+                        ninja.takeDamage(25);
                         Log.d("GameScreen", "Clicked Die button");
                         return;
                     }
@@ -363,6 +362,7 @@ public class GameScreen extends Screen {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
             game.unlockDeathAchieve();
             game.setScreen(new GameOverScreen(game));
+            game.submitScore(points);
         }
     }
 
