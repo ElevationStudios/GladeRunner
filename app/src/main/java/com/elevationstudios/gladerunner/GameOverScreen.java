@@ -97,12 +97,7 @@ public class GameOverScreen extends Screen {
 
     }
 
-    public void EndStats(float time,int points,int money)
-    {
-        pointsGained = 1;//points;
-        endTime = 1.0f;//time;
-        moneyGained = 1;//money;
-    }
+
 
     @Override
     public void present(float deltaTime){
@@ -110,9 +105,9 @@ public class GameOverScreen extends Screen {
         g.drawPixmap(background, 0, 0);
         g.drawPixmap(shopButton, playXPos, playYPos);
         g.drawText("Game Over!", gameOXPos, gameOYPos, gameOverFont);
-        g.drawText("Time Survived: "+Float.toString(endTime)+" seconds", timeXPos, timeYPos, timeFont);
-        g.drawText("Points: "+ Integer.toString(pointsGained), scoreXPos, scoreYPos, scoreFont);
-        g.drawText("Money: $"+ Integer.toString(moneyGained), moneyXPos, moneyYPos, moneyFont);
+       // g.drawText("Time Survived: "+Float.toString(endTime)+" seconds", timeXPos, timeYPos, timeFont);
+        g.drawText("Points: "+ Integer.toString(Settings.lastRunDistance) + "m", scoreXPos, scoreYPos, scoreFont);
+        g.drawText("Money: $"+ Integer.toString(Settings.lastRunGold), moneyXPos, moneyYPos, moneyFont);
     }
 
     @Override
