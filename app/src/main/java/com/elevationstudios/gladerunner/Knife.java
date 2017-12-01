@@ -16,6 +16,7 @@ public class Knife {
     public int boxWidth;
     public int boxHeight;
     public Pixmap objectPix;
+    public boolean isUp;
 
     public Knife(GameScreen game) {
         final Graphics g = game.game.getGraphics();

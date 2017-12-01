@@ -67,6 +67,9 @@ public class Ninja {
     public void CheckHealth(){
         if (health <= 0){
             alive = false;
+        } else if(health > maxHealth) {
+            health = maxHealth;
+            alive = true;
         } else {
             alive = true;
         }
