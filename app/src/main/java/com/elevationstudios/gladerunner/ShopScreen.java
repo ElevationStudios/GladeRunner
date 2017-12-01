@@ -21,6 +21,8 @@ public class ShopScreen extends Screen {
     private static Pixmap playButton;
     private static Pixmap optionButton;
     private static Pixmap buyButton;
+    private static Pixmap achievementButton;
+    private static Pixmap leaderboardButton;
 
     private int playXPos;
     private int playYPos;
@@ -45,6 +47,11 @@ public class ShopScreen extends Screen {
     private int buyBoxXPos;
     private int buyBoxYPos;
 
+    private int achieveBoxXPos;
+    private int achieveBoxYPos;
+    private int leaderBoxXPos;
+    private int leaderBoxYPos;
+
     public ShopScreen(Game game) {
         super(game);
 
@@ -53,6 +60,8 @@ public class ShopScreen extends Screen {
         playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
         optionButton = g.newPixmap("optionButton.png", Graphics.PixmapFormat.ARGB4444);
         buyButton = g.newPixmap("buyButton.png", Graphics.PixmapFormat.ARGB4444);
+        achievementButton = g.newPixmap("btnAchievement.png", Graphics.PixmapFormat.ARGB4444);
+        leaderboardButton = g.newPixmap("btnLeaderboard.png", Graphics.PixmapFormat.ARGB4444);
 
         playXPos = g.getWidth() - playButton.getWidth();
         playYPos = g.getHeight() - playButton.getHeight();
@@ -79,6 +88,10 @@ public class ShopScreen extends Screen {
         buyXPos = buyBoxXPos;
         buyYPos = buyBoxYPos;
 
+        achieveBoxXPos = (int)(g.getWidth()-achievementButton.getWidth());
+        achieveBoxYPos = 1;
+        leaderBoxXPos = (int)(achieveBoxXPos - leaderboardButton.getWidth());
+        leaderBoxYPos = 1;
 
     }
 
@@ -98,9 +111,6 @@ public class ShopScreen extends Screen {
                     return;
                 }
 
-            }
-
-            if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, optionXPos, optionYPos,
                         optionButton.getWidth(), optionButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
@@ -108,9 +118,6 @@ public class ShopScreen extends Screen {
                     return;
                 }
 
-            }
-
-            if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, buyXPos, buyYPos,
                         buyButton.getWidth(), buyButton.getHeight())){
                     //this is where you change screen
@@ -120,6 +127,17 @@ public class ShopScreen extends Screen {
                     return;
                 }
 
+                if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
+                        achievementButton.getWidth(),
+                        achievementButton.getHeight())){
+                    game.showAchievements();
+                }
+
+                if (inBounds(event, leaderBoxXPos,leaderBoxYPos,
+                        leaderboardButton.getWidth(),
+                        leaderboardButton.getHeight())){
+                    game.showLeaderboards();
+                }
             }
 
         }
@@ -134,6 +152,8 @@ public class ShopScreen extends Screen {
         g.drawPixmap(background, 0, 0);
         g.drawPixmap(playButton, playXPos, playYPos);
         g.drawPixmap(optionButton, optionXPos, optionYPos);
+        g.drawPixmap(achievementButton, achieveBoxXPos, achieveBoxYPos);
+        g.drawPixmap(leaderboardButton,leaderBoxXPos,leaderBoxYPos);
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
         g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 
