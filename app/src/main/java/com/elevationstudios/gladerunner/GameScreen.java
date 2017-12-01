@@ -44,7 +44,6 @@ public class GameScreen extends Screen {
     private int returnButtonYPos;
 
 
-
     private boolean isPaused = false;
 
 
@@ -63,6 +62,11 @@ public class GameScreen extends Screen {
     private float timer;
     private Random r;
 
+
+    private int points = 0;
+    private int moneyEarned = 0;
+    private int initialMoney = Settings.gold;
+
     public GameScreen(Game game) {
         super(game);
 
@@ -72,17 +76,17 @@ public class GameScreen extends Screen {
 
 
         dieButton = g.newPixmap("dieButton.png", Graphics.PixmapFormat.ARGB4444);
-        dieButtonXPos = g.getWidth()*4/5-dieButton.getWidth()/2;
-        dieButtonYPos = g.getHeight()*3/5-dieButton.getHeight()/2;
+        dieButtonXPos = g.getWidth() - uiBarHeight*2 + 1;
+        dieButtonYPos =  0 + 1;
 
         pauseButton = g.newPixmap("pauseButton.png", Graphics.PixmapFormat.ARGB4444);
-        pauseButtonXPos = g.getWidth()-uiBarHeight+1;
-        pauseButtonYPos = 0+1;
+        pauseButtonXPos = g.getWidth() - uiBarHeight + 1;
+        pauseButtonYPos = 0 + 1;
 
 
         playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
-        playButtonXPos = g.getWidth()/2-playButton.getWidth()/2;
-        playButtonYPos = g.getHeight()/2-playButton.getHeight();
+        playButtonXPos = g.getWidth() / 2 - playButton.getWidth() / 2;
+        playButtonYPos = g.getHeight() / 2 - playButton.getHeight();
         returnButton = g.newPixmap("returnButton.png", Graphics.PixmapFormat.ARGB4444);
         returnButtonXPos = playButtonXPos;
         returnButtonYPos = playButtonYPos + 10 + playButton.getHeight();
@@ -92,8 +96,8 @@ public class GameScreen extends Screen {
 
         ninja = new Ninja();
         ninja.PrepareAssets(g);
-        ninjaXPos = (int)(game.getGraphics().getWidth()*0.1);
-        ninjaYPos = (int)(game.getGraphics().getHeight()*0.8);
+        ninjaXPos = (int) (game.getGraphics().getWidth() * 0.1);
+        ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
 
 
@@ -103,32 +107,33 @@ public class GameScreen extends Screen {
     public void update(float deltaTime) {
         List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
         int len = touchEvents.size();
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i);
-            if(event.type == TouchEvent.TOUCH_UP){
+            if (event.type == TouchEvent.TOUCH_UP) {
 
-                if(!isPaused) {
+                if (!isPaused) {
                     if (inBounds(event, dieButtonXPos, dieButtonYPos,
-                            dieButton.getWidth(), dieButton.getHeight())) {
+                            game.getGraphics().getWidth() - (game.getGraphics().getWidth()-pauseButtonXPos) - 1,
+                            uiBarHeight-1)) {
                         ninja.takeDamage(25);
                         Log.d("GameScreen", "Clicked Die button");
                         return;
                     }
                     if (inBounds(event, pauseButtonXPos, pauseButtonYPos,
-                            game.getGraphics().getWidth()-1, uiBarHeight-1)) {
+                            game.getGraphics().getWidth() - 1, uiBarHeight - 1)) {
                         isPaused = !isPaused;
                         //CheckPause(isPaused);
                         Log.d("GameScreen", "Clicked Pause button");
                         return;
                     }
                 } else if (isPaused) {
-                    if(inBounds(event, playButtonXPos, playButtonYPos,
+                    if (inBounds(event, playButtonXPos, playButtonYPos,
                             playButton.getWidth(), playButton.getHeight())) {
                         isPaused = !isPaused;
                         Log.d("GameScreen", "Clicked Play button");
 
                     }
-                    if(inBounds(event, returnButtonXPos, returnButtonYPos,
+                    if (inBounds(event, returnButtonXPos, returnButtonYPos,
                             returnButton.getWidth(), returnButton.getHeight())) {
                         isPaused = !isPaused;
                         game.setScreen(new ShopScreen(game));
@@ -137,18 +142,18 @@ public class GameScreen extends Screen {
                     }
                 }
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_UP){
+            if (event.type == TouchEvent.TOUCH_SWIPED_UP && ninjaYVelocity == 0) {
                 Jump();
                 ninja.setState(Ninja.State.Jump);
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_DOWN && ninjaYVelocity == 0){
+            if (event.type == TouchEvent.TOUCH_SWIPED_DOWN && ninjaYVelocity == 0) {
                 ninja.setState(Ninja.State.Slide);
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_RIGHT) {
+            if (event.type == TouchEvent.TOUCH_SWIPED_RIGHT) {
                 Log.d("SwipeEvent", "Swiped Right");
                 ninja.setAction(Ninja.Action.MeleeAttack);
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_LEFT){
+            if (event.type == TouchEvent.TOUCH_SWIPED_LEFT) {
                 Log.d("SwipeEvent", "Swiped Left");
                 ninja.setAction(Ninja.Action.RangedAttack);
             }
@@ -157,7 +162,7 @@ public class GameScreen extends Screen {
 
 
     @Override
-    public void present(float deltaTime){
+    public void present(float deltaTime) {
         UpdateNinja();
 
 
@@ -168,14 +173,17 @@ public class GameScreen extends Screen {
 
         UpdateObstacles(deltaTime, g);
 
-        if(isPaused) {
+        if (isPaused) {
             DrawPauseScreen(g);
         } else {
-            g.drawPixmap(dieButton, dieButtonXPos, dieButtonYPos);
+            //g.drawPixmap(dieButton, dieButtonXPos, dieButtonYPos);
+            g.drawPixmapScaled(dieButton,
+                    dieButtonXPos, dieButtonYPos,
+                    g.getWidth() - (g.getWidth()-pauseButtonXPos) - 1,
+                    uiBarHeight - 1);
             g.drawPixmapScaled(pauseButton,
                     pauseButtonXPos, pauseButtonYPos,
-                    g.getWidth()-1, uiBarHeight-1 );
-            //g.drawPixmap(pauseButton, pauseButtonXPos, pauseButtonYPos);
+                    g.getWidth() - 1, uiBarHeight - 1);
         }
         //g.drawPixmap(playButton, playXPos, playYPos);
 
@@ -185,16 +193,21 @@ public class GameScreen extends Screen {
     }
 
 
+    @Override
+    public void pause() {
+        Settings.updateLastRunDistance(points);//(int)Math.floor(points/5));
+        Settings.updateLastRunGold(moneyEarned);
+        Settings.addGold(moneyEarned);
+        Settings.save(game.getFileIO());
+    }
 
     @Override
-    public void pause(){}
-
-    @Override
-    public void resume(){
+    public void resume() {
 
     }
+
     @Override
-    public void dispose(){
+    public void dispose() {
 
     }
 
@@ -202,72 +215,75 @@ public class GameScreen extends Screen {
 
 
     public void SetupUIValues() {
-        uiBarHeight = (int)(game.getGraphics().getHeight()*uiBarHeightPercentage);
+        uiBarHeight = (int) (game.getGraphics().getHeight() * uiBarHeightPercentage);
 
-        pauseScreenWidth = (int)(game.getGraphics().getWidth()*pauseScreenWidthPercentage);
-        pauseScreenHeight = (int)(game.getGraphics().getHeight()*pauseScreenHeightPercentage);
+        pauseScreenWidth = (int) (game.getGraphics().getWidth() * pauseScreenWidthPercentage);
+        pauseScreenHeight = (int) (game.getGraphics().getHeight() * pauseScreenHeightPercentage);
     }
 
     public void DrawUIBar(Graphics g) {
-        g.drawRect(0, 0, g.getWidth()+5, uiBarHeight, Color.BLACK);
+        g.drawRect(0, 0, g.getWidth() + 5, uiBarHeight, Color.BLACK);
         g.drawRect(uiBarOutline, uiBarOutline,
-                g.getWidth()-uiBarOutline*2, uiBarHeight-uiBarOutline*2,
+                g.getWidth() - uiBarOutline * 2, uiBarHeight - uiBarOutline * 2,
                 Color.rgb(239, 207, 112));
 
         //gold
-        g.drawText("Gold: " + Settings.gold+ "g", g.getWidth()*1/20, uiBarHeight/2+11, 24);
+        g.drawText("Gold: " + (initialMoney + moneyEarned) + "g", g.getWidth() * 1 / 20, uiBarHeight / 2 + 11, 24);
+        g.drawText("Dist: " + (points) + "m", g.getWidth() * 4 / 20, uiBarHeight / 2 + 11, 24);
 
         //health bar outline
-        g.drawRect(g.getWidth()*4/20-uiHealthbarOutline,
-                (int)(uiBarHeight/2-(g.getHeight()*uiBarHeightPercentage/2*uiHealthbarHeight)-uiHealthbarOutline),
-                g.getWidth()*8/20+uiHealthbarOutline*2,
-                (int)(uiBarHeight*uiHealthbarHeight+uiHealthbarOutline*2),
+        g.drawRect(g.getWidth() * 7 / 20 - uiHealthbarOutline,
+                (int) (uiBarHeight / 2 - (g.getHeight() * uiBarHeightPercentage / 2 * uiHealthbarHeight) - uiHealthbarOutline),
+                g.getWidth() * 8 / 20 + uiHealthbarOutline * 2,
+                (int) (uiBarHeight * uiHealthbarHeight + uiHealthbarOutline * 2),
                 Color.BLACK);
         //health bar
-        g.drawRect(g.getWidth()*4/20,
-                (int)(uiBarHeight/2-(g.getHeight()*uiBarHeightPercentage/2*uiHealthbarHeight)),
-                g.getWidth() * 8/20 * ninja.getHealth()/ninja.getMaxHealth(),
-                (int)(uiBarHeight*uiHealthbarHeight),
+        g.drawRect(g.getWidth() * 7 / 20,
+                (int) (uiBarHeight / 2 - (g.getHeight() * uiBarHeightPercentage / 2 * uiHealthbarHeight)),
+                g.getWidth() * 8 / 20 * ninja.getHealth() / ninja.getMaxHealth(),
+                (int) (uiBarHeight * uiHealthbarHeight),
                 Color.GREEN);
+
+
     }
 
-    public void DrawPauseScreen(Graphics g){
+    public void DrawPauseScreen(Graphics g) {
 
-        g.drawRect((int)(g.getWidth()*((1-pauseScreenWidthPercentage)/2))-uiBarOutline,
-                (int)(g.getHeight()*((1-pauseScreenHeightPercentage)/2))-uiBarOutline,
-                (int)(pauseScreenWidth)+uiBarOutline*2,
-                (int)(pauseScreenHeight)+uiBarOutline*2,
+        g.drawRect((int) (g.getWidth() * ((1 - pauseScreenWidthPercentage) / 2)) - uiBarOutline,
+                (int) (g.getHeight() * ((1 - pauseScreenHeightPercentage) / 2)) - uiBarOutline,
+                (int) (pauseScreenWidth) + uiBarOutline * 2,
+                (int) (pauseScreenHeight) + uiBarOutline * 2,
                 Color.BLACK);
-        g.drawRect((int)(g.getWidth()*((1-pauseScreenWidthPercentage)/2)),
-                (int)(g.getHeight()*((1-pauseScreenHeightPercentage)/2)),
-                (int)(pauseScreenWidth),
-                (int)(pauseScreenHeight),
+        g.drawRect((int) (g.getWidth() * ((1 - pauseScreenWidthPercentage) / 2)),
+                (int) (g.getHeight() * ((1 - pauseScreenHeightPercentage) / 2)),
+                (int) (pauseScreenWidth),
+                (int) (pauseScreenHeight),
                 Color.rgb(239, 207, 112));
 
-        g.drawPixmap(playButton, playButtonXPos,playButtonYPos);
-        g.drawPixmap(returnButton, returnButtonXPos,returnButtonYPos);
+        g.drawPixmap(playButton, playButtonXPos, playButtonYPos);
+        g.drawPixmap(returnButton, returnButtonXPos, returnButtonYPos);
     }
 
-    public void DrawEntities(Graphics g){
+    public void DrawEntities(Graphics g) {
         DrawNinja(g);
         DrawObstacles(g);
 
     }
 
-    public void DrawNinja(Graphics g){
+    public void DrawNinja(Graphics g) {
         /*g.drawPixmap(ninja.getCurrentSprite(),
                 ninjaXPos-ninja.getCurrentSprite().getWidth()/2,
                 ninjaYPos-ninja.getCurrentSprite().getHeight());
         */
         g.drawPixmapScaled(ninja.getCurrentSprite(),
-                ninjaXPos - (int)(ninja.getCurrentSprite().getWidth()*ninjaScale/2),
-                ninjaYPos - (int)(ninja.getCurrentSprite().getHeight()*ninjaScale/2),
+                ninjaXPos - (int) (ninja.getCurrentSprite().getWidth() * ninjaScale / 2),
+                ninjaYPos - (int) (ninja.getCurrentSprite().getHeight() * ninjaScale / 2),
                 ninjaScale);
-        if(!isPaused)
+        if (!isPaused)
             ninja.addFrame();
     }
 
-    public void DrawObstacles(Graphics g){
+    public void DrawObstacles(Graphics g) {
         for (int i = 0; i < obstacle.length; i++)
             if (obstacle[i] != null) {
                 g.drawPixmapScaled(obstacle[i].objectPix,
@@ -277,50 +293,43 @@ public class GameScreen extends Screen {
 
     }
 
-    public void Jump(){
+    public void Jump() {
         ninjaYVelocity = -jumpStrength;
     }
 
-    public void UpdateNinja(){
-        GameOverScreen gameoverScreen;
-        gameoverScreen = new GameOverScreen(game);
+    public void UpdateNinja() {
         //Log.d("GameScreenNinja", "Updating");
         ninjaYPos += ninjaYVelocity;
         ninja.getNinjaYVelocity(ninjaYVelocity);
         ninjaYVelocity -= gravity;
 
-        if(ninjaYPos >= groundYPos){
+        if (ninjaYPos >= groundYPos) {
             ninjaYVelocity = 0;
             ninjaYPos = groundYPos;
-            if(ninja.getState()==Ninja.State.Jump){
+            if (ninja.getState() == Ninja.State.Jump) {
                 ninja.setState(Ninja.State.Ground);
             }
         }
-        if (!ninja.isAlive()){
+        if (!ninja.isAlive()) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
-            gameoverScreen.EndStats (timer,Math.round(timer) + ninja.getHealth() -100,Math.round(timer));
             game.setScreen(new GameOverScreen(game));
         }
 
 
-
     }
 
-    public void UpdateObstacles(float deltaTime, Graphics g){
+    public void UpdateObstacles(float deltaTime, Graphics g) {
         timer += deltaTime;
-        for (int i = 0; i < obstacle.length; i++)
-        {
+        for (int i = 0; i < obstacle.length; i++) {
             if (obstacle[i] != null)
                 obstacle[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
 
         }
-        if (timer >= 1 )
-        {
+        if (timer >= 1) {
             timer = 0;
-            for (int i = 0; i < obstacle.length; i++)
-            {
-                if (obstacle[i] == null)
-                {
+            points += 1;
+            for (int i = 0; i < obstacle.length; i++) {
+                if (obstacle[i] == null) {
                     obstacle[i] = new Obstacle(g, r.nextBoolean());
                     break;
                 }
@@ -330,37 +339,32 @@ public class GameScreen extends Screen {
 
     }
 
-    public void CheckCollision(){
-        for (int i = 0; i < obstacle.length; i++)
-        {
+    public void CheckCollision() {
+        for (int i = 0; i < obstacle.length; i++) {
             //Check if obstacle exists
-            if (obstacle[i] != null)
-            {
+            if (obstacle[i] != null) {
                 //Check if off screen
-                if (obstacle[i].xLocation <= -obstacle[i].boxWidth*2)
-                {
+                if (obstacle[i].xLocation <= -obstacle[i].boxWidth * 2) {
                     obstacle[i] = null;
                     break;
                 }
                 //Check if touching player
                 if ((obstacle[i].xLocation < (ninjaXPos + Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)) &&
-                        (obstacle[i].xLocation > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)))
-                {
-                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
-                    {
+                        (obstacle[i].xLocation > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2))) {
+                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                    }
-                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
-                    {
+                    } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
+                    } else {
+                        moneyEarned += 5;
                     }
                 }
             }
+
+            //Against else
         }
 
-        //Against else
     }
-
 }
