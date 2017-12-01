@@ -7,6 +7,7 @@ import com.elevationstudios.framework.Input;
 import com.elevationstudios.framework.Input.TouchEvent;
 import com.elevationstudios.framework.Pixmap;
 import com.elevationstudios.framework.Screen;
+import com.google.android.gms.games.Games;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -119,7 +120,8 @@ public class GameScreen extends Screen {
                     if (inBounds(event, dieButtonXPos, dieButtonYPos,
                             uiBarHeight-1,
                             uiBarHeight-1)) {
-                        ninja.takeDamage(25);
+                        //ninja.takeDamage(25);
+                        game.showAchievements();
                         Log.d("GameScreen", "Clicked Die button");
                         return;
                     }
@@ -359,6 +361,7 @@ public class GameScreen extends Screen {
         }
         if (!ninja.isAlive()) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
+            game.unlockDeathAchieve();
             game.setScreen(new GameOverScreen(game));
         }
     }

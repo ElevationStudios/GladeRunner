@@ -131,5 +131,9 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
        startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
     }
 
+    public void unlockDeathAchieve() {
+        Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_death));
+    }
+
 
 }

@@ -15,5 +15,6 @@ public interface Game
     public void submitScore(int score);
     public void showLeaderboards();
     public void showAchievements();
+    public void unlockDeathAchieve();
 }
 
