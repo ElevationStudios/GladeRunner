@@ -61,6 +61,9 @@ public class GameScreen extends Screen {
     private float timer;
     private Random r;
 
+    private HealthPickup[] hpPickup;
+    private float hpTimer;
+    private Random rand;
 
     private int points = 0;
     private int moneyEarned = 0;
@@ -91,6 +94,9 @@ public class GameScreen extends Screen {
 
         obstacle = new Obstacle[5];
         r = new Random();
+
+        hpPickup = new HealthPickup[5];
+        rand = new Random();
 
         ninja = new Ninja();
         ninja.PrepareAssets(g);
@@ -174,6 +180,8 @@ public class GameScreen extends Screen {
         UpdateKnife(deltaTime, g);
         UpdateObstacles(deltaTime, g);
 
+        UpdateHealthSpawn(deltaTime, g);
+
         if (isPaused) {
             DrawPauseScreen(g);
         } else {
@@ -191,6 +199,9 @@ public class GameScreen extends Screen {
         //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
         for (int i = 0; i < obstacle.length; i++)
             CheckCollision();
+
+        for (int i = 0; i < hpPickup.length; i++)
+            CheckHealthCol();
     }
 
     @Override
@@ -268,6 +279,7 @@ public class GameScreen extends Screen {
         DrawNinja(g);
         DrawObstacles(g);
         DrawKnife(g);
+        DrawHealthPickup(g);
     }
 
     public void DrawKnife(Graphics g) {
@@ -308,6 +320,16 @@ public class GameScreen extends Screen {
                         obstacle[i].xLocation, obstacle[i].yLocation,
                         obstacle[i].boxHeightScale);
             }
+    }
+
+    public void DrawHealthPickup(Graphics g){
+        for (int i = 0; i < hpPickup.length; i++)
+            if (hpPickup[i] != null) {
+                g.drawPixmapScaled(hpPickup[i].objectPix,
+                        hpPickup[i].xLocation, hpPickup[i].yLocation,
+                        hpPickup[i].boxHeightScale);
+            }
+
     }
 
     public void Jump() {
@@ -353,6 +375,29 @@ public class GameScreen extends Screen {
         }
     }
 
+    public void UpdateHealthSpawn(float deltaTime, Graphics g){
+        timer += deltaTime;
+        for (int i = 0; i < hpPickup.length; i++)
+        {
+            if (hpPickup[i] != null)
+                hpPickup[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
+
+        }
+        if (timer >= 1 )
+        {
+            timer = 0;
+            for (int i = 0; i < hpPickup.length; i++)
+            {
+                if (hpPickup[i] == null)
+                {
+                    hpPickup[i] = new HealthPickup(g, rand.nextBoolean());
+                    break;
+                }
+            }
+            Log.d("GameScreen", "Spawned Health");
+        }
+
+    }
 
     public void CheckCollision() {
         for (int i = 0; i < obstacle.length; i++) {
@@ -372,6 +417,34 @@ public class GameScreen extends Screen {
                     } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
+                    } else {
+                        moneyEarned += 5;
+                    }
+                }
+            }
+
+            //Against else
+        }
+    }
+
+    void CheckHealthCol(){
+        for (int i = 0; i < hpPickup.length; i++) {
+            //Check if pickup exists
+            if (hpPickup[i] != null) {
+                //Check if off screen
+                if (hpPickup[i].xLocation <= -hpPickup[i].boxWidth * 2) {
+                    hpPickup[i] = null;
+                    break;
+                }
+                //Check if touching player
+                if ((hpPickup[i].xLocation < (ninjaXPos + Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)) &&
+                        (hpPickup[i].xLocation > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2))) {
+                    if (!hpPickup[i].isUp && ninja.getState() != Ninja.State.Jump) {
+                        ninja.takeDamage(-50);
+                        hpPickup[i] = null;
+                    } else if (hpPickup[i].isUp && ninja.getState() != Ninja.State.Slide) {
+                        ninja.takeDamage(-50);
+                        hpPickup[i] = null;
                     } else {
                         moneyEarned += 5;
                     }
