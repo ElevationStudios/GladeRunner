@@ -45,8 +45,6 @@ public class GameScreen extends Screen {
 
 
 
-
-
     private boolean isPaused = false;
 
 
@@ -67,7 +65,6 @@ public class GameScreen extends Screen {
 
     public GameScreen(Game game) {
         super(game);
-
 
         Graphics g = game.getGraphics();
         background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
@@ -140,7 +137,7 @@ public class GameScreen extends Screen {
                     }
                 }
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_UP && ninjaYVelocity == 0){
+            if(event.type == TouchEvent.TOUCH_SWIPED_UP){
                 Jump();
                 ninja.setState(Ninja.State.Jump);
             }
@@ -190,8 +187,7 @@ public class GameScreen extends Screen {
 
 
     @Override
-    public void pause(){
-    }
+    public void pause(){}
 
     @Override
     public void resume(){
@@ -273,11 +269,11 @@ public class GameScreen extends Screen {
 
     public void DrawObstacles(Graphics g){
         for (int i = 0; i < obstacle.length; i++)
-        if (obstacle[i] != null) {
-            g.drawPixmapScaled(obstacle[i].objectPix,
-                    obstacle[i].xLocation, obstacle[i].yLocation,
-                    obstacle[i].boxHeightScale);
-        }
+            if (obstacle[i] != null) {
+                g.drawPixmapScaled(obstacle[i].objectPix,
+                        obstacle[i].xLocation, obstacle[i].yLocation,
+                        obstacle[i].boxHeightScale);
+            }
 
     }
 
@@ -286,6 +282,8 @@ public class GameScreen extends Screen {
     }
 
     public void UpdateNinja(){
+        GameOverScreen gameoverScreen;
+        gameoverScreen = new GameOverScreen(game);
         //Log.d("GameScreenNinja", "Updating");
         ninjaYPos += ninjaYVelocity;
         ninja.getNinjaYVelocity(ninjaYVelocity);
@@ -300,6 +298,7 @@ public class GameScreen extends Screen {
         }
         if (!ninja.isAlive()){
             Log.d("GameScreen", "Ninja Health <= 0, dead");
+            gameoverScreen.EndStats (timer,Math.round(timer) + ninja.getHealth() -100,Math.round(timer));
             game.setScreen(new GameOverScreen(game));
         }
 

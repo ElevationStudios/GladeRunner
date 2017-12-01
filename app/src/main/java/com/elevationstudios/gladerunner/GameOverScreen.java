@@ -99,9 +99,16 @@ public class GameOverScreen extends Screen {
 
     public void EndStats(float time,int points,int money)
     {
-        pointsGained = 1;//points;
-        endTime = 1.0f;//time;
-        moneyGained = 1;//money;
+        Settings settings;
+        settings = new Settings();
+
+        pointsGained = points*15;//points;
+        endTime = time;//time;
+        moneyGained = money;//money;
+        settings.addGold(moneyGained);
+        settings.updateLastRunDistance(points);
+        settings.updateLastRunGold(moneyGained);
+        Settings.save(game.getFileIO());
     }
 
     @Override
