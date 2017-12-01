@@ -115,7 +115,8 @@ public class ShopScreen extends Screen {
                         buyButton.getWidth(), buyButton.getHeight())){
                     //this is where you change screen
                     Log.d("ShopScreen", "Clicked Buy button");
-                    playerMoney-=100;
+                    if (playerMoney > 100)
+                        playerMoney-=100;
                     return;
                 }
 

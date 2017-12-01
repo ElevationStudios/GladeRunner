@@ -140,7 +140,7 @@ public class GameScreen extends Screen {
                     }
                 }
             }
-            if(event.type == TouchEvent.TOUCH_SWIPED_UP){
+            if(event.type == TouchEvent.TOUCH_SWIPED_UP && ninjaYVelocity == 0){
                 Jump();
                 ninja.setState(Ninja.State.Jump);
             }
@@ -190,7 +190,8 @@ public class GameScreen extends Screen {
 
 
     @Override
-    public void pause(){}
+    public void pause(){
+    }
 
     @Override
     public void resume(){

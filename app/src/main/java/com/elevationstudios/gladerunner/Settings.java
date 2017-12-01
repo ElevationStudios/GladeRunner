@@ -1,5 +1,7 @@
 package com.elevationstudios.gladerunner;
 
+import android.util.Log;
+
 import com.elevationstudios.framework.FileIO;
 
 import java.io.BufferedReader;
@@ -26,7 +28,9 @@ public static boolean soundEnabled = true;
     public static void load (FileIO files){
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(files.readFile(".gladerunner")));
+            Log.d("Settings.java", "Starting load");
+            in = new BufferedReader(new InputStreamReader(files.readFile("gladerunner.settings")));
+
             soundEnabled = Boolean.parseBoolean(in.readLine());
 
             gold = Integer.parseInt(in.readLine());
@@ -41,7 +45,10 @@ public static boolean soundEnabled = true;
             for (int i = 0; i < boughtItems.length; i++){
                 boughtItems[i] = Integer.parseInt(in.readLine());
             }
+            Log.d("Settings.java", "Loaded file");
         } catch (IOException e){
+
+            Log.d("Settings.java", "Failed to load file");
         } catch (NumberFormatException e){
         } finally {
             try{
@@ -54,7 +61,9 @@ public static boolean soundEnabled = true;
     public static void save(FileIO files){
         BufferedWriter out = null;
         try{
-            out = new BufferedWriter(new OutputStreamWriter(files.writeFile(".gladerunner")));
+
+            Log.d("Settings.java", "Starting save");
+            out = new BufferedWriter(new OutputStreamWriter(files.writeFile("gladerunner.settings")));
 
             out.write(Boolean.toString(soundEnabled));
             out.write("\n");
@@ -75,9 +84,11 @@ public static boolean soundEnabled = true;
                 out.write(Integer.toString(boughtItems[i]));
                 out.write("\n");
             }
+            Log.d("Settings.java", "Saved file");
 
         }catch(IOException e){
 
+            Log.d("Settings.java", "Failed to save file");
         }finally {
             try{
                 if(out!=null)

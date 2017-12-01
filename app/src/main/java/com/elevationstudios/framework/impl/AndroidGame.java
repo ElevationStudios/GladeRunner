@@ -15,6 +15,9 @@ import com.elevationstudios.framework.Game;
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Input;
 import com.elevationstudios.framework.Screen;
+//import com.elevationstudios.gladerunner.R;
+//import com.google.android.gms.games.Games;
+//import com.google.example.games.basegameutils.BaseGameActivity;
 
 public abstract class AndroidGame extends Activity implements Game {
     AndroidFastRenderView renderView;
@@ -24,11 +27,15 @@ public abstract class AndroidGame extends Activity implements Game {
     FileIO fileIO;
     Screen screen;
 
+    static final int REQUEST_LEADERBOARD = 100;
+    static final int REQUEST_ACHIEVEMENTS = 200;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -107,4 +114,22 @@ public abstract class AndroidGame extends Activity implements Game {
     public Screen getCurrentScreen() {
         return screen;
     }
+
+   /* public boolean isSignedIn(){
+        return getGameHelper().isSignedIn();
+    }
+    public void signIn(){
+        getGameHelper().beginUserInitiatedSignIn();
+    }
+    public void submitScore(int score){
+       // Games.Leaderboards.submitScore(getGameHelper().getApiClient(), getString(R.string.Leaderboard_top_score), score);
+    }
+    public void showLeaderboards(){
+        //startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.Leaderboard_top_score)), REQUEST_LEADERBOARD);
+    }
+    public void showAchievements(){
+       startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
+    }
+*/
+
 }

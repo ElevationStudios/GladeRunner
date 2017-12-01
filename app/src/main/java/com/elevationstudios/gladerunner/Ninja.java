@@ -21,7 +21,7 @@ public class Ninja {
 
     public int frame;
     public int frameTimer = 0;
-    public int slideTimer = 45;
+    public int slideTimer = 35;
 
 
 
@@ -147,7 +147,7 @@ public class Ninja {
 
     public void UpdateNinjaAnimation(){
         frame = 0;
-        frameTimer = 0;
+            frameTimer = 0;
     }
 
     public void getNinjaYVelocity(int velocity){
