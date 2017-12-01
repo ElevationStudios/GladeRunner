@@ -43,15 +43,14 @@ public class GameScreen extends Screen {
     private int returnButtonXPos;
     private int returnButtonYPos;
 
-
     private boolean isPaused = false;
 
-
-    private Ninja ninja;
+    public Ninja ninja;
     private int ninjaXPos;
-    private int ninjaYPos;
+    public int ninjaYPos;
     private int ninjaYVelocity;
     private int groundYPos;
+    public Knife knife;
 
     private int gravity = -3;
     private int jumpStrength = 35;
@@ -74,14 +73,13 @@ public class GameScreen extends Screen {
         background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
         SetupUIValues();
 
-
         dieButton = g.newPixmap("dieButton.png", Graphics.PixmapFormat.ARGB4444);
         dieButtonXPos = g.getWidth() - uiBarHeight*2 + 1;
         dieButtonYPos =  0 + 1;
 
         pauseButton = g.newPixmap("pauseButton.png", Graphics.PixmapFormat.ARGB4444);
-        pauseButtonXPos = g.getWidth() - uiBarHeight + 1;
-        pauseButtonYPos = 0 + 1;
+        pauseButtonXPos = g.getWidth()-uiBarHeight+1;
+        pauseButtonYPos = 1;
 
 
         playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
@@ -99,8 +97,6 @@ public class GameScreen extends Screen {
         ninjaXPos = (int) (game.getGraphics().getWidth() * 0.1);
         ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
-
-
     }
 
     @Override
@@ -142,6 +138,7 @@ public class GameScreen extends Screen {
                     }
                 }
             }
+
             if (event.type == TouchEvent.TOUCH_SWIPED_UP && ninjaYVelocity == 0) {
                 Jump();
                 ninja.setState(Ninja.State.Jump);
@@ -153,24 +150,28 @@ public class GameScreen extends Screen {
                 Log.d("SwipeEvent", "Swiped Right");
                 ninja.setAction(Ninja.Action.MeleeAttack);
             }
-            if (event.type == TouchEvent.TOUCH_SWIPED_LEFT) {
+
+            if(event.type == TouchEvent.TOUCH_SWIPED_LEFT && ninja.isAlive()){
                 Log.d("SwipeEvent", "Swiped Left");
                 ninja.setAction(Ninja.Action.RangedAttack);
+                if(knife == null) {
+                    Log.d("Knife", "Spawned knife");
+                    knife = new Knife(this);
+                }
             }
         }
     }
 
-
     @Override
     public void present(float deltaTime) {
         UpdateNinja();
-
 
         Graphics g = game.getGraphics();
         g.drawPixmap(background, 0, 0);
         DrawUIBar(g);
         DrawEntities(g);
 
+        UpdateKnife(deltaTime, g);
         UpdateObstacles(deltaTime, g);
 
         if (isPaused) {
@@ -191,7 +192,6 @@ public class GameScreen extends Screen {
         for (int i = 0; i < obstacle.length; i++)
             CheckCollision();
     }
-
 
     @Override
     public void pause() {
@@ -267,7 +267,25 @@ public class GameScreen extends Screen {
     public void DrawEntities(Graphics g) {
         DrawNinja(g);
         DrawObstacles(g);
+        DrawKnife(g);
+    }
 
+    public void DrawKnife(Graphics g) {
+        if(knife != null) {
+            g.drawPixmapScaled(knife.objectPix,
+                    knife.xLocation, knife.yLocation,
+                    0.25f);
+        }
+    }
+
+    public void UpdateKnife(float deltaTime, Graphics g) {
+        if(knife != null) {
+            knife.xLocation += g.getWidth() * 2 / 3 * deltaTime;
+            if(knife.xLocation >= game.getGraphics().getWidth()) {
+                Log.d("Knife", "Knife has despawned");
+                knife = null;
+            }
+        }
     }
 
     public void DrawNinja(Graphics g) {
@@ -290,7 +308,6 @@ public class GameScreen extends Screen {
                         obstacle[i].xLocation, obstacle[i].yLocation,
                         obstacle[i].boxHeightScale);
             }
-
     }
 
     public void Jump() {
@@ -314,18 +331,16 @@ public class GameScreen extends Screen {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
             game.setScreen(new GameOverScreen(game));
         }
-
-
     }
 
     public void UpdateObstacles(float deltaTime, Graphics g) {
         timer += deltaTime;
-        for (int i = 0; i < obstacle.length; i++) {
+        for (int i = 0; i < obstacle.length; i++)  {
             if (obstacle[i] != null)
                 obstacle[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
-
         }
-        if (timer >= 1) {
+
+        if (timer >= 1 ) {
             timer = 0;
             points += 1;
             for (int i = 0; i < obstacle.length; i++) {
@@ -336,8 +351,8 @@ public class GameScreen extends Screen {
             }
             Log.d("GameScreen", "Spawned new box");
         }
-
     }
+
 
     public void CheckCollision() {
         for (int i = 0; i < obstacle.length; i++) {
@@ -365,6 +380,5 @@ public class GameScreen extends Screen {
 
             //Against else
         }
-
     }
 }
