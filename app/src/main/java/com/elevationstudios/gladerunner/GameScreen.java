@@ -117,14 +117,14 @@ public class GameScreen extends Screen {
 
                 if (!isPaused) {
                     if (inBounds(event, dieButtonXPos, dieButtonYPos,
-                            game.getGraphics().getWidth() - (game.getGraphics().getWidth()-pauseButtonXPos*2) - 1,
+                            uiBarHeight-1,
                             uiBarHeight-1)) {
                         ninja.takeDamage(25);
                         Log.d("GameScreen", "Clicked Die button");
                         return;
                     }
                     if (inBounds(event, pauseButtonXPos, pauseButtonYPos,
-                            game.getGraphics().getWidth() - 1, uiBarHeight - 1)) {
+                            uiBarHeight-1, uiBarHeight - 1)) {
                         isPaused = !isPaused;
                         //CheckPause(isPaused);
                         Log.d("GameScreen", "Clicked Pause button");
@@ -185,10 +185,6 @@ public class GameScreen extends Screen {
         DrawUIBar(g);
         DrawEntities(g);
 
-        UpdateKnife(deltaTime, g);
-        UpdateObstacles(deltaTime, g);
-
-        UpdateHealthSpawn(deltaTime, g);
 
         if (isPaused) {
             DrawPauseScreen(g);
@@ -201,6 +197,11 @@ public class GameScreen extends Screen {
             g.drawPixmapScaled(pauseButton,
                     pauseButtonXPos, pauseButtonYPos,
                     g.getWidth() - 1, uiBarHeight - 1);
+
+
+            UpdateKnife(deltaTime, g);
+            UpdateObstacles(deltaTime, g);
+            UpdateHealthSpawn(deltaTime, g);
         }
         //g.drawPixmap(playButton, playXPos, playYPos);
 
