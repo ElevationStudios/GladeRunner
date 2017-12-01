@@ -47,7 +47,7 @@ public class GameScreen extends Screen {
 
     public Ninja ninja;
     private int ninjaXPos;
-    private int ninjaYPos;
+    public int ninjaYPos;
     private int ninjaYVelocity;
     private int groundYPos;
     public Knife knife;
@@ -164,7 +164,7 @@ public class GameScreen extends Screen {
         DrawEntities(g);
 
         UpdateKnife(deltaTime, g);
-       // UpdateObstacles(deltaTime, g);
+        UpdateObstacles(deltaTime, g);
 
         if(isPaused) {
             DrawPauseScreen(g);
@@ -246,7 +246,7 @@ public class GameScreen extends Screen {
 
     public void DrawEntities(Graphics g){
         DrawNinja(g);
-        //DrawObstacles(g);
+        DrawObstacles(g);
         DrawKnife(g);
     }
 
@@ -254,7 +254,7 @@ public class GameScreen extends Screen {
         if(knife != null) {
             g.drawPixmapScaled(knife.objectPix,
                     knife.xLocation, knife.yLocation,
-                    knife.boxHeightScale);
+                    0.25f);
         }
     }
 
@@ -318,7 +318,6 @@ public class GameScreen extends Screen {
         for (int i = 0; i < obstacle.length; i++)  {
             if (obstacle[i] != null)
                 obstacle[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
-
         }
 
         if (timer >= 1 ) {
@@ -336,36 +335,26 @@ public class GameScreen extends Screen {
     }
 
     public void CheckCollision(){
-        for (int i = 0; i < obstacle.length; i++)
-        {
+        for (int i = 0; i < obstacle.length; i++) {
             //Check if obstacle exists
-            if (obstacle[i] != null)
-            {
+            if (obstacle[i] != null) {
                 //Check if off screen
-                if (obstacle[i].xLocation <= -obstacle[i].boxWidth*2)
-                {
+                if (obstacle[i].xLocation <= -obstacle[i].boxWidth*2) {
                     obstacle[i] = null;
                     break;
                 }
                 //Check if touching player
                 if ((obstacle[i].xLocation < (ninjaXPos + ninja.sprite[1][0].getWidth() * ninjaScale / 2)) &&
-                        (obstacle[i].xLocation > (ninjaXPos - ninja.sprite[1][0].getWidth() * ninjaScale / 2)))
-                {
-                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
-                    {
+                        (obstacle[i].xLocation > (ninjaXPos - ninja.sprite[1][0].getWidth() * ninjaScale / 2))) {
+                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                    }
-                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
-                    {
+                    } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
                     }
                 }
             }
         }
-
-        //Against else
     }
-
 }

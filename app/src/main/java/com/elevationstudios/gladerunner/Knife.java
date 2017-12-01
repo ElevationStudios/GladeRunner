@@ -21,7 +21,7 @@ public class Knife {
         final Graphics g = game.game.getGraphics();
         objectPix = g.newPixmap("knife.png", Graphics.PixmapFormat.RGB565);
         xLocation = (int) (g.getWidth()*0.1) + 20;
-        yLocation = g.getHeight() / 2;
+        yLocation = g.getHeight() - 200;
 
 
         boxWidth = g.getHeight() / 7;
