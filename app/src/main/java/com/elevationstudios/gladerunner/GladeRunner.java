@@ -13,7 +13,7 @@ public class GladeRunner extends AndroidGame {
         Log.d("GladeRunner.java", "Starting up");
         return new LoadingScreen(this);
     }
-/*
+
     @Override
     public void onSignInFailed(){
 
@@ -22,5 +22,5 @@ public class GladeRunner extends AndroidGame {
     public void onSignInSucceeded(){
 
     }
-*/
+
 }
