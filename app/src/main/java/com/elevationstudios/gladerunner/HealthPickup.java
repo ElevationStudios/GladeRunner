@@ -11,7 +11,6 @@ public class HealthPickup {
     public int boxWidth;
     public int boxHeight;
     public boolean isUp;
-    public Pixmap objectPix;
 
     public HealthPickup(Graphics g, boolean up) {
 
@@ -26,11 +25,10 @@ public class HealthPickup {
             yLocation = (int) (g.getHeight() * 0.64);
         }
 
-        objectPix = g.newPixmap("health.png", Graphics.PixmapFormat.RGB565);
         boxWidth = g.getHeight() / 15;
         boxHeight = boxWidth;
 
-        boxHeightScale = (float)boxHeight / (float) objectPix.getHeight();
+        boxHeightScale = (float)boxHeight / (float) Assets.health.getHeight();
 
     }
 }

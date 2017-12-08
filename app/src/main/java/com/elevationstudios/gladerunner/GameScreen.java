@@ -16,12 +16,9 @@ import java.util.Random;
 
 public class GameScreen extends Screen {
 
-    private Pixmap background;
 
-    private static Pixmap dieButton;
     private int dieButtonXPos;
     private int dieButtonYPos;
-    private static Pixmap pauseButton;
     private int pauseButtonXPos;
     private int pauseButtonYPos;
 
@@ -37,10 +34,10 @@ public class GameScreen extends Screen {
     private int pauseScreenHeight;
     private int pauseScreenWidth;
 
-    private static Pixmap playButton;
+
     private int playButtonXPos;
     private int playButtonYPos;
-    private static Pixmap returnButton;
+
     private int returnButtonXPos;
     private int returnButtonYPos;
 
@@ -75,24 +72,19 @@ public class GameScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
         SetupUIValues();
 
-        dieButton = g.newPixmap("dieButton.png", Graphics.PixmapFormat.ARGB4444);
         dieButtonXPos = g.getWidth() - uiBarHeight*2 + 1;
         dieButtonYPos =  0 + 1;
 
-        pauseButton = g.newPixmap("pauseButton.png", Graphics.PixmapFormat.ARGB4444);
         pauseButtonXPos = g.getWidth()-uiBarHeight+1;
         pauseButtonYPos = 1;
 
 
-        playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
-        playButtonXPos = g.getWidth() / 2 - playButton.getWidth() / 2;
-        playButtonYPos = g.getHeight() / 2 - playButton.getHeight();
-        returnButton = g.newPixmap("returnButton.png", Graphics.PixmapFormat.ARGB4444);
+        playButtonXPos = g.getWidth() / 2 - Assets.playButton.getWidth() / 2;
+        playButtonYPos = g.getHeight() / 2 - Assets.playButton.getHeight();
         returnButtonXPos = playButtonXPos;
-        returnButtonYPos = playButtonYPos + 10 + playButton.getHeight();
+        returnButtonYPos = playButtonYPos + 10 + Assets.playButton.getHeight();
 
         obstacle = new Obstacle[5];
         zombies = new Enemy[5];
@@ -135,13 +127,13 @@ public class GameScreen extends Screen {
                     }
                 } else if (isPaused) {
                     if (inBounds(event, playButtonXPos, playButtonYPos,
-                            playButton.getWidth(), playButton.getHeight())) {
+                            Assets.playButton.getWidth(), Assets.playButton.getHeight())) {
                         isPaused = !isPaused;
                         Log.d("GameScreen", "Clicked Play button");
 
                     }
                     if (inBounds(event, returnButtonXPos, returnButtonYPos,
-                            returnButton.getWidth(), returnButton.getHeight())) {
+                            Assets.returnButton.getWidth(), Assets.returnButton.getHeight())) {
                         isPaused = !isPaused;
                         game.setScreen(new ShopScreen(game));
                         Log.d("GameScreen", "Clicked Return button");
@@ -184,7 +176,7 @@ public class GameScreen extends Screen {
         UpdateNinja();
 
         Graphics g = game.getGraphics();
-        g.drawPixmap(background, 0, 0);
+        g.drawPixmap(Assets.background, 0, 0);
         DrawUIBar(g);
         DrawEntities(g);
 
@@ -193,11 +185,11 @@ public class GameScreen extends Screen {
             DrawPauseScreen(g);
         } else {
             //g.drawPixmap(dieButton, dieButtonXPos, dieButtonYPos);
-            g.drawPixmapScaled(dieButton,
+            g.drawPixmapScaled(Assets.dieButton,
                     dieButtonXPos, dieButtonYPos,
                     g.getWidth() - (g.getWidth()-pauseButtonXPos) - 1,
                     uiBarHeight - 1);
-            g.drawPixmapScaled(pauseButton,
+            g.drawPixmapScaled(Assets.pauseButton,
                     pauseButtonXPos, pauseButtonYPos,
                     g.getWidth() - 1, uiBarHeight - 1);
 
@@ -283,8 +275,8 @@ public class GameScreen extends Screen {
                 (int) (pauseScreenHeight),
                 Color.rgb(239, 207, 112));
 
-        g.drawPixmap(playButton, playButtonXPos, playButtonYPos);
-        g.drawPixmap(returnButton, returnButtonXPos, returnButtonYPos);
+        g.drawPixmap(Assets.playButton, playButtonXPos, playButtonYPos);
+        g.drawPixmap(Assets.returnButton, returnButtonXPos, returnButtonYPos);
     }
 
     public void DrawEntities(Graphics g) {
@@ -297,7 +289,7 @@ public class GameScreen extends Screen {
 
     public void DrawKnife(Graphics g) {
         if(knife != null) {
-            g.drawPixmapScaled(knife.objectPix,
+            g.drawPixmapScaled(Assets.knife,
                     knife.xLocation, knife.yLocation,
                     0.25f);
         }
@@ -354,7 +346,7 @@ public class GameScreen extends Screen {
     public void DrawHealthPickup(Graphics g){
         for (int i = 0; i < hpPickup.length; i++)
             if (hpPickup[i] != null) {
-                g.drawPixmapScaled(hpPickup[i].objectPix,
+                g.drawPixmapScaled(Assets.health,
                         hpPickup[i].xLocation, hpPickup[i].yLocation,
                         hpPickup[i].boxHeightScale);
             }
@@ -507,7 +499,7 @@ public class GameScreen extends Screen {
                 }
 
                 if (knife != null) {
-                    if ((zombies[i].xLocation < knife.xLocation + knife.objectPix.getWidth() * 0.25f) &&
+                    if ((zombies[i].xLocation < knife.xLocation + Assets.knife.getWidth() * 0.25f) &&
                             (zombies[i].xLocation > (knife.xLocation)) &&
                             knife.yLocation >= (zombies[i].yLocation - zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2))
                     {
