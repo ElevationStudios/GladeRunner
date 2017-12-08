@@ -12,9 +12,6 @@ import java.util.List;
 
 public class GameOverScreen extends Screen {
 
-    private static Pixmap background;
-    private static Pixmap shopButton;
-
     private int playXPos;
     private int playYPos;
 
@@ -44,11 +41,9 @@ public class GameOverScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        shopButton = g.newPixmap("shopButton.png", Graphics.PixmapFormat.ARGB4444);
 
-        playXPos = g.getWidth()*1/2-shopButton.getWidth()/2;
-        playYPos = g.getHeight()*8/10-shopButton.getHeight()/2;
+        playXPos = g.getWidth()*1/2-Assets.shopButton.getWidth()/2;
+        playYPos = g.getHeight()*8/10-Assets.shopButton.getHeight()/2;
 
 
         gameOXPos= g.getWidth()*1/2;
@@ -84,7 +79,7 @@ public class GameOverScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, playXPos, playYPos,
-                        shopButton.getWidth(), shopButton.getHeight())){
+                        Assets.shopButton.getWidth(), Assets.shopButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
                     //this is where you change screen
                     Log.d("GameOverScreen", "Clicked button");
@@ -102,8 +97,8 @@ public class GameOverScreen extends Screen {
     @Override
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
-        g.drawPixmap(background, 0, 0);
-        g.drawPixmap(shopButton, playXPos, playYPos);
+        g.drawPixmap(Assets.background, 0, 0);
+        g.drawPixmap(Assets.shopButton, playXPos, playYPos);
         g.drawText("Game Over!", gameOXPos, gameOYPos, gameOverFont);
        // g.drawText("Time Survived: "+Float.toString(endTime)+" seconds", timeXPos, timeYPos, timeFont);
         g.drawText("Points: "+ Integer.toString(Settings.lastRunDistance) + "m", scoreXPos, scoreYPos, scoreFont);

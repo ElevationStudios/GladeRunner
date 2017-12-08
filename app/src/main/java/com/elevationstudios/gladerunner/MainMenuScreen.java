@@ -26,11 +26,9 @@ public class MainMenuScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        //background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
 
-        playXPos = g.getWidth()*3/4-playButton.getWidth()/2;
-        playYPos = g.getHeight()*3/4-playButton.getHeight()/2;
+        playXPos = g.getWidth()*3/4-Assets.playButton.getWidth()/2;
+        playYPos = g.getHeight()*3/4-Assets.playButton.getHeight()/2;
 
         //setting location , then subtracting left/up to center the button
         // here we are setting it to be 3/4 to the right, 3/4 to the bottom
@@ -48,7 +46,7 @@ public class MainMenuScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, playXPos, playYPos,
-                        playButton.getWidth(), playButton.getHeight())){
+                        Assets.playButton.getWidth(), Assets.playButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
                     //this is where you change screen
                     Log.d("MainMenuScreen", "Clicked button");
@@ -65,7 +63,7 @@ public class MainMenuScreen extends Screen {
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
         g.drawPixmap(Assets.background, 0, 0);
-        g.drawPixmap(playButton, playXPos, playYPos);
+        g.drawPixmap(Assets.playButton, playXPos, playYPos);
 
         //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
     }

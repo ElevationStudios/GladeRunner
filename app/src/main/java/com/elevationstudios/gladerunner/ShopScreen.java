@@ -16,14 +16,6 @@ import java.util.List;
  */
 
 public class ShopScreen extends Screen {
-
-    private static Pixmap background;
-    private static Pixmap playButton;
-    private static Pixmap optionButton;
-    private static Pixmap buyButton;
-    private static Pixmap achievementButton;
-    private static Pixmap leaderboardButton;
-
     private int playXPos;
     private int playYPos;
 
@@ -56,21 +48,15 @@ public class ShopScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
-        optionButton = g.newPixmap("optionButton.png", Graphics.PixmapFormat.ARGB4444);
-        buyButton = g.newPixmap("buyButton.png", Graphics.PixmapFormat.ARGB4444);
-        achievementButton = g.newPixmap("btnAchievement.png", Graphics.PixmapFormat.ARGB4444);
-        leaderboardButton = g.newPixmap("btnLeaderboard.png", Graphics.PixmapFormat.ARGB4444);
 
-        playXPos = g.getWidth() - playButton.getWidth();
-        playYPos = g.getHeight() - playButton.getHeight();
+        playXPos = g.getWidth() - Assets.playButton.getWidth();
+        playYPos = g.getHeight() - Assets.playButton.getHeight();
 
         //setting location , then subtracting left/up to center the button
         // here we are setting it to be 3/4 to the right, 3/4 to the bottom
 
         optionXPos = 0;
-        optionYPos = g.getHeight() - optionButton.getHeight();
+        optionYPos = g.getHeight() - Assets.optionButton.getHeight();
 
         shopTextFontSize = 80.f;
         shopTextXPos = g.getWidth() * 1/2 - (int) shopTextFontSize;
@@ -88,9 +74,9 @@ public class ShopScreen extends Screen {
         buyXPos = buyBoxXPos;
         buyYPos = buyBoxYPos;
 
-        achieveBoxXPos = (int)(g.getWidth()-achievementButton.getWidth());
+        achieveBoxXPos = (int)(g.getWidth()-Assets.btnLeaderboard.getWidth());
         achieveBoxYPos = 1;
-        leaderBoxXPos = (int)(achieveBoxXPos - leaderboardButton.getWidth());
+        leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth());
         leaderBoxYPos = 1;
 
     }
@@ -105,21 +91,21 @@ public class ShopScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, playXPos, playYPos,
-                        playButton.getWidth(), playButton.getHeight())){
+                        Assets.playButton.getWidth(), Assets.playButton.getHeight())){
                     game.setScreen(new GameScreen(game));
                     Log.d("ShopScreen", "Clicked Play button");
                     return;
                 }
 
                 if(inBounds(event, optionXPos, optionYPos,
-                        optionButton.getWidth(), optionButton.getHeight())){
+                        Assets.optionButton.getWidth(), Assets.optionButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
                     Log.d("ShopScreen", "Clicked Options button");
                     return;
                 }
 
                 if(inBounds(event, buyXPos, buyYPos,
-                        buyButton.getWidth(), buyButton.getHeight())){
+                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney > 100)
@@ -128,14 +114,14 @@ public class ShopScreen extends Screen {
                 }
 
                 if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
-                        achievementButton.getWidth(),
-                        achievementButton.getHeight())){
+                        Assets.btnAchievement.getWidth(),
+                        Assets.btnAchievement.getHeight())){
                     game.showAchievements();
                 }
 
                 if (inBounds(event, leaderBoxXPos,leaderBoxYPos,
-                        leaderboardButton.getWidth(),
-                        leaderboardButton.getHeight())){
+                        Assets.btnLeaderboard.getWidth(),
+                        Assets.btnLeaderboard.getHeight())){
                     game.showLeaderboards();
                 }
             }
@@ -149,20 +135,20 @@ public class ShopScreen extends Screen {
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
 
-        g.drawPixmap(background, 0, 0);
-        g.drawPixmap(playButton, playXPos, playYPos);
-        g.drawPixmap(optionButton, optionXPos, optionYPos);
-        g.drawPixmap(achievementButton, achieveBoxXPos, achieveBoxYPos);
-        g.drawPixmap(leaderboardButton,leaderBoxXPos,leaderBoxYPos);
+        g.drawPixmap(Assets.background, 0, 0);
+        g.drawPixmap(Assets.playButton, playXPos, playYPos);
+        g.drawPixmap(Assets.optionButton, optionXPos, optionYPos);
+        g.drawPixmap(Assets.btnAchievement, achieveBoxXPos, achieveBoxYPos);
+        g.drawPixmap(Assets.btnLeaderboard,leaderBoxXPos,leaderBoxYPos);
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
         g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 
         for (int i = 0; i < 5; i++)
         {
-            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, buyButton.getHeight(), Color.GRAY);
-            g.drawPixmap(buyButton, buyXPos, buyYPos + i * g.getHeight()/8);
-            g.drawText("Buyable " + Integer.toString(i+1), g.getWidth() /3, buyYPos + buyButton.getHeight() / 2 + i * g.getHeight()/8, 40.f);
-            g.drawText(priceText, g.getWidth() *3/4 - (int) buyFontSize, buyYPos + buyButton.getHeight() / 2 + i * g.getHeight()/8, buyFontSize);
+            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.GRAY);
+            g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/8);
+            g.drawText("Buyable " + Integer.toString(i+1), g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + i * g.getHeight()/8, 40.f);
+            g.drawText(priceText, g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + i * g.getHeight()/8, buyFontSize);
         }
 
     }

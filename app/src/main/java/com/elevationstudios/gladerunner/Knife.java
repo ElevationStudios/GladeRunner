@@ -20,7 +20,6 @@ public class Knife {
 
     public Knife(GameScreen game) {
         final Graphics g = game.game.getGraphics();
-        objectPix = g.newPixmap("knife.png", Graphics.PixmapFormat.RGB565);
         xLocation = (int) (g.getWidth()*0.1) + 20;
         yLocation = g.getHeight() - 200;
 
@@ -28,7 +27,7 @@ public class Knife {
         boxWidth = g.getHeight() / 7;
         boxHeight = boxWidth;
 
-        boxHeightScale = (float)boxHeight / (float) objectPix.getHeight();
+        boxHeightScale = (float)boxHeight / (float) Assets.knife.getHeight();
 
     }
 }

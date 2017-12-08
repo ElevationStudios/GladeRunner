@@ -16,14 +16,42 @@ public class LoadingScreen extends Screen {
     @Override
     public void update(float deltaTime){
         Graphics g = game.getGraphics();
-        Assets.background = g.newPixmap("background.png", PixmapFormat.RGB565);
 
         //TODO: Move all assets - buttons, images, everything, to Assets and use this instead
-        //Assets.ninja = g.newPixmap("ninja1.png", PixmapFormat.ARGB4444);
+
+        Assets.background = g.newPixmap("background.png", PixmapFormat.RGB565);
+        //Buttons
+        Assets.buyButton = g.newPixmap("buyButton.png", PixmapFormat.ARGB4444);
+        Assets.backButton = g.newPixmap("backButton.png", PixmapFormat.ARGB4444);
+        Assets.dieButton = g.newPixmap("dieButton.png", PixmapFormat.ARGB4444);
+        Assets.helpButton = g.newPixmap("helpButton.png", PixmapFormat.ARGB4444);
+        Assets.menuButton = g.newPixmap("menuButton.png", PixmapFormat.ARGB4444);
+        Assets.nextButton = g.newPixmap("nextButton.png", PixmapFormat.ARGB4444);
+        Assets.playButton = g.newPixmap("playButton.png", PixmapFormat.ARGB4444);
+        Assets.optionButton = g.newPixmap("optionButton.png", PixmapFormat.ARGB4444);
+        Assets.pauseButton = g.newPixmap("pauseButton.png", PixmapFormat.ARGB4444);
+        Assets.returnButton = g.newPixmap("returnButton.png", PixmapFormat.ARGB4444);
+        Assets.shopButton = g.newPixmap("shopButton.png", PixmapFormat.ARGB4444);
+
+        Assets.btnAchievement = g.newPixmap("btnAchievement.png", PixmapFormat.ARGB4444);
+        Assets.btnLeaderboard = g.newPixmap("btnLeaderboard.png", PixmapFormat.ARGB4444);
+
+        //Sound enabled/disabled icon
+        Assets.checked = g.newPixmap("checked.png", PixmapFormat.ARGB4444);
+        Assets.unchecked = g.newPixmap("unchecked.png", PixmapFormat.ARGB4444);
+
+        //Instructions panel
+        Assets.helpMove = g.newPixmap("helpMove.png", PixmapFormat.ARGB4444);
+
+        //GAMEPLAY
+        //Obstacles
+        Assets.rocks = g.newPixmap("rocks.png", PixmapFormat.ARGB4444);
+        Assets.spikes = g.newPixmap("spikes.png", PixmapFormat.ARGB4444);
+        //Health pack
+        Assets.health = g.newPixmap("health.png", PixmapFormat.ARGB4444);
+        Assets.knife = g.newPixmap("knife.png", PixmapFormat.ARGB4444);
         LoadNinjaAssets(g, Assets.ninjaSprite);
-
         LoadZombieAssets(g, Assets.zombieSprite);
-
 
         Settings.load(game.getFileIO());
         game.setScreen(new MainMenuScreen(game));
