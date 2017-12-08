@@ -1,8 +1,5 @@
 package com.elevationstudios.gladerunner;
 
-import android.graphics.Color;
-import android.util.Log;
-
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Pixmap;
 
