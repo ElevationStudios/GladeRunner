@@ -59,6 +59,7 @@ public class GameScreen extends Screen {
     private float ninjaScale = 0.3f;
 
     private Obstacle[] obstacle;
+    private Enemy[] zombies;
     private float timer;
     private Random r;
 
@@ -94,6 +95,7 @@ public class GameScreen extends Screen {
         returnButtonYPos = playButtonYPos + 10 + playButton.getHeight();
 
         obstacle = new Obstacle[5];
+        zombies = new Enemy[5];
         r = new Random();
 
         hpPickup = new HealthPickup[5];
@@ -166,7 +168,7 @@ public class GameScreen extends Screen {
                 if(knife == null) {
                     Log.d("Knife", "Spawned knife");
                     knife = new Knife(this);
-                    knife.yLocation = ninjaYPos;
+                    knife.yLocation = ninjaYPos - game.getGraphics().getHeight() / 20;
                     if (ninja.getState() == Ninja.State.Jump) {
                         knife.isUp = true;
                     } else{
@@ -208,7 +210,7 @@ public class GameScreen extends Screen {
 
         //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
         for (int i = 0; i < obstacle.length; i++)
-            CheckCollision();
+            CheckCollision(deltaTime);
 
         for (int i = 0; i < hpPickup.length; i++)
             CheckHealthCol();
@@ -287,6 +289,7 @@ public class GameScreen extends Screen {
 
     public void DrawEntities(Graphics g) {
         DrawNinja(g);
+        DrawZombies(g);
         DrawObstacles(g);
         DrawKnife(g);
         DrawHealthPickup(g);
@@ -319,7 +322,24 @@ public class GameScreen extends Screen {
                 ninjaYPos - (int) (ninja.getCurrentSprite().getHeight() * ninjaScale / 2),
                 ninjaScale);
         if (!isPaused)
+        {
             ninja.addFrame();
+        }
+
+    }
+    public void DrawZombies(Graphics g) {
+        for (int i = 0; i < zombies.length; i++)
+        {
+            if (zombies[i] != null)
+            {
+                g.drawPixmapScaled(zombies[i].getCurrentSprite(),
+                        zombies[i].xLocation - (int) (zombies[i].getCurrentSprite().getWidth() * ninjaScale / 2),
+                        zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2),
+                        ninjaScale);
+                if (!isPaused)
+                    zombies[i].addFrame();
+            }
+        }
     }
 
     public void DrawObstacles(Graphics g) {
@@ -372,17 +392,34 @@ public class GameScreen extends Screen {
             if (obstacle[i] != null)
                 obstacle[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
         }
+        for (int i = 0; i < zombies.length; i++) {
+            if (zombies[i] != null)
+                zombies[i].xLocation -= g.getWidth() * 5 / 6 * deltaTime;
+        }
 
         if (timer >= 1 ) {
             timer = 0;
             points += 1;
-            for (int i = 0; i < obstacle.length; i++) {
-                if (obstacle[i] == null) {
-                    obstacle[i] = new Obstacle(g, r.nextBoolean());
-                    break;
+            if (r.nextFloat() > 0.5)
+            {
+                for (int i = 0; i < obstacle.length; i++) {
+                    if (obstacle[i] == null) {
+                        obstacle[i] = new Obstacle(g, r.nextBoolean());
+                        Log.d("GameScreen", "Spawned new obstacle");
+                        break;
+                    }
                 }
             }
-            Log.d("GameScreen", "Spawned new box");
+            else
+            {
+                for (int i = 0; i < zombies.length; i++) {
+                    if (zombies[i] == null) {
+                        zombies[i] = new Enemy(g);
+                        Log.d("GameScreen", "Spawned new zombie");
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -410,8 +447,9 @@ public class GameScreen extends Screen {
 
     }
 
-    public void CheckCollision() {
-        for (int i = 0; i < obstacle.length; i++) {
+    public void CheckCollision(float deltaTime) {
+        for (int i = 0; i < obstacle.length; i++)
+        {
             //Check if obstacle exists
             if (obstacle[i] != null) {
                 //Check if off screen
@@ -433,21 +471,68 @@ public class GameScreen extends Screen {
                     }
                     break;
                 }
-                if(knife!=null) {
-                    if ((obstacle[i].xLocation < (knife.xLocation + knife.objectPix.getWidth() * 0.25f)) &&
-                            (obstacle[i].xLocation > (knife.xLocation)) &&
-                            (knife.isUp == obstacle[i].isUp)) {
+
+            }
+
+            //Against else
+        }
+        for (int i = 0; i < zombies.length; i++)
+        {
+            if (zombies[i] != null)
+            {
+                if (ninja != null)
+                {
+                    if (zombies[i].xLocation <= ninjaXPos + ninja.getCurrentSprite().getWidth() * ninjaScale + game.getGraphics().getWidth() * 5 * deltaTime &&
+                            zombies[i].getAction() == Enemy.Action.Idle)
+                    {
+                        zombies[i].setAction(Enemy.Action.Attack);
+                    }
+                    if (zombies[i].xLocation <= (ninjaXPos + ninja.getCurrentSprite().getWidth() * ninjaScale / 4) &&
+                            zombies[i].getAction() == Enemy.Action.Attack)
+                    {
+                        if (ninja.ninjaAction == Ninja.Action.MeleeAttack)
+                        {
+                            zombies[i].takeDamage(50);
+                            moneyEarned += 100;
+                            zombies[i].setAction(Enemy.Action.Dead);
+                            break;
+                        }
+                        else
+                        {
+                            ninja.takeDamage(40);
+                            zombies[i] = null;
+                            break;
+                        }
+                    }
+                }
+
+                if (knife != null) {
+                    if ((zombies[i].xLocation < knife.xLocation + knife.objectPix.getWidth() * 0.25f) &&
+                            (zombies[i].xLocation > (knife.xLocation)) &&
+                            knife.yLocation >= (zombies[i].yLocation - zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2))
+                    {
                         Log.d("GameScreen.java", "Knife hit");
-                        obstacle[i] = null;
+                        zombies[i].takeDamage(50);
+                        if (zombies[i].isAlive() == false)
+                        {
+                            zombies[i].setAction(Enemy.Action.Dead);
+                        }
                         knife = null;
-                        moneyEarned += 100;
                         Log.d("GameScreen.java", "Knife deleted");
                         break;
                     }
                 }
+                if (zombies[i].getAction() == Enemy.Action.Dead)
+                {
+                    if (zombies[i].frame > 11)
+                    {
+                        zombies[i] = null;
+                        moneyEarned += 100;
+                    }
+                }
             }
 
-            //Against else
+
         }
     }
 
@@ -472,8 +557,6 @@ public class GameScreen extends Screen {
                     }
                 }
             }
-
-            //Against else
         }
     }
 }
