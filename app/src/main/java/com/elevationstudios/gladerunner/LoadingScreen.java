@@ -50,8 +50,10 @@ public class LoadingScreen extends Screen {
         //Health pack
         Assets.health = g.newPixmap("health.png", PixmapFormat.ARGB4444);
         Assets.knife = g.newPixmap("knife.png", PixmapFormat.ARGB4444);
+
         LoadNinjaAssets(g, Assets.ninjaSprite);
         LoadZombieAssets(g, Assets.zombieSprite);
+        LoadSounds();
 
         Settings.load(game.getFileIO());
         game.setScreen(new MainMenuScreen(game));
@@ -194,4 +196,17 @@ public class LoadingScreen extends Screen {
         sprite[2][11] = g.newPixmap("ZombieAnim/dead_11.png", Graphics.PixmapFormat.RGB565);
     }
 
+    public void LoadSounds() {
+        Assets.cachedSoundEffects.put(SoundEffect.AHH, game.getAudio().newSound("Sounds/Ahh.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.CHOKE_FULL, game.getAudio().newSound("Sounds/ChokeFull.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.GULP, game.getAudio().newSound("Sounds/Gulp.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.HURT, game.getAudio().newSound("Sounds/Hurt.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.JUMP, game.getAudio().newSound("Sounds/Jump.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.LEDGE_CLIMB, game.getAudio().newSound("Sounds/LedgeClimb.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.ATTACK, game.getAudio().newSound("Sounds/NormalAttack.wav"));
+        Assets.cachedSoundEffects.put(SoundEffect.STRONG_ATTACK, game.getAudio().newSound("Sounds/StrongAttack.wav"));
+
+        Assets.cachedMusic.put(SoundEffect.ORCHESTRA_MUSIC, game.getAudio().newMusic("Sounds/Cyberwave Orchestra.wav"));
+        Assets.cachedMusic.put(SoundEffect.MASTERMIND_MUSIC, game.getAudio().newMusic("Sounds/Suspense Music - Mastermind.wav"));
+    }
 }
