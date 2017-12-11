@@ -378,9 +378,9 @@ public class GameScreen extends Screen {
         }
         if (!ninja.isAlive()) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
-           // game.unlockDeathAchieve();
+            //game.unlockDeathAchieve();
             game.setScreen(new GameOverScreen(game));
-          //  game.submitScore(points);
+            //game.submitScore(points);
         }
     }
 
@@ -461,8 +461,10 @@ public class GameScreen extends Screen {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.HURT);
                     } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
+                        SoundEffect.PlaySound(SoundEffect.HURT);
                         obstacle[i] = null;
                     } else {
                         moneyEarned += 5;
@@ -498,6 +500,7 @@ public class GameScreen extends Screen {
                         else
                         {
                             ninja.takeDamage(40);
+                            SoundEffect.PlaySound(SoundEffect.HURT);
                             zombies[i] = null;
                             break;
                         }

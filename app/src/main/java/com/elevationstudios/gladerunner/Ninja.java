@@ -61,7 +61,6 @@ public class Ninja {
         CheckHealth();
     }
     public void takeDamage(int num){
-        SoundEffect.PlaySound(SoundEffect.HURT);
         setHealth(health-num);
     }
 
