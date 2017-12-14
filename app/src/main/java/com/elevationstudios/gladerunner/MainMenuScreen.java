@@ -32,7 +32,7 @@ public class MainMenuScreen extends Screen {
 
         //setting location , then subtracting left/up to center the button
         // here we are setting it to be 3/4 to the right, 3/4 to the bottom
-
+       SoundEffect.PlayMusic(SoundEffect.ORCHESTRA_MUSIC);
 
     }
 

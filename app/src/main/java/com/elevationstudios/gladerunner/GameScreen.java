@@ -100,6 +100,8 @@ public class GameScreen extends Screen {
         groundYPos = ninjaYPos;
 
         initialMoney = Settings.gold;
+
+        SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
     }
 
     @Override
@@ -148,15 +150,18 @@ public class GameScreen extends Screen {
             }
             if (event.type == TouchEvent.TOUCH_SWIPED_DOWN && ninjaYVelocity == 0) {
                 ninja.setState(Ninja.State.Slide);
+                SoundEffect.PlaySound(SoundEffect.LEDGE_CLIMB);
             }
             if (event.type == TouchEvent.TOUCH_SWIPED_RIGHT) {
                 Log.d("SwipeEvent", "Swiped Right");
                 ninja.setAction(Ninja.Action.MeleeAttack);
+                SoundEffect.PlaySound(SoundEffect.STRONG_ATTACK);
             }
 
             if(event.type == TouchEvent.TOUCH_SWIPED_LEFT && ninja.isAlive()){
                 Log.d("SwipeEvent", "Swiped Left");
                 ninja.setAction(Ninja.Action.RangedAttack);
+                SoundEffect.PlaySound(SoundEffect.ATTACK);
                 if(knife == null) {
                     Log.d("Knife", "Spawned knife");
                     knife = new Knife(this);
@@ -354,6 +359,7 @@ public class GameScreen extends Screen {
     }
 
     public void Jump() {
+        SoundEffect.PlaySound(SoundEffect.JUMP);
         ninjaYVelocity = -jumpStrength;
     }
 
@@ -372,9 +378,9 @@ public class GameScreen extends Screen {
         }
         if (!ninja.isAlive()) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
-            game.unlockDeathAchieve();
+            //game.unlockDeathAchieve();
             game.setScreen(new GameOverScreen(game));
-            game.submitScore(points);
+            //game.submitScore(points);
         }
     }
 
@@ -455,8 +461,10 @@ public class GameScreen extends Screen {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.HURT);
                     } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
+                        SoundEffect.PlaySound(SoundEffect.HURT);
                         obstacle[i] = null;
                     } else {
                         moneyEarned += 5;
@@ -492,6 +500,7 @@ public class GameScreen extends Screen {
                         else
                         {
                             ninja.takeDamage(40);
+                            SoundEffect.PlaySound(SoundEffect.HURT);
                             zombies[i] = null;
                             break;
                         }
@@ -547,6 +556,7 @@ public class GameScreen extends Screen {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
                     }
+                    SoundEffect.PlaySound(SoundEffect.GULP);
                 }
             }
         }

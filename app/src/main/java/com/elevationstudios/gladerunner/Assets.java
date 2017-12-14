@@ -3,8 +3,13 @@ package com.elevationstudios.gladerunner;
 import android.util.Log;
 
 import com.elevationstudios.framework.Graphics;
+import com.elevationstudios.framework.Music;
 import com.elevationstudios.framework.Pixmap;
 import com.elevationstudios.framework.Sound;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Kenneth on 30-Nov-17.
  */
@@ -45,4 +50,7 @@ public class Assets {
     public static Pixmap zombieSprite[][] = new Pixmap[3][12];
     //0 = idle, 1 = attack, 2 = dead
 
+    public static Music currentMusic;
+    public static Map<SoundEffect, Sound> cachedSoundEffects = new HashMap<>();
+    public static Map<SoundEffect, Music> cachedMusic = new HashMap<>(2);
 }
