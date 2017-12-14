@@ -37,10 +37,10 @@ public class GameScreen extends Screen {
 
     private int playButtonXPos;
     private int playButtonYPos;
-
+    private int ExtraPoints = Settings.ExtraPoints;
     private int returnButtonXPos;
     private int returnButtonYPos;
-
+    private int ExtraMoney = Settings.ExtraGold;
     private boolean isPaused = false;
 
     public Ninja ninja;
@@ -215,7 +215,7 @@ public class GameScreen extends Screen {
 
     @Override
     public void pause() {
-        Settings.updateLastRunDistance(points);//(int)Math.floor(points/5));
+        Settings.updateLastRunDistance(points + ExtraPoints);//(int)Math.floor(points/5));
         Settings.updateLastRunGold(moneyEarned);
         Settings.addGold(moneyEarned);
         Settings.save(game.getFileIO());
@@ -249,7 +249,7 @@ public class GameScreen extends Screen {
 
         //gold
         g.drawText("Gold: " + (initialMoney + moneyEarned) + "g", g.getWidth() * 1 / 20, uiBarHeight / 2 + 11, 24);
-        g.drawText("Dist: " + (points) + "m", g.getWidth() * 4 / 20, uiBarHeight / 2 + 11, 24);
+        g.drawText("Dist: " + (points + ExtraPoints) + "m", g.getWidth() * 4 / 20, uiBarHeight / 2 + 11, 24);
 
         //health bar outline
         g.drawRect(g.getWidth() * 7 / 20 - uiHealthbarOutline,
@@ -467,7 +467,7 @@ public class GameScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.HURT);
                         obstacle[i] = null;
                     } else {
-                        moneyEarned += 5;
+                        moneyEarned += (5 + ExtraMoney);
                     }
                     break;
                 }
@@ -493,7 +493,7 @@ public class GameScreen extends Screen {
                         if (ninja.ninjaAction == Ninja.Action.MeleeAttack)
                         {
                             zombies[i].takeDamage(50);
-                            moneyEarned += 100;
+                            moneyEarned += (100 + ExtraMoney * 5);
                             zombies[i].setAction(Enemy.Action.Dead);
                             break;
                         }
@@ -528,7 +528,7 @@ public class GameScreen extends Screen {
                     if (zombies[i].frame > 11)
                     {
                         zombies[i] = null;
-                        moneyEarned += 100;
+                        moneyEarned += (100 + ExtraMoney *5);
                     }
                 }
             }

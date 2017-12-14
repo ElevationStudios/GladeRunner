@@ -15,7 +15,7 @@ public class Ninja {
 
     protected boolean alive;
     protected int health;
-    protected int maxHealth = 100;
+    protected int maxHealth = Settings.maxHealth;
 
     protected int yVelocity;
 
