@@ -17,6 +17,8 @@ import java.util.Map;
 public class Assets {
 
     public static Pixmap background;
+    public static Pixmap bg1;
+    public static Pixmap bg2;
 
     //Buttons
     public static Pixmap buyButton;
