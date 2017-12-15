@@ -179,12 +179,16 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
         Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_death));
     }
 
+    public void incrementDeaths(){
+
+    }
+
     public void showBanner(){
         this.runOnUiThread(new Runnable(){
             public void run(){
                 adView.setVisibility(View.VISIBLE);
-                //adView.loadAd(new AdRequest.Builder().build());
-                adView.loadAd(new AdRequest.Builder().addTestDevice("516A69C16880F784D6CEBD97C4CC403E").build());
+                adView.loadAd(new AdRequest.Builder().build());
+                //adView.loadAd(new AdRequest.Builder().addTestDevice("516A69C16880F784D6CEBD97C4CC403E").build());
                 Log.d("BannerAd", "Showing Banner");
             }
         });

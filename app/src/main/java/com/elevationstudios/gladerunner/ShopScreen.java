@@ -173,6 +173,7 @@ public class ShopScreen extends Screen {
                     if (playerMoney >= (100 * Five)) {
                         playerMoney -= (100 * Five);
                         Settings.boughtItems[4] += 1;
+                        Settings.gold = playerMoney;
                         Settings.save(game.getFileIO());
                         return;
                     }
@@ -180,14 +181,14 @@ public class ShopScreen extends Screen {
 
 
                 if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
-                        Assets.btnAchievement.getWidth(),
-                        Assets.btnAchievement.getHeight())){
+                        (int)(Assets.btnAchievement.getWidth() * boxScale),
+                        (int)(Assets.btnAchievement.getHeight() * boxScale))){
                     game.showAchievements();
                 }
 
                 if (inBounds(event, leaderBoxXPos,leaderBoxYPos,
-                        Assets.btnLeaderboard.getWidth(),
-                        Assets.btnLeaderboard.getHeight())){
+                        (int)(Assets.btnLeaderboard.getWidth() * boxScale),
+                        (int)(Assets.btnLeaderboard.getHeight() * boxScale))){
                     game.showLeaderboards();
                 }
             }
@@ -229,7 +230,7 @@ public class ShopScreen extends Screen {
 
     @Override
     public void pause(){
-        Settings.gold = playerMoney;
+        Settings.setGold(playerMoney);
 
         //  Update bought stats
         // Settings.boughtItems;

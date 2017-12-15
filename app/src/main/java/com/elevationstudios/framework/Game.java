@@ -16,6 +16,7 @@ public interface Game
     public void showLeaderboards();
     public void showAchievements();
     public void unlockDeathAchieve();
+    public void incrementDeaths();
 
     //ads
     public void showBanner();

@@ -24,7 +24,7 @@ public static boolean soundEnabled = true;
     public static int[] boughtItems = new int[] { 0, 0, 0, 0, 0 };
 
     public static int ExtraGold = boughtItems[2];
-    public static int maxHealth = ( (10 * boughtItems[4]) + (10 * boughtItems[0]) + 100);
+    public static int maxHealth = (100);
     public static int ExtraPoints = (boughtItems[3] * 15);
 
     public static void load (FileIO files){
@@ -127,8 +127,30 @@ public static boolean soundEnabled = true;
         lastRunGold = num;
     }
 
+    public static void setGold(int num){gold = num;}
+
     public static void addGold(int num){
         gold += num;
+    }
+
+    public static int getGold() {return gold;}
+
+    public static void setMaxHealth(int num){ maxHealth = num; }
+
+    public static int getMaxHealth(){return maxHealth;}
+
+    public static void updateMaxHealth(){ setMaxHealth((100 * boughtItems[4]) + (100 * boughtItems[0]) + 100); }
+
+    public static void setBoughtItems(int buy1, int buy2, int buy3, int buy4, int buy5 ){
+        boughtItems[0] = buy1;
+        boughtItems[1] = buy2;
+        boughtItems[2] = buy3;
+        boughtItems[3] = buy4;
+        boughtItems[4] = buy5;
+    }
+
+    public static void returnBoughtItems(int para){
+
     }
 
 }

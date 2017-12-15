@@ -109,7 +109,7 @@ public class GameScreen extends Screen {
         ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
 
-        initialMoney = Settings.gold;
+        initialMoney = Settings.getGold();
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
 
@@ -124,6 +124,7 @@ public class GameScreen extends Screen {
             background2Array[i] = new Background(i * backgroundWidth, Assets.bg2);
         }
         bg2MoveSpeed = g.getWidth() * 2 / 3;
+        initialMoney = Settings.getGold();
     }
 
     @Override
