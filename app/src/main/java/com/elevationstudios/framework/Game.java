@@ -16,5 +16,11 @@ public interface Game
     public void showLeaderboards();
     public void showAchievements();
     public void unlockDeathAchieve();
+
+    //ads
+    public void showBanner();
+    public void hideBanner();
+
+    public void showInterstitialAd();
 }
 

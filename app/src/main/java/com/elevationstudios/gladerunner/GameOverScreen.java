@@ -106,7 +106,9 @@ public class GameOverScreen extends Screen {
     }
 
     @Override
-    public void pause(){}
+    public void pause(){
+        game.showInterstitialAd();
+    }
 
     @Override
     public void resume(){

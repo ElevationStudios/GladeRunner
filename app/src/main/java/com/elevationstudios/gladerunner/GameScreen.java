@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class GameScreen extends Screen {
 
-
+    private boolean debug;
     private int dieButtonXPos;
     private int dieButtonYPos;
     private int pauseButtonXPos;
@@ -76,7 +76,12 @@ public class GameScreen extends Screen {
     public GameScreen(Game game) {
         super(game);
 
+
+
         Graphics g = game.getGraphics();
+
+        debug = false; //shows Die button
+
         SetupUIValues();
 
         dieButtonXPos = g.getWidth() - uiBarHeight*2 + 1;
@@ -130,7 +135,7 @@ public class GameScreen extends Screen {
             if (event.type == TouchEvent.TOUCH_UP) {
 
                 if (!isPaused) {
-                    if (inBounds(event, dieButtonXPos, dieButtonYPos,
+                    if (debug && inBounds(event, dieButtonXPos, dieButtonYPos,
                             uiBarHeight-1,
                             uiBarHeight-1)) {
                         ninja.takeDamage(25);
@@ -210,6 +215,7 @@ public class GameScreen extends Screen {
             DrawPauseScreen(g);
         } else {
             //g.drawPixmap(dieButton, dieButtonXPos, dieButtonYPos);
+            if(debug)
             g.drawPixmapScaled(Assets.dieButton,
                     dieButtonXPos, dieButtonYPos,
                     g.getWidth() - (g.getWidth()-pauseButtonXPos) - 1,

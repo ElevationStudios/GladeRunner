@@ -8,4 +8,9 @@
     <string name="achievement_death" translatable="false">CgkIyLuKyrkGEAIQAQ</string>
     <!-- leaderboard High Scores -->
     <string name="Leaderboard_top_score" translatable="false">CgkIyLuKyrkGEAIQAg</string>
+
+
+    <string name="banner_ad_unit_id">ca-app-pub-3019710358791217/4442877398</string>
+    <string name="interstitual_ad_unit_id">ca-app-pub-3019710358791217/9536912665</string>
+
 </resources>
