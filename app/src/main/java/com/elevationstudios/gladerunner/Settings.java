@@ -15,15 +15,17 @@ public class Settings {
 public static boolean soundEnabled = true;
 
     public static int gold = 500;
-
     //keeps track of what we just earned
     public static int lastRunGold = 0;
     public static int lastRunDistance = 0;
-
     public static int[] highscores = new int[] { 250, 200, 150, 100, 50};
 
     //boughtitems = 5 items, start at 0
     public static int[] boughtItems = new int[] { 0, 0, 0, 0, 0 };
+
+    public static int ExtraGold = boughtItems[2];
+    public static int maxHealth = ( (10 * boughtItems[4]) + (10 * boughtItems[0]) + 100);
+    public static int ExtraPoints = (boughtItems[3] * 15);
 
     public static void load (FileIO files){
         BufferedReader in = null;
