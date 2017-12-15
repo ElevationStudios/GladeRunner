@@ -5,10 +5,9 @@ import com.elevationstudios.framework.Game;
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Input;
 import com.elevationstudios.framework.Input.TouchEvent;
-import com.elevationstudios.framework.Pixmap;
 import com.elevationstudios.framework.Screen;
-import com.google.android.gms.games.Games;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import java.util.List;
@@ -68,6 +67,12 @@ public class GameScreen extends Screen {
     private int moneyEarned = 0;
     private int initialMoney = 0;//
 
+    //background & foreground
+    int backgroundWidth;
+    Background[] background1Array = new Background[3];
+    Background[] background2Array = new Background[3];
+    float bg1MoveSpeed = 0.05f;
+    float bg2MoveSpeed = 0.82f;
     public GameScreen(Game game) {
         super(game);
 
@@ -102,6 +107,18 @@ public class GameScreen extends Screen {
         initialMoney = Settings.gold;
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
+
+        backgroundWidth = Assets.bg1.getWidth();
+
+        for(int i = 0; i < background1Array.length; i++) {
+            background1Array[i] = new Background(i * backgroundWidth, Assets.bg1);
+        }
+        bg1MoveSpeed = g.getWidth() * 1/10;
+
+        for(int i = 0; i < background2Array.length; i++) {
+            background2Array[i] = new Background(i * backgroundWidth, Assets.bg2);
+        }
+        bg2MoveSpeed = g.getWidth() * 2 / 3;
     }
 
     @Override
@@ -174,6 +191,7 @@ public class GameScreen extends Screen {
                 }
             }
         }
+
     }
 
     @Override
@@ -181,7 +199,9 @@ public class GameScreen extends Screen {
         UpdateNinja();
 
         Graphics g = game.getGraphics();
-        g.drawPixmap(Assets.background, 0, 0);
+       // g.drawPixmap(Assets.background, 0, 0);
+        g.drawRect(0, 0, g.getWidth(), g.getHeight(), Color.BLACK);
+        DrawBackground(g);
         DrawUIBar(g);
         DrawEntities(g);
 
@@ -199,6 +219,7 @@ public class GameScreen extends Screen {
                     g.getWidth() - 1, uiBarHeight - 1);
 
 
+            UpdateBackground(deltaTime, g);
             UpdateKnife(deltaTime, g);
             UpdateObstacles(deltaTime, g);
             UpdateHealthSpawn(deltaTime, g);
@@ -282,6 +303,43 @@ public class GameScreen extends Screen {
 
         g.drawPixmap(Assets.playButton, playButtonXPos, playButtonYPos);
         g.drawPixmap(Assets.returnButton, returnButtonXPos, returnButtonYPos);
+    }
+
+    public void UpdateBackground(float deltaTime, Graphics g){
+        //Updates the moving of backgrounds
+        for(int i = 0; i < background1Array.length; i++){
+            background1Array[i].xLocation -= bg1MoveSpeed * deltaTime;
+            background2Array[i].xLocation -= bg2MoveSpeed * deltaTime;
+        }
+
+        for(int i = 0; i < background1Array.length; i++) {
+            if (background1Array[i].xLocation <= -backgroundWidth)
+                if(i != 0)
+                    background1Array[i].xLocation = background1Array[i-1].xLocation + backgroundWidth;
+                else if(i == 0) //
+                    background1Array[i].xLocation = background1Array[background1Array.length-1].xLocation + backgroundWidth;
+
+            if (background2Array[i].xLocation <= -backgroundWidth)
+                if(i != 0)
+                    background2Array[i].xLocation = background2Array[i-1].xLocation + backgroundWidth;
+                else if(i == 0)
+                    background2Array[i].xLocation = background2Array[background2Array.length-1].xLocation + backgroundWidth;
+
+
+        }
+
+
+
+    }
+
+    public void DrawBackground(Graphics g) {
+        for(int i = 0; i < background1Array.length; i++){
+            g.drawPixmap(background1Array[i].background, background1Array[i].xLocation, 0);
+        }
+
+        for(int i = 0; i < background2Array.length; i++) {
+            g.drawPixmap(background2Array[i].background, background2Array[i].xLocation, 0);
+        }
     }
 
     public void DrawEntities(Graphics g) {
@@ -392,7 +450,7 @@ public class GameScreen extends Screen {
         }
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null)
-                zombies[i].xLocation -= g.getWidth() * 5 / 6 * deltaTime;
+                zombies[i].xLocation -= g.getWidth() * 3 / 6 * deltaTime;
         }
 
         if (timer >= 1 ) {

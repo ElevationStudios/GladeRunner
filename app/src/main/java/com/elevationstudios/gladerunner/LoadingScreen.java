@@ -18,8 +18,13 @@ public class LoadingScreen extends Screen {
         Graphics g = game.getGraphics();
 
         //TODO: Move all assets - buttons, images, everything, to Assets and use this instead
-
+        //Background non-moving
         Assets.background = g.newPixmap("background.png", PixmapFormat.RGB565);
+
+        //1 = bg, 2 = fg
+        Assets.bg1 = g.newPixmap("bg1.png", PixmapFormat.RGB565);
+        Assets.bg2 = g.newPixmap("bg2.png", PixmapFormat.RGB565);
+
         //Buttons
         Assets.buyButton = g.newPixmap("buyButton.png", PixmapFormat.ARGB4444);
         Assets.backButton = g.newPixmap("backButton.png", PixmapFormat.ARGB4444);
