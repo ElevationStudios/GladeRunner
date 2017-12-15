@@ -68,6 +68,10 @@ public class GameScreen extends Screen {
     private int moneyEarned = 0;
     private int initialMoney = 0;//
 
+    Background[] backgrounds = new Background[3];
+    int backgroundWidth;
+
+    float bgMoveSpeed = 0.4f;
     public GameScreen(Game game) {
         super(game);
 
@@ -102,6 +106,13 @@ public class GameScreen extends Screen {
         initialMoney = Settings.gold;
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
+
+        backgrounds[0] = new Background(0, g.newPixmap("bg1.png", Graphics.PixmapFormat.ARGB4444));
+        backgroundWidth = backgrounds[0].background.getWidth();
+        backgrounds[1] = new Background(backgroundWidth, g.newPixmap("bg1.png", Graphics.PixmapFormat.ARGB4444));
+        backgrounds[2] = new Background(backgroundWidth * 2, g.newPixmap("bg1.png", Graphics.PixmapFormat.ARGB4444));
+
+        DrawBackground(g, 0);
     }
 
     @Override
@@ -174,6 +185,7 @@ public class GameScreen extends Screen {
                 }
             }
         }
+
     }
 
     @Override
@@ -181,7 +193,8 @@ public class GameScreen extends Screen {
         UpdateNinja();
 
         Graphics g = game.getGraphics();
-        g.drawPixmap(Assets.background, 0, 0);
+        DrawBackground(g, deltaTime);
+        //g.drawPixmap(Assets.background, 0, 0);
         DrawUIBar(g);
         DrawEntities(g);
 
@@ -200,6 +213,7 @@ public class GameScreen extends Screen {
 
 
             UpdateKnife(deltaTime, g);
+            UpdateBackground(deltaTime);
             UpdateObstacles(deltaTime, g);
             UpdateHealthSpawn(deltaTime, g);
         }
@@ -282,6 +296,52 @@ public class GameScreen extends Screen {
 
         g.drawPixmap(Assets.playButton, playButtonXPos, playButtonYPos);
         g.drawPixmap(Assets.returnButton, returnButtonXPos, returnButtonYPos);
+    }
+
+    public void UpdateBackground(float deltaTime){
+        //backgrounds[0].xLocation -= backgrounds[0].background.getWidth() * bgMoveSpeed * deltaTime;
+
+        for (int i = 0; i < 3; i++)
+        {
+            backgrounds[i].xLocation -= backgrounds[i].background.getWidth() * bgMoveSpeed * deltaTime;
+        }
+    }
+
+    public void DrawBackground(Graphics g, float deltaTime) {
+        /*for (int i = 0; i < 3; i++) {
+            backgrounds[i].xLocation = backgroundWidth * i;
+        }*/
+
+        /*for (int i = 0; i < 3; i++)
+        {
+            backgrounds[i].xLocation -= bgMoveSpeed * deltaTime;
+        }*/
+
+        /*if (backgrounds[0].xLocation <= -backgroundWidth)
+        {
+            for (int i = 0; i < 2; i++)
+                backgrounds[i] = backgrounds[i+1];
+
+            backgrounds[2].xLocation = backgroundWidth * 2;
+        }*/
+
+        if (backgrounds[0].xLocation <= -backgroundWidth)
+        {
+            Background oldBackground = backgrounds[0];
+            for(int i = 0; i < 2; i++) {
+                backgrounds[i] = backgrounds[i + 1];
+            }
+            backgrounds[2] = oldBackground;
+            backgrounds[2].xLocation = backgroundWidth * 2;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            g.drawPixmap(backgrounds[i].background, backgrounds[i].xLocation, 0);
+        }
+
+       // g.drawPixmap(backgrounds[0].background, backgrounds[0].xLocation, 0);
+
     }
 
     public void DrawEntities(Graphics g) {
