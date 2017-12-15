@@ -17,6 +17,7 @@ public interface Game
     public void showAchievements();
     public void unlockDeathAchieve();
     public void incrementDeaths();
+    public void incrementRunDistance(int num);
 
     //ads
     public void showBanner();

@@ -81,6 +81,10 @@ public class OptionsScreen extends Screen {
                         Assets.checked.getWidth(), Assets.checked.getHeight())){
 
                     enableSFX =! enableSFX;
+                    if (!enableSFX)
+                        Assets.currentMusic.pause();
+                    else
+                        Assets.currentMusic.play();
                     Log.d("OptionsScreen", "Clicked checkbox ");
                     return;
                 }
@@ -106,7 +110,7 @@ public class OptionsScreen extends Screen {
 
     @Override
     public void pause() {
-        Settings.soundEnabled = enableSFX;
+        Settings.setSoundEnabled(enableSFX);
         Settings.save(game.getFileIO());
     }
 

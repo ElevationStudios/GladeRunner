@@ -166,10 +166,10 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
         getGameHelper().beginUserInitiatedSignIn();
     }
     public void submitScore(int score){
-        Games.Leaderboards.submitScore(getGameHelper().getApiClient(), getString(R.string.Leaderboard_top_score), score);
+        Games.Leaderboards.submitScore(getGameHelper().getApiClient(), getString(R.string.leaderboard_high_scores), score);
     }
     public void showLeaderboards(){
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.Leaderboard_top_score)), REQUEST_LEADERBOARD);
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.leaderboard_high_scores)), REQUEST_LEADERBOARD);
     }
     public void showAchievements(){
        startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
@@ -181,6 +181,10 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
 
     public void incrementDeaths(){
 
+    }
+
+    public void incrementRunDistance(int num) {
+        Games.Achievements.increment(getApiClient(), "CgkIyLuKyrkGEAIQAw", num);
     }
 
     public void showBanner(){

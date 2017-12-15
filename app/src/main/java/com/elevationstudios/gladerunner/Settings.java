@@ -23,9 +23,9 @@ public static boolean soundEnabled = true;
     //boughtitems = 5 items, start at 0
     public static int[] boughtItems = new int[] { 0, 0, 0, 0, 0 };
 
-    public static int ExtraGold = boughtItems[2];
-    public static int maxHealth = (100);
-    public static int ExtraPoints = (boughtItems[3] * 15);
+    public static int ExtraGold;
+    public static int maxHealth;
+    public static int ExtraPoints;
 
     public static void load (FileIO files){
         BufferedReader in = null;
@@ -139,18 +139,21 @@ public static boolean soundEnabled = true;
 
     public static int getMaxHealth(){return maxHealth;}
 
-    public static void updateMaxHealth(){ setMaxHealth((100 * boughtItems[4]) + (100 * boughtItems[0]) + 100); }
+    public static void updateMaxHealth(){ setMaxHealth((10 * boughtItems[4]) + (10 * boughtItems[0]) + 100); }
 
-    public static void setBoughtItems(int buy1, int buy2, int buy3, int buy4, int buy5 ){
-        boughtItems[0] = buy1;
-        boughtItems[1] = buy2;
-        boughtItems[2] = buy3;
-        boughtItems[3] = buy4;
-        boughtItems[4] = buy5;
-    }
 
-    public static void returnBoughtItems(int para){
+    public static void setMoneyGain(int num) {ExtraGold = num;}
 
-    }
+    public static int getMoneyGain() {return ExtraGold;}
 
+    public static void updateMoneyGain() {setMoneyGain(boughtItems[2]);}
+
+    public static void setExtraPoints(int num) {ExtraPoints = num; }
+
+    public static int getExtraPoints() {return ExtraPoints;}
+
+    public static void updateExtraPoints() {setExtraPoints((boughtItems[3] * 15));}
+
+    public static void setSoundEnabled(boolean b){soundEnabled = b;}
+    public static boolean getSoundEnabled(){return soundEnabled;}
 }

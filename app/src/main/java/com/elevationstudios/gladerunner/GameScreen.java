@@ -39,7 +39,7 @@ public class GameScreen extends Screen {
     private int ExtraPoints = Settings.ExtraPoints;
     private int returnButtonXPos;
     private int returnButtonYPos;
-    private int ExtraMoney = Settings.ExtraGold;
+    private int ExtraGold = Settings.ExtraGold;
     private boolean isPaused = false;
 
     public Ninja ninja;
@@ -110,6 +110,14 @@ public class GameScreen extends Screen {
         groundYPos = ninjaYPos;
 
         initialMoney = Settings.getGold();
+
+        Settings.updateMoneyGain();
+        ExtraGold = Settings.getMoneyGain();
+
+        Settings.updateExtraPoints();
+        ExtraPoints = Settings.getExtraPoints();
+
+
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
 
@@ -443,9 +451,10 @@ public class GameScreen extends Screen {
         }
         if (!ninja.isAlive()) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
-            //game.unlockDeathAchieve();
+            game.unlockDeathAchieve();
             game.setScreen(new GameOverScreen(game));
-            //game.submitScore(points);
+            game.submitScore(points);
+            game.incrementRunDistance(points);
         }
     }
 
@@ -532,7 +541,7 @@ public class GameScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.HURT);
                         obstacle[i] = null;
                     } else {
-                        moneyEarned += (5 + ExtraMoney);
+                        moneyEarned += (5 + ExtraGold);
                     }
                     break;
                 }
@@ -558,7 +567,7 @@ public class GameScreen extends Screen {
                         if (ninja.ninjaAction == Ninja.Action.MeleeAttack)
                         {
                             zombies[i].takeDamage(50);
-                            moneyEarned += (100 + ExtraMoney * 5);
+                            moneyEarned += (100 + ExtraGold * 5);
                             zombies[i].setAction(Enemy.Action.Dead);
                             break;
                         }
@@ -593,7 +602,7 @@ public class GameScreen extends Screen {
                     if (zombies[i].frame > 11)
                     {
                         zombies[i] = null;
-                        moneyEarned += (100 + ExtraMoney *5);
+                        moneyEarned += (100 + ExtraGold *5);
                     }
                 }
             }
