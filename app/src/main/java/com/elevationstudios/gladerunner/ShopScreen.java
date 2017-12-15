@@ -45,6 +45,7 @@ public class ShopScreen extends Screen {
     private int buyBoxXPos;
     private int buyBoxYPos;
 
+    private float boxScale = 0.6f;
     private int achieveBoxXPos;
     private int achieveBoxYPos;
     private int leaderBoxXPos;
@@ -66,12 +67,12 @@ public class ShopScreen extends Screen {
 
         shopTextFontSize = 80.f;
         shopTextXPos = g.getWidth() * 1/2 - (int) shopTextFontSize;
-        shopTextYPos = g.getHeight() * 1/10 + (int) shopTextFontSize / 2;
+        shopTextYPos = g.getHeight() * 3/20 + (int) shopTextFontSize / 2;
 
         moneyFontSize = 80.f;
         playerMoney = Settings.gold;
         moneyXPos = 0;
-        moneyYPos = (int) moneyFontSize;
+        moneyYPos = g.getHeight() * 3/20 + (int) shopTextFontSize / 2;
         buyFontSize = 40.f;
 
         buyBoxXPos = g.getWidth()/8;
@@ -79,10 +80,10 @@ public class ShopScreen extends Screen {
         buyXPos = buyBoxXPos;
         buyYPos = buyBoxYPos;
 
-        achieveBoxXPos = (int)(g.getWidth()-Assets.btnLeaderboard.getWidth());
-        achieveBoxYPos = 1;
-        leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth());
-        leaderBoxYPos = 1;
+        achieveBoxXPos = (int)(g.getWidth()-Assets.btnLeaderboard.getWidth()*boxScale);
+        achieveBoxYPos = moneyYPos-Assets.btnAchievement.getHeight()/2;
+        leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth()*boxScale);
+        leaderBoxYPos = moneyYPos-Assets.btnLeaderboard.getHeight()/2;
 
         game.showBanner();
     }
@@ -203,8 +204,8 @@ public class ShopScreen extends Screen {
         g.drawPixmap(Assets.background, 0, 0);
         g.drawPixmap(Assets.playButton, playXPos, playYPos);
         g.drawPixmap(Assets.optionButton, optionXPos, optionYPos);
-        g.drawPixmap(Assets.btnAchievement, achieveBoxXPos, achieveBoxYPos);
-        g.drawPixmap(Assets.btnLeaderboard,leaderBoxXPos,leaderBoxYPos);
+        g.drawPixmapScaled(Assets.btnAchievement, achieveBoxXPos, achieveBoxYPos, boxScale);
+        g.drawPixmapScaled(Assets.btnLeaderboard,leaderBoxXPos,leaderBoxYPos, boxScale);
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
         g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 

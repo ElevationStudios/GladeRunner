@@ -27,6 +27,7 @@ public class GameOverScreen extends Screen {
     private int scoreXPos;
     private int scoreYPos;
 
+    private String gameOverText;
     private int gameOXPos;
     private int gameOYPos;
 
@@ -46,7 +47,15 @@ public class GameOverScreen extends Screen {
         playYPos = g.getHeight()*8/10-Assets.shopButton.getHeight()/2;
 
 
-        gameOXPos= g.getWidth()*1/2;
+
+        gameOverFont = 80.0f;
+        timeFont = 40.0f;
+        scoreFont = 40.0f;
+        moneyFont = 40.0f;
+
+
+        gameOverText = "Game Over!";
+        gameOXPos= g.getWidth()*1/2 - (int)gameOverFont;
         gameOYPos= g.getHeight() * 1/10;
 
         timeXPos= g.getWidth()*1/4;
@@ -58,10 +67,6 @@ public class GameOverScreen extends Screen {
         moneyXPos= g.getWidth()*1/4;
         moneyYPos= g.getHeight() * 5/10;
 
-        gameOverFont = 80.0f;
-        timeFont = 40.0f;
-        scoreFont = 40.0f;
-        moneyFont = 40.0f;
 
         SoundEffect.PlayMusic(SoundEffect.ORCHESTRA_MUSIC);
         //setting location , then subtracting left/up to center the button

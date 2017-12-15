@@ -493,7 +493,7 @@ public class GameScreen extends Screen {
                 hpPickup[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
 
         }
-        if (hpTimer >= 2.5 )
+        if (hpTimer >= 5.0f )
         {
             hpTimer = 0;
             for (int i = 0; i < hpPickup.length; i++)
