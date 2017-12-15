@@ -79,6 +79,7 @@ public class ShopScreen extends Screen {
         leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth());
         leaderBoxYPos = 1;
 
+        game.showBanner();
     }
 
     @Override
@@ -159,8 +160,8 @@ public class ShopScreen extends Screen {
 
         //  Update bought stats
         // Settings.boughtItems;
-
         Settings.save(game.getFileIO());
+        game.hideBanner();
     }
 
     @Override
