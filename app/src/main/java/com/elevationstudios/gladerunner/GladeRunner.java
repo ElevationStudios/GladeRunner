@@ -23,4 +23,15 @@ public class GladeRunner extends AndroidGame {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Assets.currentMusic.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
 }

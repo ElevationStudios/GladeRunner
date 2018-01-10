@@ -15,7 +15,7 @@ public class Ninja {
 
     protected boolean alive;
     protected int health;
-    protected int maxHealth = 100;
+    protected int maxHealth = Settings.getMaxHealth();//(100 * Settings.boughtItems[0]) + (100 * Settings.boughtItems[4]) + 100;
 
     protected int yVelocity;
 
@@ -26,6 +26,8 @@ public class Ninja {
 
 
     public Ninja(){
+        Settings.updateMaxHealth();
+        maxHealth = Settings.getMaxHealth();
         setHealth(maxHealth);
         setState(State.Ground);
         setAction(Action.Idle);

@@ -30,15 +30,22 @@ public class ShopScreen extends Screen {
     private float shopTextFontSize;
 
     private int playerMoney;
-    private String priceText;
     private int moneyXPos;
     private int moneyYPos;
     private float moneyFontSize;
     private float buyFontSize;
 
+    //Cost of items one through five, specific amounts and updated in update function
+    private int One;
+    private int Two;
+    private int Three;
+    private int Four;
+    private int Five;
+
     private int buyBoxXPos;
     private int buyBoxYPos;
 
+    private float boxScale = 0.6f;
     private int achieveBoxXPos;
     private int achieveBoxYPos;
     private int leaderBoxXPos;
@@ -60,32 +67,38 @@ public class ShopScreen extends Screen {
 
         shopTextFontSize = 80.f;
         shopTextXPos = g.getWidth() * 1/2 - (int) shopTextFontSize;
-        shopTextYPos = g.getHeight() * 1/10 + (int) shopTextFontSize / 2;
+        shopTextYPos = g.getHeight() * 3/20 + (int) shopTextFontSize / 2;
 
         moneyFontSize = 80.f;
         playerMoney = Settings.gold;
         moneyXPos = 0;
-        moneyYPos = (int) moneyFontSize;
+        moneyYPos = g.getHeight() * 3/20 + (int) shopTextFontSize / 2;
         buyFontSize = 40.f;
-        priceText = "Price: $100";
 
         buyBoxXPos = g.getWidth()/8;
         buyBoxYPos = g.getHeight()/4;
         buyXPos = buyBoxXPos;
         buyYPos = buyBoxYPos;
 
-        achieveBoxXPos = (int)(g.getWidth()-Assets.btnLeaderboard.getWidth());
-        achieveBoxYPos = 1;
-        leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth());
-        leaderBoxYPos = 1;
+        achieveBoxXPos = (int)(g.getWidth()-Assets.btnLeaderboard.getWidth()*boxScale);
+        achieveBoxYPos = moneyYPos-Assets.btnAchievement.getHeight()/2;
+        leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth()*boxScale);
+        leaderBoxYPos = moneyYPos-Assets.btnLeaderboard.getHeight()/2;
 
+        game.showBanner();
     }
 
     @Override
     public void update(float deltaTime) {
+        Graphics g = game.getGraphics();
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
+        One = ((Settings.boughtItems[0] + 1) + (((Settings.boughtItems[0]) * (Settings.boughtItems[0]))/2));
+        Two = ((Settings.boughtItems[1] + 1) + (((Settings.boughtItems[1]) * (Settings.boughtItems[1]))/2));
+        Three = ((Settings.boughtItems[2] + 1) + (((Settings.boughtItems[2]) * (Settings.boughtItems[2]))/2));
+        Four = ((Settings.boughtItems[3] + 1) + (((Settings.boughtItems[3]) * (Settings.boughtItems[3]))/2));
+        Five = ((Settings.boughtItems[4] + 1) + (((Settings.boughtItems[4]) * (Settings.boughtItems[4]))/2));
         int len = touchEvents.size();
+        present(deltaTime);
         for(int i = 0; i < len; i++){
             TouchEvent event = touchEvents.get(i);
 
@@ -103,25 +116,79 @@ public class ShopScreen extends Screen {
                     Log.d("ShopScreen", "Clicked Options button");
                     return;
                 }
-
+                //increase health below (shop)
                 if(inBounds(event, buyXPos, buyYPos,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
+
                     Log.d("ShopScreen", "Clicked Buy button");
-                    if (playerMoney > 100)
-                        playerMoney-=100;
-                    return;
+                    if (playerMoney >= (100 * One)) {
+                        playerMoney -= (100 * One);
+                        Settings.boughtItems[0] += 1;
+                        Settings.save(game.getFileIO());
+                        return;
+                    }
+                }
+                if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/8,
+                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
+                    //this is where you change screen
+
+                    Log.d("ShopScreen", "Clicked Buy button");
+                    if (playerMoney >= (100 * Two)) {
+                        playerMoney -= (100 * Two);
+                        Settings.boughtItems[1] += 1;
+                        Settings.save(game.getFileIO());
+                        return;
+                    }
+                }
+                if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/8,
+                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
+                    //this is where you change screen
+
+                    Log.d("ShopScreen", "Clicked Buy button");
+                    if (playerMoney >= (100 * Three)) {
+                        playerMoney -= (100 * Three);
+                        Settings.boughtItems[2] += 1;
+                        Settings.save(game.getFileIO());
+                        return;
+                    }
+                }
+                if(inBounds(event, buyXPos, buyYPos + 3 * g.getHeight()/8,
+                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
+                    //this is where you change screen
+
+                    Log.d("ShopScreen", "Clicked Buy button");
+                    if (playerMoney >= (100 * Four)) {
+                        playerMoney -= (100 * Four);
+                        Settings.boughtItems[3] += 1;
+                        Settings.save(game.getFileIO());
+                        return;
+                    }
+                }
+                if(inBounds(event, buyXPos, buyYPos + 4 * g.getHeight()/8,
+                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
+                    //this is where you change screen
+
+                    Log.d("ShopScreen", "Clicked Buy button");
+                    if (playerMoney >= (100 * Five)) {
+                        playerMoney -= (100 * Five);
+                        Settings.boughtItems[4] += 1;
+                        Settings.gold = playerMoney;
+                        Settings.save(game.getFileIO());
+                        return;
+                    }
                 }
 
+
                 if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
-                        Assets.btnAchievement.getWidth(),
-                        Assets.btnAchievement.getHeight())){
+                        (int)(Assets.btnAchievement.getWidth() * boxScale),
+                        (int)(Assets.btnAchievement.getHeight() * boxScale))){
                     game.showAchievements();
                 }
 
                 if (inBounds(event, leaderBoxXPos,leaderBoxYPos,
-                        Assets.btnLeaderboard.getWidth(),
-                        Assets.btnLeaderboard.getHeight())){
+                        (int)(Assets.btnLeaderboard.getWidth() * boxScale),
+                        (int)(Assets.btnLeaderboard.getHeight() * boxScale))){
                     game.showLeaderboards();
                 }
             }
@@ -138,8 +205,8 @@ public class ShopScreen extends Screen {
         g.drawPixmap(Assets.background, 0, 0);
         g.drawPixmap(Assets.playButton, playXPos, playYPos);
         g.drawPixmap(Assets.optionButton, optionXPos, optionYPos);
-        g.drawPixmap(Assets.btnAchievement, achieveBoxXPos, achieveBoxYPos);
-        g.drawPixmap(Assets.btnLeaderboard,leaderBoxXPos,leaderBoxYPos);
+        g.drawPixmapScaled(Assets.btnAchievement, achieveBoxXPos, achieveBoxYPos, boxScale);
+        g.drawPixmapScaled(Assets.btnLeaderboard,leaderBoxXPos,leaderBoxYPos, boxScale);
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
         g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 
@@ -147,20 +214,28 @@ public class ShopScreen extends Screen {
         {
             g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.GRAY);
             g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/8);
-            g.drawText("Buyable " + Integer.toString(i+1), g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + i * g.getHeight()/8, 40.f);
-            g.drawText(priceText, g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + i * g.getHeight()/8, buyFontSize);
+            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/8, 40.f);
+            g.drawText("Buy Happiness ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/8, 40.f);
+            g.drawText("Increase Money Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/8, 40.f);
+            g.drawText("Increase Distance Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 3 * g.getHeight()/8, 40.f);
+            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 4 * g.getHeight()/8, 40.f);
+            g.drawText("Price = " + Integer.toString(One * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/8, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Two * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/8, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Three * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/8, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Four * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 3 * g.getHeight()/8, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Five * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 4 * g.getHeight()/8, buyFontSize);
         }
 
     }
 
     @Override
     public void pause(){
-        Settings.gold = playerMoney;
+        Settings.setGold(playerMoney);
 
         //  Update bought stats
         // Settings.boughtItems;
-
         Settings.save(game.getFileIO());
+        game.hideBanner();
     }
 
     @Override

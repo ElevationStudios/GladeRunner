@@ -54,8 +54,6 @@ public class MainMenuScreen extends Screen {
                 }
             }
         }
-
-
     }
 
 
@@ -70,6 +68,7 @@ public class MainMenuScreen extends Screen {
 
     @Override
     public void pause(){
+        Log.d("Sound", "MainMenu Paused");
         Settings.save(game.getFileIO());
     }
 
