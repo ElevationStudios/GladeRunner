@@ -127,7 +127,7 @@ public class ShopScreen extends Screen {
                         return;
                     }
                 }
-                if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/8,
+                if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/6,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
@@ -139,7 +139,7 @@ public class ShopScreen extends Screen {
                         return;
                     }
                 }
-                if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/8,
+                if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/6,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
