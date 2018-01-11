@@ -7,7 +7,6 @@ import com.elevationstudios.framework.Input;
 import com.elevationstudios.framework.Input.TouchEvent;
 import com.elevationstudios.framework.Screen;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import java.util.List;
@@ -34,11 +33,11 @@ public class GameScreen extends Screen {
     private int pauseScreenWidth;
 
 
-    private int playButtonXPos;
-    private int playButtonYPos;
+    private int resumeButtonXPos;
+    private int resumeButtonYPos;
     private int ExtraPoints = Settings.ExtraPoints;
-    private int returnButtonXPos;
-    private int returnButtonYPos;
+    private int exitButtonXPos;
+    private int exitButtonYPos;
     private int ExtraGold = Settings.ExtraGold;
     private boolean isPaused = false;
 
@@ -91,10 +90,10 @@ public class GameScreen extends Screen {
         pauseButtonYPos = 1;
 
 
-        playButtonXPos = g.getWidth() / 2 - Assets.playButton.getWidth() / 2;
-        playButtonYPos = g.getHeight() / 2 - Assets.playButton.getHeight();
-        returnButtonXPos = playButtonXPos;
-        returnButtonYPos = playButtonYPos + 10 + Assets.playButton.getHeight();
+        resumeButtonXPos = g.getWidth() / 2 - Assets.playButton.getWidth() / 2;
+        resumeButtonYPos = g.getHeight() / 2 - Assets.playButton.getHeight();
+        exitButtonXPos = resumeButtonXPos;
+        exitButtonYPos = resumeButtonYPos + 10 + Assets.playButton.getHeight();
 
         obstacle = new Obstacle[5];
         zombies = new Enemy[5];
@@ -159,13 +158,13 @@ public class GameScreen extends Screen {
                         return;
                     }
                 } else if (isPaused) {
-                    if (inBounds(event, playButtonXPos, playButtonYPos,
+                    if (inBounds(event, resumeButtonXPos, resumeButtonYPos,
                             Assets.playButton.getWidth(), Assets.playButton.getHeight())) {
                         isPaused = !isPaused;
                         Log.d("GameScreen", "Clicked Play button");
 
                     }
-                    if (inBounds(event, returnButtonXPos, returnButtonYPos,
+                    if (inBounds(event, exitButtonXPos, exitButtonYPos,
                             Assets.returnButton.getWidth(), Assets.returnButton.getHeight())) {
                         isPaused = !isPaused;
                         game.setScreen(new ShopScreen(game));
@@ -281,7 +280,7 @@ public class GameScreen extends Screen {
         g.drawRect(0, 0, g.getWidth() + 5, uiBarHeight, Color.BLACK);
         g.drawRect(uiBarOutline, uiBarOutline,
                 g.getWidth() - uiBarOutline * 2, uiBarHeight - uiBarOutline * 2,
-                Color.rgb(239, 207, 112));
+                Color.rgb(254, 238, 187));//239, 207, 112));
 
         //gold
         g.drawText("Gold: " + (initialMoney + moneyEarned) + "g", g.getWidth() * 1 / 20, uiBarHeight / 2 + 11, 24);
@@ -314,10 +313,10 @@ public class GameScreen extends Screen {
                 (int) (g.getHeight() * ((1 - pauseScreenHeightPercentage) / 2)),
                 (int) (pauseScreenWidth),
                 (int) (pauseScreenHeight),
-                Color.rgb(239, 207, 112));
+                Color.rgb(254, 238, 187));
 
-        g.drawPixmap(Assets.playButton, playButtonXPos, playButtonYPos);
-        g.drawPixmap(Assets.returnButton, returnButtonXPos, returnButtonYPos);
+        g.drawPixmap(Assets.resumeButton, resumeButtonXPos, resumeButtonYPos);
+        g.drawPixmap(Assets.exitButton, exitButtonXPos, exitButtonYPos);
     }
 
     public void UpdateBackground(float deltaTime, Graphics g){
@@ -387,9 +386,12 @@ public class GameScreen extends Screen {
                 ninjaXPos-ninja.getCurrentSprite().getWidth()/2,
                 ninjaYPos-ninja.getCurrentSprite().getHeight());
         */
+        int yDiff = 0;
+        if(ninja.getState() == Ninja.State.Slide)
+            yDiff = 15;
         g.drawPixmapScaled(ninja.getCurrentSprite(),
                 ninjaXPos - (int) (ninja.getCurrentSprite().getWidth() * ninjaScale / 2),
-                ninjaYPos - (int) (ninja.getCurrentSprite().getHeight() * ninjaScale / 2),
+                ninjaYPos - (int) (ninja.getCurrentSprite().getHeight() * ninjaScale / 2) + yDiff,
                 ninjaScale);
         if (!isPaused)
         {

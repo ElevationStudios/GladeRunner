@@ -21,7 +21,8 @@ public class Ninja {
 
     public int frame;
     public int frameTimer = 0;
-    public int slideTimer = 35;
+    public int attackTimer = 0;
+    public int slideTime = 35;
 
 
 
@@ -43,7 +44,7 @@ public class Ninja {
 
     public void setState(State state){
         ninjaState = state;
-        UpdateNinjaAnimation();
+        frameTimer = 0;
     }
 
     public Action getAction() {
@@ -52,7 +53,7 @@ public class Ninja {
 
     public void setAction(Action action){
         ninjaAction = action;
-        UpdateNinjaAnimation();
+        frame = 0;
     }
 
     public int getHealth(){
@@ -140,7 +141,7 @@ public class Ninja {
     public void addFrame() {
         //control for sliding
         if (ninjaState == State.Slide) {
-            if (frameTimer < slideTimer) {
+            if (frameTimer < slideTime) {
                 frameTimer++;
             } else {
                 setState(State.Ground);
@@ -148,11 +149,6 @@ public class Ninja {
             }
         }
         frame++;
-    }
-
-    public void UpdateNinjaAnimation(){
-        frame = 0;
-            frameTimer = 0;
     }
 
     public void getNinjaYVelocity(int velocity){

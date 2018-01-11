@@ -45,13 +45,17 @@ public class MainMenuScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if(event.type == TouchEvent.TOUCH_UP){
-                if(inBounds(event, playXPos, playYPos,
+                game.setScreen(new ShopScreen(game));
+                Log.d("MainMenuScreen", "Clicked button");
+
+
+               /* if(inBounds(event, playXPos, playYPos,
                         Assets.playButton.getWidth(), Assets.playButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
                     //this is where you change screen
                     Log.d("MainMenuScreen", "Clicked button");
                     return;
-                }
+                }*/
             }
         }
     }
@@ -61,9 +65,13 @@ public class MainMenuScreen extends Screen {
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
         g.drawPixmap(Assets.background, 0, 0);
-        g.drawPixmap(Assets.playButton, playXPos, playYPos);
-
-        //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
+//        g.drawPixmap(Assets.playButton, playXPos, playYPos);
+        g.drawPixmap(Assets.titleText,
+                g.getWidth()/2 - (int)(Assets.titleText.getWidth()/2),
+                g.getHeight()*1/3 - Assets.titleText.getHeight()/2);
+        g.drawPixmapScaled(Assets.continueText,
+                g.getWidth()/2 - (int)(Assets.continueText.getWidth()/2  * 0.6f),
+                g.getHeight()*3/4 - Assets.continueText.getHeight()/2, 0.6f);
     }
 
     @Override

@@ -212,7 +212,8 @@ public class ShopScreen extends Screen {
 
         for (int i = 0; i < 5; i++)
         {
-            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.GRAY);
+            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.BLACK);
+            g.drawRect(buyBoxXPos+2, buyBoxYPos + i * g.getHeight()/8+2, (int)(g.getWidth()*3/4 -4), (int)(Assets.buyButton.getHeight()-4), Color.rgb(254, 238, 187));
             g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/8);
             g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/8, 40.f);
             g.drawText("Buy Happiness ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/8, 40.f);
