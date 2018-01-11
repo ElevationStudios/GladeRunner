@@ -48,6 +48,7 @@ public class MainMenuScreen extends Screen {
                 if(inBounds(event, playXPos, playYPos,
                         Assets.playButton.getWidth(), Assets.playButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     //this is where you change screen
                     Log.d("MainMenuScreen", "Clicked button");
                     return;

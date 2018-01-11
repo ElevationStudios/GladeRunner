@@ -155,6 +155,7 @@ public class GameScreen extends Screen {
                             uiBarHeight-1, uiBarHeight - 1)) {
                         isPaused = !isPaused;
                         //CheckPause(isPaused);
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         Log.d("GameScreen", "Clicked Pause button");
                         return;
                     }
@@ -162,12 +163,14 @@ public class GameScreen extends Screen {
                     if (inBounds(event, playButtonXPos, playButtonYPos,
                             Assets.playButton.getWidth(), Assets.playButton.getHeight())) {
                         isPaused = !isPaused;
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         Log.d("GameScreen", "Clicked Play button");
 
                     }
                     if (inBounds(event, returnButtonXPos, returnButtonYPos,
                             Assets.returnButton.getWidth(), Assets.returnButton.getHeight())) {
                         isPaused = !isPaused;
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         game.setScreen(new ShopScreen(game));
                         Log.d("GameScreen", "Clicked Return button");
 
@@ -535,10 +538,10 @@ public class GameScreen extends Screen {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                        SoundEffect.PlaySound(SoundEffect.HURT);
+                        SoundEffect.PlaySound(SoundEffect.ROCK_HIT);
                     } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
-                        SoundEffect.PlaySound(SoundEffect.HURT);
+                        SoundEffect.PlaySound(SoundEffect.SPIKE_TRAP);
                         obstacle[i] = null;
                     } else {
                         moneyEarned += (5 + ExtraGold);

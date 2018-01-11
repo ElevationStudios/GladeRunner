@@ -63,6 +63,7 @@ public class OptionsScreen extends Screen {
                 if(inBounds(event, backXPos, backYPos,
                         Assets.backButton.getWidth(), Assets.backButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("OptionsScreen", "Clicked back button");
                     return;
                 }
@@ -72,6 +73,7 @@ public class OptionsScreen extends Screen {
                 else if(inBounds(event, helpXPos, helpXPos,
                         Assets.helpButton.getWidth(), Assets.helpButton.getHeight())){
                     game.setScreen(new HelpScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("OptionsScreen", "Clicked Help button");
                     return;
                 }
@@ -85,6 +87,7 @@ public class OptionsScreen extends Screen {
                         Assets.currentMusic.pause();
                     else
                         Assets.currentMusic.play();
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("OptionsScreen", "Clicked checkbox ");
                     return;
                 }

@@ -56,6 +56,7 @@ public class HelpScreen extends Screen {
                 if(inBounds(event, returnXPos, returnYPos,
                         Assets.returnButton.getWidth(), Assets.returnButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked return button");
                     return;
                 }
@@ -64,6 +65,7 @@ public class HelpScreen extends Screen {
                         Assets.nextButton.getWidth(), Assets.nextButton.getHeight())
                         && slide != 2){
                     slide++;
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked next button");
                     return;
                 }
@@ -72,6 +74,7 @@ public class HelpScreen extends Screen {
                         Assets.backButton.getWidth(), Assets.backButton.getHeight())
                         && slide != 1){
                     slide--;
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked back button");
                     return;
                 }

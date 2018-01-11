@@ -105,6 +105,7 @@ public class ShopScreen extends Screen {
             if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, playXPos, playYPos,
                         Assets.playButton.getWidth(), Assets.playButton.getHeight())){
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     game.setScreen(new GameScreen(game));
                     Log.d("ShopScreen", "Clicked Play button");
                     return;
@@ -112,6 +113,7 @@ public class ShopScreen extends Screen {
 
                 if(inBounds(event, optionXPos, optionYPos,
                         Assets.optionButton.getWidth(), Assets.optionButton.getHeight())){
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     game.setScreen(new OptionsScreen(game));
                     Log.d("ShopScreen", "Clicked Options button");
                     return;
@@ -125,57 +127,76 @@ public class ShopScreen extends Screen {
                     if (playerMoney >= (100 * One)) {
                         playerMoney -= (100 * One);
                         Settings.boughtItems[0] += 1;
+                        SoundEffect.PlaySound(SoundEffect.COINS);
                         Settings.save(game.getFileIO());
                         return;
+                    } else {
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
                 if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/8,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney >= (100 * Two)) {
                         playerMoney -= (100 * Two);
                         Settings.boughtItems[1] += 1;
+                        SoundEffect.PlaySound(SoundEffect.COINS);
                         Settings.save(game.getFileIO());
                         return;
+                    } else {
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
                 if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/8,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney >= (100 * Three)) {
                         playerMoney -= (100 * Three);
                         Settings.boughtItems[2] += 1;
+                        SoundEffect.PlaySound(SoundEffect.COINS);
                         Settings.save(game.getFileIO());
                         return;
+                    } else {
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
                 if(inBounds(event, buyXPos, buyYPos + 3 * g.getHeight()/8,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney >= (100 * Four)) {
                         playerMoney -= (100 * Four);
                         Settings.boughtItems[3] += 1;
+                        SoundEffect.PlaySound(SoundEffect.COINS);
                         Settings.save(game.getFileIO());
                         return;
+                    } else {
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
                 if(inBounds(event, buyXPos, buyYPos + 4 * g.getHeight()/8,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney >= (100 * Five)) {
                         playerMoney -= (100 * Five);
                         Settings.boughtItems[4] += 1;
+                        SoundEffect.PlaySound(SoundEffect.COINS);
                         Settings.gold = playerMoney;
                         Settings.save(game.getFileIO());
                         return;
+                    } else {
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
 
