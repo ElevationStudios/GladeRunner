@@ -204,13 +204,13 @@ public class ShopScreen extends Screen {
             g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/6, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.BLACK);
             g.drawRect(buyBoxXPos+2, buyBoxYPos + i * g.getHeight()/6+2, (int)(g.getWidth()*3/4 -4), (int)(Assets.buyButton.getHeight()-4), Color.rgb(254, 238, 187));
             g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/6);
-            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, 40.f);
-            g.drawText("Increase Money Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, 40.f);
-            g.drawText("Increase Distance Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6, 40.f);
+            g.drawText("Increase Health ", g.getWidth() /3, buyYPos + 8 + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, 40.f);
+            g.drawText("Increase Money Gain ", g.getWidth() /3, buyYPos + 8 + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, 40.f);
+            g.drawText("Increase Distance Gain ", g.getWidth() /3, buyYPos + 8 + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6, 40.f);
 
-            g.drawText("Price = " + Integer.toString(One * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Two * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Three * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6, buyFontSize);
+            g.drawText("Price: " + Integer.toString(One * 100), (int)(g.getWidth() * 0.70f) - (int) buyFontSize, buyYPos + 8 + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, buyFontSize);
+            g.drawText("Price: " + Integer.toString(Two * 100), (int)(g.getWidth() * 0.70f) - (int) buyFontSize, buyYPos + 8 + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, buyFontSize);
+            g.drawText("Price: " + Integer.toString(Three * 100), (int)(g.getWidth() * 0.70f) - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6+ 8, buyFontSize);
         }
 
     }

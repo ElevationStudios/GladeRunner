@@ -45,6 +45,8 @@ public class Ninja {
     public void setState(State state){
         ninjaState = state;
         frameTimer = 0;
+        if(state == State.Dead)
+            frame = 0;
     }
 
     public Action getAction() {
@@ -91,6 +93,12 @@ public class Ninja {
     public Pixmap getCurrentSprite(){
 
             //IF NOT ATTACKING
+        if(ninjaState == State.Dead) {
+            if(frame > 9)
+                return(Assets.ninjaSprite[0][9]);
+            return(Assets.ninjaSprite[0][frame]);
+        }
+
         if(ninjaAction==Action.Idle) {
             if (ninjaState == State.Ground) {
                 if (frame > 9)
@@ -149,6 +157,10 @@ public class Ninja {
             }
         }
         frame++;
+    }
+
+    public int getFrameNum() {
+        return frame;
     }
 
     public void getNinjaYVelocity(int velocity){

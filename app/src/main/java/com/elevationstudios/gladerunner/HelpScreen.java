@@ -12,8 +12,8 @@ import java.util.List;
 public class HelpScreen extends Screen {
 
 
-    private int optionXPos;
-    private int optionYPos;
+    private int returnXPos;
+    private int returnYPos;
 
     private int nextXPos;
     private int nextYPos;
@@ -29,17 +29,15 @@ public class HelpScreen extends Screen {
         Graphics g = game.getGraphics();
         slide = 1;
 
-        optionXPos = 0;
-        optionYPos = 0;
+        returnXPos = 0;
+        returnYPos = g.getHeight()-Assets.backButton.getHeight();
 
-        nextXPos = g.getWidth()-Assets.nextButton.getWidth();
+        /*nextXPos = g.getWidth()-Assets.nextButton.getWidth();
         nextYPos = g.getHeight()-Assets.nextButton.getHeight();
 
         backXPos = 0;
         backYPos = g.getHeight()-Assets.backButton.getHeight();
-
-        //setting location , then subtracting left/up to center the button
-        // here we are setting it to be 3/4 to the right, 3/4 to the bottom
+*/
 
     }
 
@@ -52,16 +50,16 @@ public class HelpScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if(event.type == TouchEvent.TOUCH_UP){
-                if(inBounds(event, optionXPos, optionYPos,
-                        Assets.optionButton.getWidth(), Assets.optionButton.getHeight())){
+                if(inBounds(event, returnXPos, returnYPos,
+                        Assets.returnButton.getWidth(), Assets.returnButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
 
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    Log.d("HelpScreen", "Clicked option button");
+                    Log.d("HelpScreen", "Clicked Return button");
                     return;
                 }
 
-                if(inBounds(event, nextXPos, nextYPos,
+                /*if(inBounds(event, nextXPos, nextYPos,
                         Assets.nextButton.getWidth(), Assets.nextButton.getHeight())
                         && slide != 2){
                     slide++;
@@ -77,7 +75,7 @@ public class HelpScreen extends Screen {
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked back button");
                     return;
-                }
+                }*/
             }
 
         }
@@ -90,11 +88,12 @@ public class HelpScreen extends Screen {
         Graphics g = game.getGraphics();
         //if(slide == 1)
         g.drawPixmap(Assets.helpMove, 0, 0);
-        g.drawPixmap(Assets.optionButton, optionXPos, optionYPos);
-        if(slide != 1)
+        g.drawPixmap(Assets.optionButton, returnXPos, returnYPos);
+
+       /* if(slide != 1)
             g.drawPixmap(Assets.backButton, backXPos, backYPos);
         if(slide != 2)
-            g.drawPixmap(Assets.nextButton, nextXPos, nextYPos);
+            g.drawPixmap(Assets.nextButton, nextXPos, nextYPos);*/
     }
 
     @Override

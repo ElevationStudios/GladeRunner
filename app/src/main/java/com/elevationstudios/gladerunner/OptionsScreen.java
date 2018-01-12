@@ -15,8 +15,8 @@ public class OptionsScreen extends Screen {
 	private int helpXPos = 50;
 	private int helpYPos = 50;
 
-	private int shopXPos = 50;
-	private int shopYPos = 50;
+	private int backXPos = 50;
+	private int backYPos = 50;
 
 	private int checkXPos = 50; //textx = 165
 	private int checkYPos = 300; //texty = 350
@@ -37,15 +37,15 @@ public class OptionsScreen extends Screen {
         optionsYPos= g.getHeight() * 1/10;
 
 
-        shopXPos = g.getWidth()/2 - Assets.shopButton.getWidth()/2;
-        shopYPos = g.getHeight() * 4/10 - Assets.shopButton.getHeight()/2;
+        checkXPos = g.getWidth()/2 - (int)(Assets.checked.getWidth()/2) - Assets.helpButton.getWidth()/3;
+        checkYPos = g.getHeight() * 4/10 - Assets.checked.getHeight()/2;
 
         helpXPos = g.getWidth()/2 - Assets.helpButton.getWidth()/2;
         helpYPos = g.getHeight() * 6/10 - Assets.helpButton.getHeight()/2;
+        backXPos = g.getWidth()/2 - Assets.backButton.getWidth()/2;
+        backYPos = g.getHeight() * 8/10 - Assets.backButton.getHeight()/2;
 
 
-        checkXPos = g.getWidth()/2 - Assets.checked.getWidth()/2;
-        checkYPos = g.getHeight() * 8/10 - Assets.checked.getHeight()/2;
 
     }
 
@@ -55,13 +55,13 @@ public class OptionsScreen extends Screen {
 
         for(Input.TouchEvent event : touchEvents){
 
-            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+            if(event.type == Input.TouchEvent.TOUCH_UP){
 
                 testX = event.x;
                 testY = event.y;
 
                 // Shop button
-                if(inBounds(event, shopXPos, shopYPos,
+                if(inBounds(event, backXPos, backYPos,
                         Assets.shopButton.getWidth(), Assets.shopButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
 
@@ -103,7 +103,7 @@ public class OptionsScreen extends Screen {
         g.drawPixmap(Assets.background, 0, 0);
 
         g.drawText(optionsText, optionsXPos, optionsYPos, optionsTextFont);
-        g.drawPixmap(Assets.shopButton, shopXPos, shopYPos);
+        g.drawPixmap(Assets.backButton, backXPos, backYPos);
         g.drawPixmap(Assets.helpButton, helpXPos, helpYPos);
 
         g.drawPixmap(enableSFX ? Assets.checked : Assets.unchecked, checkXPos, checkYPos);

@@ -8,6 +8,7 @@ import com.elevationstudios.framework.Input.TouchEvent;
 import com.elevationstudios.framework.Screen;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import java.util.List;
 import java.util.Random;
@@ -15,6 +16,9 @@ import java.util.Random;
 public class GameScreen extends Screen {
 
     private boolean debug;
+
+    private boolean isRunning;
+
     private int dieButtonXPos;
     private int dieButtonYPos;
     private int pauseButtonXPos;
@@ -129,10 +133,15 @@ public class GameScreen extends Screen {
         initialMoney = Settings.getGold();
         ExtraGold = Settings.getMoneyGain();
         ExtraPoints = Settings.getExtraPoints();
+
+        isRunning = true;
     }
 
     @Override
     public void update(float deltaTime) {
+        if(!isRunning)
+            return;
+
         if (!initialMoneyFixed) {
             initialMoney = Settings.getGold();
             initialMoneyFixed = true;
@@ -216,7 +225,7 @@ public class GameScreen extends Screen {
 
     @Override
     public void present(float deltaTime) {
-        UpdateNinja();
+
 
         Graphics g = game.getGraphics();
        // g.drawPixmap(Assets.background, 0, 0);
@@ -225,6 +234,11 @@ public class GameScreen extends Screen {
         DrawUIBar(g);
         DrawEntities(g);
 
+        UpdateNinja();
+
+
+        if(!isRunning)
+            return;
 
         if (isPaused) {
             DrawPauseScreen(g);
@@ -400,7 +414,7 @@ public class GameScreen extends Screen {
                 ninjaXPos - (int) (ninja.getCurrentSprite().getWidth() * ninjaScale / 2),
                 ninjaYPos - (int) (ninja.getCurrentSprite().getHeight() * ninjaScale / 2) + yDiff,
                 ninjaScale);
-        if (!isPaused)
+        if (!isPaused && isRunning)
         {
             ninja.addFrame();
         }
@@ -419,7 +433,7 @@ public class GameScreen extends Screen {
                         zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2) + yDiff,
                         (float) (ninjaScale * 1.3));
 
-                if (!isPaused)
+                if (!isPaused && isRunning)
                     zombies[i].addFrame();
             }
         }
@@ -462,12 +476,22 @@ public class GameScreen extends Screen {
                 ninja.setState(Ninja.State.Ground);
             }
         }
-        if (!ninja.isAlive()) {
+        if (!ninja.isAlive() && ninja.getState() != Ninja.State.Dead) {
             Log.d("GameScreen", "Ninja Health <= 0, dead");
-            game.unlockDeathAchieve();
-            game.setScreen(new GameOverScreen(game));
-            game.submitScore(points);
-            game.incrementRunDistance(points);
+            isRunning = false;
+            ninja.setState(Ninja.State.Dead);
+            ninja.frame = 0;
+            Log.d("GameScreen", "Setting dead");
+        }
+        if( ninja.getState()== Ninja.State.Dead) {
+            Log.d("GameScreen", "Setting frameDead");
+            ninja.addFrame();
+            if(ninja.getFrameNum() == 100) {
+                game.unlockDeathAchieve();
+                game.setScreen(new GameOverScreen(game));
+                game.submitScore(points);
+                game.incrementRunDistance(points);
+            }
         }
     }
 
@@ -636,7 +660,7 @@ public class GameScreen extends Screen {
                     if (zombies[i].frame > 11)
                     {
                         if (zombies[i].killedBy == 1)
-                            moneyEarned += (40 + ExtraGold * 3);
+                            moneyEarned += (100 + ExtraGold * 5)/2;
                         else
                             moneyEarned += (100 + ExtraGold * 5);
                         zombies[i] = null;
