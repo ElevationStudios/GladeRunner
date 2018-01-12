@@ -84,6 +84,7 @@ public class ShopScreen extends Screen {
         leaderBoxXPos = (int)(achieveBoxXPos - Assets.btnAchievement.getWidth()*boxScale);
         leaderBoxYPos = moneyYPos-Assets.btnLeaderboard.getHeight()/2;
 
+        SoundEffect.PlayMusic(SoundEffect.SHOP_MUSIC);
         game.showBanner();
     }
 
@@ -220,6 +221,8 @@ public class ShopScreen extends Screen {
 
         //  Update bought stats
         // Settings.boughtItems;
+        Settings.updateMoneyGain();
+        Settings.updateExtraPoints();
         Settings.save(game.getFileIO());
         game.hideBanner();
     }

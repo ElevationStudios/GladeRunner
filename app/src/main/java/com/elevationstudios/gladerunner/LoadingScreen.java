@@ -223,5 +223,7 @@ public class LoadingScreen extends Screen {
 
         Assets.cachedMusic.put(SoundEffect.ORCHESTRA_MUSIC, game.getAudio().newMusic("Sounds/Cyberwave Orchestra.wav"));
         Assets.cachedMusic.put(SoundEffect.MASTERMIND_MUSIC, game.getAudio().newMusic("Sounds/BGMusic.wav"));
+        Assets.cachedMusic.put(SoundEffect.SHOP_MUSIC, game.getAudio().newMusic("Sounds/Wii Shop Channel.wav"));
+
     }
 }

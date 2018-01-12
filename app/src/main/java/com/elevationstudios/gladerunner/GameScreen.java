@@ -64,6 +64,8 @@ public class GameScreen extends Screen {
 
     private int points = 0;
     private int moneyEarned = 0;
+    //initialmoneyfixed bool is an ugly fix for making sure initial money is set correctly
+    private boolean initialMoneyFixed = false;
     private int initialMoney = 0;//
 
     //background & foreground
@@ -108,14 +110,6 @@ public class GameScreen extends Screen {
         ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
 
-        initialMoney = Settings.getGold();
-
-        Settings.updateMoneyGain();
-        ExtraGold = Settings.getMoneyGain();
-
-        Settings.updateExtraPoints();
-        ExtraPoints = Settings.getExtraPoints();
-
 
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
@@ -131,11 +125,18 @@ public class GameScreen extends Screen {
             background2Array[i] = new Background(i * backgroundWidth, Assets.bg2);
         }
         bg2MoveSpeed = g.getWidth() * 2 / 3;
+        initialMoneyFixed = false;
         initialMoney = Settings.getGold();
+        ExtraGold = Settings.getMoneyGain();
+        ExtraPoints = Settings.getExtraPoints();
     }
 
     @Override
     public void update(float deltaTime) {
+        if (!initialMoneyFixed) {
+            initialMoney = Settings.getGold();
+            initialMoneyFixed = true;
+        }
         List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
@@ -193,10 +194,13 @@ public class GameScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_SWIPED_LEFT && ninja.isAlive()){
                 Log.d("SwipeEvent", "Swiped Left");
+                if(knife != null)
+                    return;
                 ninja.setAction(Ninja.Action.RangedAttack);
                 SoundEffect.PlaySound(SoundEffect.ATTACK);
                 if(knife == null) {
                     Log.d("Knife", "Spawned knife");
+                    moneyEarned -= 20;
                     knife = new Knife(this);
                     knife.yLocation = ninjaYPos - game.getGraphics().getHeight() / 20;
                     if (ninja.getState() == Ninja.State.Jump) {
