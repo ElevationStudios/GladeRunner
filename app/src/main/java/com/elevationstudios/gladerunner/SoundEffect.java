@@ -6,7 +6,7 @@ import com.elevationstudios.framework.Music;
 
 public enum SoundEffect {
 
-    AHH, ATTACK, CHOKE_FULL, GULP, HURT, JUMP, LEDGE_CLIMB, STRONG_ATTACK, ORCHESTRA_MUSIC, MASTERMIND_MUSIC;
+    AHH, BUTTON_CLICK, ATTACK, CHOKE_FULL, COINS, GULP, HURT, JUMP, LEDGE_CLIMB, STRONG_ATTACK, ROCK_HIT, SPIKE_TRAP,  ORCHESTRA_MUSIC, MASTERMIND_MUSIC, SHOP_MUSIC;
 
     public static void PlayMusic(SoundEffect effect) {
         if (Settings.getSoundEnabled()) {

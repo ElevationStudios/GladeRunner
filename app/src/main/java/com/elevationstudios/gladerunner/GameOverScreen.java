@@ -87,6 +87,7 @@ public class GameOverScreen extends Screen {
                         Assets.shopButton.getWidth(), Assets.shopButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
                     //this is where you change screen
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("GameOverScreen", "Clicked button");
                     return;
                 }

@@ -64,6 +64,8 @@ public class GameScreen extends Screen {
 
     private int points = 0;
     private int moneyEarned = 0;
+    //initialmoneyfixed bool is an ugly fix for making sure initial money is set correctly
+    private boolean initialMoneyFixed = false;
     private int initialMoney = 0;//
 
     //background & foreground
@@ -108,14 +110,6 @@ public class GameScreen extends Screen {
         ninjaYPos = (int) (game.getGraphics().getHeight() * 0.8);
         groundYPos = ninjaYPos;
 
-        initialMoney = Settings.getGold();
-
-        Settings.updateMoneyGain();
-        ExtraGold = Settings.getMoneyGain();
-
-        Settings.updateExtraPoints();
-        ExtraPoints = Settings.getExtraPoints();
-
 
 
         SoundEffect.PlayMusic(SoundEffect.MASTERMIND_MUSIC);
@@ -131,11 +125,18 @@ public class GameScreen extends Screen {
             background2Array[i] = new Background(i * backgroundWidth, Assets.bg2);
         }
         bg2MoveSpeed = g.getWidth() * 2 / 3;
+        initialMoneyFixed = false;
         initialMoney = Settings.getGold();
+        ExtraGold = Settings.getMoneyGain();
+        ExtraPoints = Settings.getExtraPoints();
     }
 
     @Override
     public void update(float deltaTime) {
+        if (!initialMoneyFixed) {
+            initialMoney = Settings.getGold();
+            initialMoneyFixed = true;
+        }
         List<Input.TouchEvent> touchEvents = game.getInput().getTouchEvents();
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
@@ -154,6 +155,7 @@ public class GameScreen extends Screen {
                             uiBarHeight-1, uiBarHeight - 1)) {
                         isPaused = !isPaused;
                         //CheckPause(isPaused);
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         Log.d("GameScreen", "Clicked Pause button");
                         return;
                     }
@@ -161,12 +163,14 @@ public class GameScreen extends Screen {
                     if (inBounds(event, resumeButtonXPos, resumeButtonYPos,
                             Assets.playButton.getWidth(), Assets.playButton.getHeight())) {
                         isPaused = !isPaused;
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         Log.d("GameScreen", "Clicked Play button");
 
                     }
                     if (inBounds(event, exitButtonXPos, exitButtonYPos,
                             Assets.returnButton.getWidth(), Assets.returnButton.getHeight())) {
                         isPaused = !isPaused;
+                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         game.setScreen(new ShopScreen(game));
                         Log.d("GameScreen", "Clicked Return button");
 
@@ -190,10 +194,13 @@ public class GameScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_SWIPED_LEFT && ninja.isAlive()){
                 Log.d("SwipeEvent", "Swiped Left");
+                if(knife != null)
+                    return;
                 ninja.setAction(Ninja.Action.RangedAttack);
                 SoundEffect.PlaySound(SoundEffect.ATTACK);
                 if(knife == null) {
                     Log.d("Knife", "Spawned knife");
+                    moneyEarned -= 20;
                     knife = new Knife(this);
                     knife.yLocation = ninjaYPos - game.getGraphics().getHeight() / 20;
                     if (ninja.getState() == Ninja.State.Jump) {
@@ -404,10 +411,14 @@ public class GameScreen extends Screen {
         {
             if (zombies[i] != null)
             {
+                int yDiff = 0;
+                if(!zombies[i].isAlive())
+                    yDiff = 20;
                 g.drawPixmapScaled(zombies[i].getCurrentSprite(),
                         zombies[i].xLocation - (int) (zombies[i].getCurrentSprite().getWidth() * ninjaScale / 2),
-                        zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2),
+                        zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2) + yDiff,
                         (float) (ninjaScale * 1.3));
+
                 if (!isPaused)
                     zombies[i].addFrame();
             }
@@ -543,22 +554,21 @@ public class GameScreen extends Screen {
                 {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
                     {
+                        //rock obj, and we are not jumping...
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                        SoundEffect.PlaySound(SoundEffect.HURT);
+                        SoundEffect.PlaySound(SoundEffect.ROCK_HIT);
                     }
                     else if (!obstacle[i].isUp &&
                             ((ninjaYPos - (int) (game.getGraphics().getHeight() * 0.8) + (Assets.ninjaSprite[1][0].getHeight() * ninjaScale)) >
-                                    obstacle[i].yLocation - (int) (game.getGraphics().getHeight() * 0.78)))
+                                    obstacle[i].yLocation - (int) (game.getGraphics().getHeight() /2 * 0.78)))
                     {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                        SoundEffect.PlaySound(SoundEffect.HURT);
-                    }
-                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
-                    {
+                        SoundEffect.PlaySound(SoundEffect.ROCK_HIT);
+                    } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
                         ninja.takeDamage(25);
-                        SoundEffect.PlaySound(SoundEffect.HURT);
+                        SoundEffect.PlaySound(SoundEffect.SPIKE_TRAP);
                         obstacle[i] = null;
                     }
                     else
@@ -590,6 +600,7 @@ public class GameScreen extends Screen {
                             zombies[i].takeDamage(50);
                             zombies[i].killedBy = 0;
                             zombies[i].setAction(Enemy.Action.Dead);
+                            SoundEffect.PlaySound(SoundEffect.COINS);
                             break;
                         }
                         else
@@ -652,11 +663,12 @@ public class GameScreen extends Screen {
                     if (!hpPickup[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.GULP);
                     } else if (hpPickup[i].isUp && ninja.getState() == Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.GULP);
                     }
-                    SoundEffect.PlaySound(SoundEffect.GULP);
                 }
             }
         }
