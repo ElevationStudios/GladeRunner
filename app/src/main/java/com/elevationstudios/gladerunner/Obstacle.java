@@ -22,7 +22,7 @@ public class Obstacle {
         {
             yLocation = (int) (g.getHeight() * 0.78);
             objectPix = Assets.rocks;
-            boxWidth = g.getHeight() / 7;
+            boxWidth = g.getHeight() / 8;
             boxHeight = boxWidth;
         }
         else

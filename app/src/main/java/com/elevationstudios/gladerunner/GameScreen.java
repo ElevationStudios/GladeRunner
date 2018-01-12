@@ -407,7 +407,7 @@ public class GameScreen extends Screen {
                 g.drawPixmapScaled(zombies[i].getCurrentSprite(),
                         zombies[i].xLocation - (int) (zombies[i].getCurrentSprite().getWidth() * ninjaScale / 2),
                         zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2),
-                        ninjaScale);
+                        (float) (ninjaScale * 1.3));
                 if (!isPaused)
                     zombies[i].addFrame();
             }
@@ -468,7 +468,7 @@ public class GameScreen extends Screen {
         }
         for (int i = 0; i < zombies.length; i++) {
             if (zombies[i] != null)
-                zombies[i].xLocation -= g.getWidth() * 3 / 6 * deltaTime;
+                zombies[i].xLocation -= g.getWidth() * 5 / 7 * deltaTime;
         }
 
         if (timer >= 1 ) {
@@ -505,18 +505,23 @@ public class GameScreen extends Screen {
                 hpPickup[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
 
         }
-        if (hpTimer >= 5.0f )
+        if (hpTimer >= 3.0f )
         {
             hpTimer = 0;
             for (int i = 0; i < hpPickup.length; i++)
             {
                 if (hpPickup[i] == null)
                 {
-                    hpPickup[i] = new HealthPickup(g, rand.nextBoolean());
+                    if (rand.nextBoolean())
+                    {
+                        hpPickup[i] = new HealthPickup(g, rand.nextBoolean());
+                        Log.d("GameScreen", "Spawned Health");
+                    }
+                    else
+                        Log.d("GameScreen", "Did not spawn Health");
                     break;
                 }
             }
-            Log.d("GameScreen", "Spawned Health");
         }
 
     }
@@ -529,21 +534,35 @@ public class GameScreen extends Screen {
                 //Check if off screen
                 if (obstacle[i].xLocation <= -obstacle[i].boxWidth * 2) {
                     obstacle[i] = null;
+                    moneyEarned += 100 + ExtraGold * 5;
                     break;
                 }
                 //Check if touching player
-                if ((obstacle[i].xLocation < (ninjaXPos + Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)) &&
-                        (obstacle[i].xLocation > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2))) {
-                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump) {
+                if (obstacle[i].xLocation < (ninjaXPos + (Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)) &&
+                        ((obstacle[i].xLocation + (obstacle[i].objectPix.getWidth() / 2) * obstacle[i].boxHeightScale ) > (ninjaXPos - Assets.ninjaSprite[1][0].getWidth() * ninjaScale / 2)))
+                {
+                    if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
+                    {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
                         SoundEffect.PlaySound(SoundEffect.HURT);
-                    } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
+                    }
+                    else if (!obstacle[i].isUp &&
+                            ((ninjaYPos - (int) (game.getGraphics().getHeight() * 0.8) + (Assets.ninjaSprite[1][0].getHeight() * ninjaScale)) >
+                                    obstacle[i].yLocation - (int) (game.getGraphics().getHeight() * 0.78)))
+                    {
+                        ninja.takeDamage(25);
+                        obstacle[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.HURT);
+                    }
+                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
+                    {
                         ninja.takeDamage(25);
                         SoundEffect.PlaySound(SoundEffect.HURT);
                         obstacle[i] = null;
-                    } else {
-                        moneyEarned += (5 + ExtraGold);
+                    }
+                    else
+                    {
                     }
                     break;
                 }
@@ -569,7 +588,7 @@ public class GameScreen extends Screen {
                         if (ninja.ninjaAction == Ninja.Action.MeleeAttack)
                         {
                             zombies[i].takeDamage(50);
-                            moneyEarned += (100 + ExtraGold * 5);
+                            zombies[i].killedBy = 0;
                             zombies[i].setAction(Enemy.Action.Dead);
                             break;
                         }
@@ -584,7 +603,8 @@ public class GameScreen extends Screen {
                 }
 
                 if (knife != null) {
-                    if ((zombies[i].xLocation < knife.xLocation + Assets.knife.getWidth() * 0.25f) &&
+                    if (zombies[i].getAction() != Enemy.Action.Dead &&
+                            (zombies[i].xLocation < knife.xLocation + Assets.knife.getWidth() * 0.25f) &&
                             (zombies[i].xLocation > (knife.xLocation)) &&
                             knife.yLocation >= (zombies[i].yLocation - zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2))
                     {
@@ -592,6 +612,7 @@ public class GameScreen extends Screen {
                         zombies[i].takeDamage(50);
                         if (zombies[i].isAlive() == false)
                         {
+                            zombies[i].killedBy = 1;
                             zombies[i].setAction(Enemy.Action.Dead);
                         }
                         knife = null;
@@ -603,8 +624,11 @@ public class GameScreen extends Screen {
                 {
                     if (zombies[i].frame > 11)
                     {
+                        if (zombies[i].killedBy == 1)
+                            moneyEarned += (40 + ExtraGold * 3);
+                        else
+                            moneyEarned += (100 + ExtraGold * 5);
                         zombies[i] = null;
-                        moneyEarned += (100 + ExtraGold *5);
                     }
                 }
             }
