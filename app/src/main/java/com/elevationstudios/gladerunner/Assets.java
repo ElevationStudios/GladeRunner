@@ -20,10 +20,14 @@ public class Assets {
     public static Pixmap bg1;
     public static Pixmap bg2;
 
+    //Title
+    public static Pixmap titleText;
+    public static Pixmap continueText;
     //Buttons
     public static Pixmap buyButton;
     public static Pixmap backButton;
     public static Pixmap dieButton;
+    public static Pixmap exitButton;
     public static Pixmap helpButton;
     public static Pixmap menuButton;
     public static Pixmap nextButton;
@@ -31,6 +35,7 @@ public class Assets {
     public static Pixmap optionButton;
     public static Pixmap pauseButton;
     public static Pixmap returnButton;
+    public static Pixmap resumeButton;
     public static Pixmap shopButton;
 
     public static Pixmap btnAchievement;

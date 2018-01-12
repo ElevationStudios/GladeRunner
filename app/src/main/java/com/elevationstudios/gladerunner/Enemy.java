@@ -21,13 +21,16 @@ public class Enemy {
 
     public int frame;
 
+    public int killedBy;
+
     public Enemy (Graphics g)
     {
         setAction(Action.Idle);
         maxHealth = 50;
         setHealth(maxHealth);
         xLocation = g.getWidth();
-        yLocation = (int) (g.getHeight() * 0.78);
+        yLocation = (int) (g.getHeight() * 0.72);
+        killedBy = 0;
 
 
     }

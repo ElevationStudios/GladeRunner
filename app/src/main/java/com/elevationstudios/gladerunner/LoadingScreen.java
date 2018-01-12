@@ -25,16 +25,22 @@ public class LoadingScreen extends Screen {
         Assets.bg1 = g.newPixmap("bg1.png", PixmapFormat.RGB565);
         Assets.bg2 = g.newPixmap("bg2.png", PixmapFormat.RGB565);
 
+        //Title
+        Assets.titleText = g.newPixmap("titleText.png", PixmapFormat.RGB565);
+        Assets.continueText = g.newPixmap("continueText.png", PixmapFormat.RGB565);
+
         //Buttons
         Assets.buyButton = g.newPixmap("buyButton.png", PixmapFormat.ARGB4444);
         Assets.backButton = g.newPixmap("backButton.png", PixmapFormat.ARGB4444);
         Assets.dieButton = g.newPixmap("dieButton.png", PixmapFormat.ARGB4444);
+        Assets.exitButton = g.newPixmap("exitButton.png", PixmapFormat.ARGB4444);
         Assets.helpButton = g.newPixmap("helpButton.png", PixmapFormat.ARGB4444);
         Assets.menuButton = g.newPixmap("menuButton.png", PixmapFormat.ARGB4444);
         Assets.nextButton = g.newPixmap("nextButton.png", PixmapFormat.ARGB4444);
         Assets.playButton = g.newPixmap("playButton.png", PixmapFormat.ARGB4444);
         Assets.optionButton = g.newPixmap("optionButton.png", PixmapFormat.ARGB4444);
         Assets.pauseButton = g.newPixmap("pauseButton.png", PixmapFormat.ARGB4444);
+        Assets.resumeButton = g.newPixmap("resumeButton.png", PixmapFormat.ARGB4444);
         Assets.returnButton = g.newPixmap("returnButton.png", PixmapFormat.ARGB4444);
         Assets.shopButton = g.newPixmap("shopButton.png", PixmapFormat.ARGB4444);
 

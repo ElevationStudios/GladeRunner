@@ -1,6 +1,8 @@
 package com.elevationstudios.framework;
 
-public interface Graphics 
+import android.graphics.Paint;
+
+public interface Graphics
 {
     public static enum PixmapFormat
     {
@@ -18,6 +20,7 @@ public interface Graphics
     public void drawPixmapScaled(Pixmap pixmap, int x, int y, float scale);
     public void drawText(String string, int x, int y);
     public void drawText(String string, int x, int y, float textSize);
+    public void drawText(String string, int x, int y, float textSize, Paint color);
     public int getWidth();
     public int getHeight();
 }

@@ -5,7 +5,6 @@ import android.util.Log;
 import com.elevationstudios.framework.Game;
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Input.TouchEvent;
-import com.elevationstudios.framework.Pixmap;
 import com.elevationstudios.framework.Screen;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 public class HelpScreen extends Screen {
 
 
-    private int returnXPos;
-    private int returnYPos;
+    private int optionXPos;
+    private int optionYPos;
 
     private int nextXPos;
     private int nextYPos;
@@ -30,8 +29,8 @@ public class HelpScreen extends Screen {
         Graphics g = game.getGraphics();
         slide = 1;
 
-        returnXPos = 0;
-        returnYPos = 0;
+        optionXPos = 0;
+        optionYPos = 0;
 
         nextXPos = g.getWidth()-Assets.nextButton.getWidth();
         nextYPos = g.getHeight()-Assets.nextButton.getHeight();
@@ -53,11 +52,15 @@ public class HelpScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if(event.type == TouchEvent.TOUCH_UP){
-                if(inBounds(event, returnXPos, returnYPos,
-                        Assets.returnButton.getWidth(), Assets.returnButton.getHeight())){
+                if(inBounds(event, optionXPos, optionYPos,
+                        Assets.optionButton.getWidth(), Assets.optionButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
+<<<<<<< HEAD
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked return button");
+=======
+                    Log.d("HelpScreen", "Clicked option button");
+>>>>>>> master
                     return;
                 }
 
@@ -90,7 +93,7 @@ public class HelpScreen extends Screen {
         Graphics g = game.getGraphics();
         //if(slide == 1)
         g.drawPixmap(Assets.helpMove, 0, 0);
-        g.drawPixmap(Assets.returnButton, returnXPos, returnYPos);
+        g.drawPixmap(Assets.optionButton, optionXPos, optionYPos);
         if(slide != 1)
             g.drawPixmap(Assets.backButton, backXPos, backYPos);
         if(slide != 2)

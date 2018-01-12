@@ -39,8 +39,7 @@ public class ShopScreen extends Screen {
     private int One;
     private int Two;
     private int Three;
-    private int Four;
-    private int Five;
+
 
     private int buyBoxXPos;
     private int buyBoxYPos;
@@ -76,7 +75,7 @@ public class ShopScreen extends Screen {
         buyFontSize = 40.f;
 
         buyBoxXPos = g.getWidth()/8;
-        buyBoxYPos = g.getHeight()/4;
+        buyBoxYPos = (int)(g.getHeight() * 0.35f);
         buyXPos = buyBoxXPos;
         buyYPos = buyBoxYPos;
 
@@ -95,8 +94,7 @@ public class ShopScreen extends Screen {
         One = ((Settings.boughtItems[0] + 1) + (((Settings.boughtItems[0]) * (Settings.boughtItems[0]))/2));
         Two = ((Settings.boughtItems[1] + 1) + (((Settings.boughtItems[1]) * (Settings.boughtItems[1]))/2));
         Three = ((Settings.boughtItems[2] + 1) + (((Settings.boughtItems[2]) * (Settings.boughtItems[2]))/2));
-        Four = ((Settings.boughtItems[3] + 1) + (((Settings.boughtItems[3]) * (Settings.boughtItems[3]))/2));
-        Five = ((Settings.boughtItems[4] + 1) + (((Settings.boughtItems[4]) * (Settings.boughtItems[4]))/2));
+
         int len = touchEvents.size();
         present(deltaTime);
         for(int i = 0; i < len; i++){
@@ -134,7 +132,7 @@ public class ShopScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
-                if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/8,
+                if(inBounds(event, buyXPos, buyYPos + 1 * g.getHeight()/6,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
@@ -150,7 +148,7 @@ public class ShopScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
-                if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/8,
+                if(inBounds(event, buyXPos, buyYPos + 2 * g.getHeight()/6,
                         Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
                     //this is where you change screen
 
@@ -166,10 +164,8 @@ public class ShopScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
-                if(inBounds(event, buyXPos, buyYPos + 3 * g.getHeight()/8,
-                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
-                    //this is where you change screen
 
+<<<<<<< HEAD
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("ShopScreen", "Clicked Buy button");
                     if (playerMoney >= (100 * Four)) {
@@ -199,6 +195,8 @@ public class ShopScreen extends Screen {
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     }
                 }
+=======
+>>>>>>> master
 
 
                 if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
@@ -231,20 +229,18 @@ public class ShopScreen extends Screen {
         g.drawText("Shop", shopTextXPos, shopTextYPos, shopTextFontSize);
         g.drawText("$" + Integer.toString(playerMoney), moneyXPos, moneyYPos, moneyFontSize);
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
-            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/8, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.GRAY);
-            g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/8);
-            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/8, 40.f);
-            g.drawText("Buy Happiness ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/8, 40.f);
-            g.drawText("Increase Money Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/8, 40.f);
-            g.drawText("Increase Distance Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 3 * g.getHeight()/8, 40.f);
-            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 4 * g.getHeight()/8, 40.f);
-            g.drawText("Price = " + Integer.toString(One * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/8, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Two * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/8, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Three * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/8, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Four * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 3 * g.getHeight()/8, buyFontSize);
-            g.drawText("Price = " + Integer.toString(Five * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 4 * g.getHeight()/8, buyFontSize);
+            g.drawRect(buyBoxXPos, buyBoxYPos + i * g.getHeight()/6, g.getWidth()*3/4, Assets.buyButton.getHeight(), Color.BLACK);
+            g.drawRect(buyBoxXPos+2, buyBoxYPos + i * g.getHeight()/6+2, (int)(g.getWidth()*3/4 -4), (int)(Assets.buyButton.getHeight()-4), Color.rgb(254, 238, 187));
+            g.drawPixmap(Assets.buyButton, buyXPos, buyYPos + i * g.getHeight()/6);
+            g.drawText("Buy Health ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, 40.f);
+            g.drawText("Increase Money Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, 40.f);
+            g.drawText("Increase Distance Gain ", g.getWidth() /3, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6, 40.f);
+
+            g.drawText("Price = " + Integer.toString(One * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 0 * g.getHeight()/6, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Two * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 1 * g.getHeight()/6, buyFontSize);
+            g.drawText("Price = " + Integer.toString(Three * 100), g.getWidth() *3/4 - (int) buyFontSize, buyYPos + Assets.buyButton.getHeight() / 2 + 2 * g.getHeight()/6, buyFontSize);
         }
 
     }
