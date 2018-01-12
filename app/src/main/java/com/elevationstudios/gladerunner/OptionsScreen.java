@@ -64,12 +64,9 @@ public class OptionsScreen extends Screen {
                 if(inBounds(event, shopXPos, shopYPos,
                         Assets.shopButton.getWidth(), Assets.shopButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
-<<<<<<< HEAD
+
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    Log.d("OptionsScreen", "Clicked back button");
-=======
                     Log.d("OptionsScreen", "Clicked Shop button");
->>>>>>> master
                     return;
                 }
 

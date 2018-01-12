@@ -407,10 +407,14 @@ public class GameScreen extends Screen {
         {
             if (zombies[i] != null)
             {
+                int yDiff = 0;
+                if(!zombies[i].isAlive())
+                    yDiff = 20;
                 g.drawPixmapScaled(zombies[i].getCurrentSprite(),
                         zombies[i].xLocation - (int) (zombies[i].getCurrentSprite().getWidth() * ninjaScale / 2),
-                        zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2),
+                        zombies[i].yLocation - (int) (zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2) + yDiff,
                         (float) (ninjaScale * 1.3));
+
                 if (!isPaused)
                     zombies[i].addFrame();
             }
@@ -546,25 +550,19 @@ public class GameScreen extends Screen {
                 {
                     if (!obstacle[i].isUp && ninja.getState() != Ninja.State.Jump)
                     {
+                        //rock obj, and we are not jumping...
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-                        SoundEffect.PlaySound(SoundEffect.HURT);
+                        SoundEffect.PlaySound(SoundEffect.ROCK_HIT);
                     }
                     else if (!obstacle[i].isUp &&
                             ((ninjaYPos - (int) (game.getGraphics().getHeight() * 0.8) + (Assets.ninjaSprite[1][0].getHeight() * ninjaScale)) >
-                                    obstacle[i].yLocation - (int) (game.getGraphics().getHeight() * 0.78)))
+                                    obstacle[i].yLocation - (int) (game.getGraphics().getHeight() /2 * 0.78)))
                     {
                         ninja.takeDamage(25);
                         obstacle[i] = null;
-<<<<<<< HEAD
                         SoundEffect.PlaySound(SoundEffect.ROCK_HIT);
                     } else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide) {
-=======
-                        SoundEffect.PlaySound(SoundEffect.HURT);
-                    }
-                    else if (obstacle[i].isUp && ninja.getState() != Ninja.State.Slide)
-                    {
->>>>>>> master
                         ninja.takeDamage(25);
                         SoundEffect.PlaySound(SoundEffect.SPIKE_TRAP);
                         obstacle[i] = null;
@@ -598,6 +596,7 @@ public class GameScreen extends Screen {
                             zombies[i].takeDamage(50);
                             zombies[i].killedBy = 0;
                             zombies[i].setAction(Enemy.Action.Dead);
+                            SoundEffect.PlaySound(SoundEffect.COINS);
                             break;
                         }
                         else
@@ -660,11 +659,12 @@ public class GameScreen extends Screen {
                     if (!hpPickup[i].isUp && ninja.getState() != Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.GULP);
                     } else if (hpPickup[i].isUp && ninja.getState() == Ninja.State.Jump) {
                         ninja.takeDamage(-50);
                         hpPickup[i] = null;
+                        SoundEffect.PlaySound(SoundEffect.GULP);
                     }
-                    SoundEffect.PlaySound(SoundEffect.GULP);
                 }
             }
         }

@@ -55,12 +55,9 @@ public class HelpScreen extends Screen {
                 if(inBounds(event, optionXPos, optionYPos,
                         Assets.optionButton.getWidth(), Assets.optionButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
-<<<<<<< HEAD
+
                     SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    Log.d("HelpScreen", "Clicked return button");
-=======
                     Log.d("HelpScreen", "Clicked option button");
->>>>>>> master
                     return;
                 }
 

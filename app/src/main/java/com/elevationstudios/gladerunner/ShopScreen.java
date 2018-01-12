@@ -165,38 +165,7 @@ public class ShopScreen extends Screen {
                     }
                 }
 
-<<<<<<< HEAD
-                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    Log.d("ShopScreen", "Clicked Buy button");
-                    if (playerMoney >= (100 * Four)) {
-                        playerMoney -= (100 * Four);
-                        Settings.boughtItems[3] += 1;
-                        SoundEffect.PlaySound(SoundEffect.COINS);
-                        Settings.save(game.getFileIO());
-                        return;
-                    } else {
-                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    }
-                }
-                if(inBounds(event, buyXPos, buyYPos + 4 * g.getHeight()/8,
-                        Assets.buyButton.getWidth(), Assets.buyButton.getHeight())){
-                    //this is where you change screen
 
-                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    Log.d("ShopScreen", "Clicked Buy button");
-                    if (playerMoney >= (100 * Five)) {
-                        playerMoney -= (100 * Five);
-                        Settings.boughtItems[4] += 1;
-                        SoundEffect.PlaySound(SoundEffect.COINS);
-                        Settings.gold = playerMoney;
-                        Settings.save(game.getFileIO());
-                        return;
-                    } else {
-                        SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                    }
-                }
-=======
->>>>>>> master
 
 
                 if (inBounds(event, achieveBoxXPos, achieveBoxYPos,
