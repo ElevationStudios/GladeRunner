@@ -1,8 +1,5 @@
 package com.elevationstudios.gladerunner;
 
-import android.graphics.Color;
-import android.util.Log;
-
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Pixmap;
 
@@ -24,14 +21,14 @@ public class Obstacle {
         if (!isUp)
         {
             yLocation = (int) (g.getHeight() * 0.78);
-            objectPix = g.newPixmap("rocks.png", Graphics.PixmapFormat.RGB565);
-            boxWidth = g.getHeight() / 7;
+            objectPix = Assets.rocks;
+            boxWidth = g.getHeight() / 8;
             boxHeight = boxWidth;
         }
         else
         {
             yLocation = (int) (g.getHeight() * 0.54);
-            objectPix = g.newPixmap("spikes.png", Graphics.PixmapFormat.RGB565);
+            objectPix = Assets.spikes;
             boxWidth = g.getHeight() / 5;
             boxHeight = boxWidth;
         }

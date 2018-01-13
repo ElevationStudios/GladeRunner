@@ -15,15 +15,17 @@ public class Settings {
 public static boolean soundEnabled = true;
 
     public static int gold = 500;
-
     //keeps track of what we just earned
     public static int lastRunGold = 0;
     public static int lastRunDistance = 0;
-
     public static int[] highscores = new int[] { 250, 200, 150, 100, 50};
 
     //boughtitems = 5 items, start at 0
-    public static int[] boughtItems = new int[] { 0, 0, 0, 0, 0 };
+    public static int[] boughtItems = new int[] { 0, 0, 0};
+
+    public static int ExtraGold;
+    public static int maxHealth;
+    public static int ExtraPoints;
 
     public static void load (FileIO files){
         BufferedReader in = null;
@@ -125,8 +127,33 @@ public static boolean soundEnabled = true;
         lastRunGold = num;
     }
 
+    public static void setGold(int num){gold = num;}
+
     public static void addGold(int num){
         gold += num;
     }
 
+    public static int getGold() {return gold;}
+
+    public static void setMaxHealth(int num){ maxHealth = num; }
+
+    public static int getMaxHealth(){return maxHealth;}
+
+    public static void updateMaxHealth(){ setMaxHealth((15 * boughtItems[0]) + 100); }
+
+
+    public static void setMoneyGain(int num) {ExtraGold = num;}
+
+    public static int getMoneyGain() {return ExtraGold;}
+
+    public static void updateMoneyGain() {setMoneyGain(boughtItems[1]);}
+
+    public static void setExtraPoints(int num) {ExtraPoints = num; }
+
+    public static int getExtraPoints() {return ExtraPoints;}
+
+    public static void updateExtraPoints() {setExtraPoints((boughtItems[2] * 15));}
+
+    public static void setSoundEnabled(boolean b){soundEnabled = b;}
+    public static boolean getSoundEnabled(){return soundEnabled;}
 }

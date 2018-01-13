@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.elevationstudios.framework.Audio;
 import com.elevationstudios.framework.FileIO;
@@ -16,6 +19,12 @@ import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Input;
 import com.elevationstudios.framework.Screen;
 import com.elevationstudios.gladerunner.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
@@ -26,6 +35,8 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
     Input input;
     FileIO fileIO;
     Screen screen;
+    AdView adView;
+    InterstitialAd mInterstitialAd;
 
     static final int REQUEST_LEADERBOARD = 100;
     static final int REQUEST_ACHIEVEMENTS = 200;
@@ -56,11 +67,44 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
         fileIO = new AndroidFileIO(getAssets());
         audio = new AndroidAudio(this);
         input = new AndroidInput(this, renderView, scaleX, scaleY);
+
+
+        //Ads
+        MobileAds.initialize(this, "ca-app-pub-3019710358791217~5384423978");
+
+        //Create and load adview
+        adView = new AdView(this);
+        adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        adView.setAdSize(AdSize.SMART_BANNER);
+
+        //create a realtivelayout as the main layout and add the gameview
+        RelativeLayout mainLayout = new RelativeLayout(this);
+        mainLayout.addView(renderView);
+
+        //add Adview on top of this screen
+        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        adParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        mainLayout.addView(adView, adParams);
+
+        //Interstitial Ad (Full screen)
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3019710358791217/9536912665");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed(){
+                //load next interstitial
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+        });
+
+
+
         screen = getStartScreen();
 
-
-
-        setContentView(renderView);
+        setContentView(mainLayout);
     }
 
     @Override
@@ -122,10 +166,10 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
         getGameHelper().beginUserInitiatedSignIn();
     }
     public void submitScore(int score){
-        Games.Leaderboards.submitScore(getGameHelper().getApiClient(), getString(R.string.Leaderboard_top_score), score);
+        Games.Leaderboards.submitScore(getGameHelper().getApiClient(), getString(R.string.leaderboard_high_scores), score);
     }
     public void showLeaderboards(){
-        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.Leaderboard_top_score)), REQUEST_LEADERBOARD);
+        startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), getString(R.string.leaderboard_high_scores)), REQUEST_LEADERBOARD);
     }
     public void showAchievements(){
        startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
@@ -135,5 +179,42 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
         Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_death));
     }
 
+    public void incrementDeaths(){
+
+    }
+
+    public void incrementRunDistance(int num) {
+        Games.Achievements.increment(getApiClient(), "CgkIyLuKyrkGEAIQAw", num);
+    }
+
+    public void showBanner(){
+        this.runOnUiThread(new Runnable(){
+            public void run(){
+                adView.setVisibility(View.VISIBLE);
+                //adView.loadAd(new AdRequest.Builder().build());
+                adView.loadAd(new AdRequest.Builder().addTestDevice("516A69C16880F784D6CEBD97C4CC403E").build());
+                Log.d("BannerAd", "Showing Banner");
+            }
+        });
+
+    }
+    public void hideBanner(){
+        this.runOnUiThread(new Runnable() {
+               public void run() {
+                   adView.setVisibility(View.GONE);
+                   Log.d("BannerAd", "Hiding Banner");
+               }
+        });
+    }
+    public void showInterstitialAd(){
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                if(mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                    Log.d("InterstitialAd", "Showing interstitial");
+                }
+            }
+        });
+    }
 
 }

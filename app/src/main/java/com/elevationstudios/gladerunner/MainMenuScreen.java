@@ -26,15 +26,13 @@ public class MainMenuScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        //background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        playButton = g.newPixmap("playButton.png", Graphics.PixmapFormat.ARGB4444);
 
-        playXPos = g.getWidth()*3/4-playButton.getWidth()/2;
-        playYPos = g.getHeight()*3/4-playButton.getHeight()/2;
+        playXPos = g.getWidth()*3/4-Assets.playButton.getWidth()/2;
+        playYPos = g.getHeight()*3/4-Assets.playButton.getHeight()/2;
 
         //setting location , then subtracting left/up to center the button
         // here we are setting it to be 3/4 to the right, 3/4 to the bottom
-
+       SoundEffect.PlayMusic(SoundEffect.ORCHESTRA_MUSIC);
 
     }
 
@@ -47,17 +45,20 @@ public class MainMenuScreen extends Screen {
             TouchEvent event = touchEvents.get(i);
 
             if(event.type == TouchEvent.TOUCH_UP){
-                if(inBounds(event, playXPos, playYPos,
-                        playButton.getWidth(), playButton.getHeight())){
+                game.setScreen(new ShopScreen(game));
+                Log.d("MainMenuScreen", "Clicked button");
+
+
+               /* if(inBounds(event, playXPos, playYPos,
+                        Assets.playButton.getWidth(), Assets.playButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     //this is where you change screen
                     Log.d("MainMenuScreen", "Clicked button");
                     return;
-                }
+                }*/
             }
         }
-
-
     }
 
 
@@ -65,13 +66,18 @@ public class MainMenuScreen extends Screen {
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
         g.drawPixmap(Assets.background, 0, 0);
-        g.drawPixmap(playButton, playXPos, playYPos);
-
-        //g.drawText("TestString", g.getWidth()/2-10, g.getHeight()/2, 20.0f);
+//        g.drawPixmap(Assets.playButton, playXPos, playYPos);
+        g.drawPixmap(Assets.titleText,
+                g.getWidth()/2 - (int)(Assets.titleText.getWidth()/2),
+                g.getHeight()*1/3 - Assets.titleText.getHeight()/2);
+        g.drawPixmapScaled(Assets.continueText,
+                g.getWidth()/2 - (int)(Assets.continueText.getWidth()/2  * 0.6f),
+                g.getHeight()*3/4 - Assets.continueText.getHeight()/2, 0.6f);
     }
 
     @Override
     public void pause(){
+        Log.d("Sound", "MainMenu Paused");
         Settings.save(game.getFileIO());
     }
 

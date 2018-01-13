@@ -15,17 +15,20 @@ public class Ninja {
 
     protected boolean alive;
     protected int health;
-    protected int maxHealth = 100;
+    protected int maxHealth = Settings.getMaxHealth();//(100 * Settings.boughtItems[0]) + (100 * Settings.boughtItems[4]) + 100;
 
     protected int yVelocity;
 
     public int frame;
     public int frameTimer = 0;
-    public int slideTimer = 35;
+    public int attackTimer = 0;
+    public int slideTime = 35;
 
 
 
     public Ninja(){
+        Settings.updateMaxHealth();
+        maxHealth = Settings.getMaxHealth();
         setHealth(maxHealth);
         setState(State.Ground);
         setAction(Action.Idle);
@@ -41,7 +44,9 @@ public class Ninja {
 
     public void setState(State state){
         ninjaState = state;
-        UpdateNinjaAnimation();
+        frameTimer = 0;
+        if(state == State.Dead)
+            frame = 0;
     }
 
     public Action getAction() {
@@ -50,7 +55,7 @@ public class Ninja {
 
     public void setAction(Action action){
         ninjaAction = action;
-        UpdateNinjaAnimation();
+        frame = 0;
     }
 
     public int getHealth(){
@@ -58,6 +63,10 @@ public class Ninja {
     }
     public void setHealth(int num){
         health = num;
+        if (health < 0)
+            health = 0;
+        if (health > maxHealth)
+            health = maxHealth;
         CheckHealth();
     }
     public void takeDamage(int num){
@@ -88,6 +97,12 @@ public class Ninja {
     public Pixmap getCurrentSprite(){
 
             //IF NOT ATTACKING
+        if(ninjaState == State.Dead) {
+            if(frame > 9)
+                return(Assets.ninjaSprite[0][9]);
+            return(Assets.ninjaSprite[0][frame]);
+        }
+
         if(ninjaAction==Action.Idle) {
             if (ninjaState == State.Ground) {
                 if (frame > 9)
@@ -138,7 +153,7 @@ public class Ninja {
     public void addFrame() {
         //control for sliding
         if (ninjaState == State.Slide) {
-            if (frameTimer < slideTimer) {
+            if (frameTimer < slideTime) {
                 frameTimer++;
             } else {
                 setState(State.Ground);
@@ -148,9 +163,8 @@ public class Ninja {
         frame++;
     }
 
-    public void UpdateNinjaAnimation(){
-        frame = 0;
-            frameTimer = 0;
+    public int getFrameNum() {
+        return frame;
     }
 
     public void getNinjaYVelocity(int velocity){

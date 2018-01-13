@@ -5,23 +5,19 @@ import android.util.Log;
 import com.elevationstudios.framework.Game;
 import com.elevationstudios.framework.Graphics;
 import com.elevationstudios.framework.Input.TouchEvent;
-import com.elevationstudios.framework.Pixmap;
 import com.elevationstudios.framework.Screen;
 
 import java.util.List;
 
 public class HelpScreen extends Screen {
 
-    private static Pixmap background;
-    private static Pixmap returnButton;
+
     private int returnXPos;
     private int returnYPos;
 
-    private static Pixmap nextButton;
     private int nextXPos;
     private int nextYPos;
 
-    private static Pixmap backButton;
     private int backXPos;
     private int backYPos;
 
@@ -31,23 +27,17 @@ public class HelpScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("helpMove.png", Graphics.PixmapFormat.RGB565);
         slide = 1;
 
-        returnButton = g.newPixmap("returnButton.png", Graphics.PixmapFormat.ARGB4444);
         returnXPos = 0;
-        returnYPos = 0;
+        returnYPos = g.getHeight()-Assets.backButton.getHeight();
 
-        nextButton = g.newPixmap("nextButton.png", Graphics.PixmapFormat.ARGB4444);
-        nextXPos = g.getWidth()-nextButton.getWidth();
-        nextYPos = g.getHeight()-nextButton.getHeight();
+        /*nextXPos = g.getWidth()-Assets.nextButton.getWidth();
+        nextYPos = g.getHeight()-Assets.nextButton.getHeight();
 
-        backButton = g.newPixmap("backButton.png", Graphics.PixmapFormat.ARGB4444);
         backXPos = 0;
-        backYPos = g.getHeight()-backButton.getHeight();
-
-        //setting location , then subtracting left/up to center the button
-        // here we are setting it to be 3/4 to the right, 3/4 to the bottom
+        backYPos = g.getHeight()-Assets.backButton.getHeight();
+*/
 
     }
 
@@ -61,27 +51,31 @@ public class HelpScreen extends Screen {
 
             if(event.type == TouchEvent.TOUCH_UP){
                 if(inBounds(event, returnXPos, returnYPos,
-                        returnButton.getWidth(), returnButton.getHeight())){
+                        Assets.returnButton.getWidth(), Assets.returnButton.getHeight())){
                     game.setScreen(new OptionsScreen(game));
-                    Log.d("HelpScreen", "Clicked return button");
+
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
+                    Log.d("HelpScreen", "Clicked Return button");
                     return;
                 }
 
-                if(inBounds(event, nextXPos, nextYPos,
-                        nextButton.getWidth(), nextButton.getHeight())
+                /*if(inBounds(event, nextXPos, nextYPos,
+                        Assets.nextButton.getWidth(), Assets.nextButton.getHeight())
                         && slide != 2){
                     slide++;
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked next button");
                     return;
                 }
 
                 if(inBounds(event, backXPos, backYPos,
-                        backButton.getWidth(), backButton.getHeight())
+                        Assets.backButton.getWidth(), Assets.backButton.getHeight())
                         && slide != 1){
                     slide--;
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("HelpScreen", "Clicked back button");
                     return;
-                }
+                }*/
             }
 
         }
@@ -93,12 +87,13 @@ public class HelpScreen extends Screen {
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
         //if(slide == 1)
-        g.drawPixmap(background, 0, 0);
-        g.drawPixmap(returnButton, returnXPos, returnYPos);
-        if(slide != 1)
-            g.drawPixmap(backButton, backXPos, backYPos);
+        g.drawPixmap(Assets.helpMove, 0, 0);
+        g.drawPixmap(Assets.optionButton, returnXPos, returnYPos);
+
+       /* if(slide != 1)
+            g.drawPixmap(Assets.backButton, backXPos, backYPos);
         if(slide != 2)
-            g.drawPixmap(nextButton, nextXPos, nextYPos);
+            g.drawPixmap(Assets.nextButton, nextXPos, nextYPos);*/
     }
 
     @Override

@@ -7,20 +7,19 @@ import java.util.List;
 
 public class OptionsScreen extends Screen {
 
-    private static Pixmap background;
-	
-    private static Pixmap helpButton;
+    private float optionsTextFont;
+    private String optionsText;
+    private int optionsXPos;
+    private int optionsYPos;
+
 	private int helpXPos = 50;
 	private int helpYPos = 50;
-	
-    private static Pixmap backButton;
+
 	private int backXPos = 50;
 	private int backYPos = 50;
 
-    private static Pixmap checkdBox;
-    private static Pixmap uncheckdBox;
-	private int checkXPos = 50;
-	private int checkYPos = 300;
+	private int checkXPos = 50; //textx = 165
+	private int checkYPos = 300; //texty = 350
 
     private int testX;
     private int testY;
@@ -31,12 +30,23 @@ public class OptionsScreen extends Screen {
         super(game);
 
         Graphics g = game.getGraphics();
-        background = g.newPixmap("background.png", Graphics.PixmapFormat.RGB565);
-        helpButton = g.newPixmap("helpButton.png", Graphics.PixmapFormat.ARGB4444);
-        backButton = g.newPixmap("backButton.png", Graphics.PixmapFormat.ARGB4444);
 
-        checkdBox = g.newPixmap("checked.png", Graphics.PixmapFormat.ARGB4444);
-        uncheckdBox = g.newPixmap("unchecked.png", Graphics.PixmapFormat.ARGB4444);
+        optionsTextFont = 80.0f;
+        optionsText = "Options";
+        optionsXPos= g.getWidth()*2 - (int)optionsTextFont;
+        optionsYPos= g.getHeight() * 1/10;
+
+
+        checkXPos = g.getWidth()/2 - (int)(Assets.checked.getWidth()/2) - Assets.helpButton.getWidth()/3;
+        checkYPos = g.getHeight() * 4/10 - Assets.checked.getHeight()/2;
+
+        helpXPos = g.getWidth()/2 - Assets.helpButton.getWidth()/2;
+        helpYPos = g.getHeight() * 6/10 - Assets.helpButton.getHeight()/2;
+        backXPos = g.getWidth()/2 - Assets.backButton.getWidth()/2;
+        backYPos = g.getHeight() * 8/10 - Assets.backButton.getHeight()/2;
+
+
+
     }
 
     @Override
@@ -45,33 +55,41 @@ public class OptionsScreen extends Screen {
 
         for(Input.TouchEvent event : touchEvents){
 
-            if(event.type == Input.TouchEvent.TOUCH_DOWN){
+            if(event.type == Input.TouchEvent.TOUCH_UP){
 
                 testX = event.x;
                 testY = event.y;
 
-                // Back button
+                // Shop button
                 if(inBounds(event, backXPos, backYPos,
-                        backButton.getWidth(), backButton.getHeight())){
+                        Assets.shopButton.getWidth(), Assets.shopButton.getHeight())){
                     game.setScreen(new ShopScreen(game));
-                    Log.d("OptionsScreen", "Clicked back button");
+
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
+                    Log.d("OptionsScreen", "Clicked Shop button");
                     return;
                 }
 
 
                 // Help Button
-                else if(inBounds(event, helpXPos, helpXPos + backButton.getHeight(),
-                        helpButton.getWidth(), helpButton.getHeight())){
+                else if(inBounds(event, helpXPos, helpYPos,
+                        Assets.helpButton.getWidth(), Assets.helpButton.getHeight())){
                     game.setScreen(new HelpScreen(game));
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("OptionsScreen", "Clicked Help button");
                     return;
                 }
 
                 // Checkbox
                 else if(inBounds(event, checkXPos, checkYPos,
-                        checkdBox.getWidth(), checkdBox.getHeight())){
+                        Assets.checked.getWidth(), Assets.checked.getHeight())){
 
                     enableSFX =! enableSFX;
+                    if (!enableSFX)
+                        Assets.currentMusic.pause();
+                    else
+                        Assets.currentMusic.play();
+                    SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                     Log.d("OptionsScreen", "Clicked checkbox ");
                     return;
                 }
@@ -82,20 +100,22 @@ public class OptionsScreen extends Screen {
     @Override
     public void present(float deltaTime){
         Graphics g = game.getGraphics();
-        g.drawPixmap(background, 0, 0);
-        g.drawPixmap(backButton, backXPos, backYPos);
-        g.drawPixmap(helpButton, helpXPos, helpYPos + backButton.getHeight());
+        g.drawPixmap(Assets.background, 0, 0);
 
-        g.drawPixmap(enableSFX ? checkdBox : uncheckdBox, checkXPos, checkYPos);
+        g.drawText(optionsText, optionsXPos, optionsYPos, optionsTextFont);
+        g.drawPixmap(Assets.backButton, backXPos, backYPos);
+        g.drawPixmap(Assets.helpButton, helpXPos, helpYPos);
 
-        g.drawText("Enable SFX", 165, 350);
+        g.drawPixmap(enableSFX ? Assets.checked : Assets.unchecked, checkXPos, checkYPos);
+
+        g.drawText("Enable SFX", checkXPos + 115, checkYPos + 50);
 
         //g.drawText("X = " + testX + " Y = " + testY + " testing2", 100, 600);
     }
 
     @Override
     public void pause() {
-        Settings.soundEnabled = enableSFX;
+        Settings.setSoundEnabled(enableSFX);
         Settings.save(game.getFileIO());
     }
 
