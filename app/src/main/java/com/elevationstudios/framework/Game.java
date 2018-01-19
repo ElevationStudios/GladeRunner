@@ -15,9 +15,13 @@ public interface Game
     public void submitScore(int score);
     public void showLeaderboards();
     public void showAchievements();
-    public void unlockDeathAchieve();
+
     public void incrementDeaths();
     public void incrementRunDistance(int num);
+    public void incrementGoldCollected(int num);
+    public void incrementZombieKills();
+    public void checkRunAchieves(int num);
+    public void checkGoldAchieves(int num);
 
     //ads
     public void showBanner();

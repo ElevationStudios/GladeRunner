@@ -175,24 +175,63 @@ public abstract class AndroidGame extends BaseGameActivity implements Game {
        startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
     }
 
-    public void unlockDeathAchieve() {
-        Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_death));
-    }
-
     public void incrementDeaths(){
-
+        Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_death));
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_dj_vu), 1);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_ive_been_in_this_place_before), 1);
     }
 
     public void incrementRunDistance(int num) {
-        Games.Achievements.increment(getApiClient(), "CgkIyLuKyrkGEAIQAw", num);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_casual_jogger), num);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_getting_in_shape), num);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_adrenaline_junkie), num);
+        if (num > 10)
+            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_marathon_runner), (num/10));
+        checkRunAchieves(num);
+
+    }
+    public void checkRunAchieves(int num) {
+        if (num >= 40)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_beginner_runner));
+
+        if (num >= 100)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_100m_dash));
+
+        if (num >= 200)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_endurance_runner));
+    }
+
+    public void incrementGoldCollected(int num){
+        if (num > 10) {
+            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_treasure_hunter), num / 10);
+            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_hoarder), num / 10);
+            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_kleptomaniac), num / 10);
+        }
+        checkGoldAchieves(num);
+    }
+
+    public void checkGoldAchieves(int num) {
+        if (num >= 1000)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_makin_some_cash));
+        if (num >= 5000)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_getting_greedy));
+        if (num >= 10000)
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_ninjapreneur));
+
+    }
+
+    public void incrementZombieKills() {
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_hunter), 1);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_witcher), 1);
+        Games.Achievements.increment(getApiClient(), getString(R.string.achievement_massacre), 1);
     }
 
     public void showBanner(){
         this.runOnUiThread(new Runnable(){
             public void run(){
                 adView.setVisibility(View.VISIBLE);
-                //adView.loadAd(new AdRequest.Builder().build());
-                adView.loadAd(new AdRequest.Builder().addTestDevice("516A69C16880F784D6CEBD97C4CC403E").build());
+                adView.loadAd(new AdRequest.Builder().build());
+                //adView.loadAd(new AdRequest.Builder().addTestDevice("516A69C16880F784D6CEBD97C4CC403E").build());
                 Log.d("BannerAd", "Showing Banner");
             }
         });

@@ -2,6 +2,7 @@ package com.elevationstudios.gladerunner;
 
 import android.util.Log;
 
+import com.elevationstudios.framework.Game;
 import com.elevationstudios.framework.Screen;
 import com.elevationstudios.framework.impl.AndroidGame;
 
@@ -34,4 +35,11 @@ public class GladeRunner extends AndroidGame {
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+
+    }
+
 }
+

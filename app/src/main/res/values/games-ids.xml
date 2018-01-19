@@ -1,20 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
     <!-- app_id -->
     <string name="app_id" translatable="false">221614611912</string>
     <!-- package_name -->
     <string name="package_name" translatable="false">com.elevationstudios.gladerunner</string>
     <!-- achievement Death! -->
     <string name="achievement_death" translatable="false">CgkIyLuKyrkGEAIQAQ</string>
-    <!-- achievement RunTest -->
-    <string name="achievement_runtest" translatable="false">CgkIyLuKyrkGEAIQAw</string>
+    <!-- achievement Déjà vu -->
+    <string name="achievement_dj_vu" translatable="false">CgkIyLuKyrkGEAIQBA</string>
+    <!-- achievement I've Been In This Place Before -->
+    <string name="achievement_ive_been_in_this_place_before" translatable="false">CgkIyLuKyrkGEAIQBQ</string>
+    <!-- achievement Beginner Runner -->
+    <string name="achievement_beginner_runner" translatable="false">CgkIyLuKyrkGEAIQAw</string>
+    <!-- achievement 100M Dash -->
+    <string name="achievement_100m_dash" translatable="false">CgkIyLuKyrkGEAIQBg</string>
+    <!-- achievement Endurance Runner -->
+    <string name="achievement_endurance_runner" translatable="false">CgkIyLuKyrkGEAIQBw</string>
+    <!-- achievement Casual Jogger -->
+    <string name="achievement_casual_jogger" translatable="false">CgkIyLuKyrkGEAIQCA</string>
+    <!-- achievement Getting In Shape -->
+    <string name="achievement_getting_in_shape" translatable="false">CgkIyLuKyrkGEAIQCQ</string>
+    <!-- achievement Adrenaline Junkie -->
+    <string name="achievement_adrenaline_junkie" translatable="false">CgkIyLuKyrkGEAIQCg</string>
+    <!-- achievement Marathon Runner -->
+    <string name="achievement_marathon_runner" translatable="false">CgkIyLuKyrkGEAIQCw</string>
+    <!-- achievement Hunter -->
+    <string name="achievement_hunter" translatable="false">CgkIyLuKyrkGEAIQDA</string>
+    <!-- achievement Witcher -->
+    <string name="achievement_witcher" translatable="false">CgkIyLuKyrkGEAIQDQ</string>
+    <!-- achievement Massacre -->
+    <string name="achievement_massacre" translatable="false">CgkIyLuKyrkGEAIQDg</string>
+    <!-- achievement Makin' Some Cash -->
+    <string name="achievement_makin_some_cash" translatable="false">CgkIyLuKyrkGEAIQDw</string>
+    <!-- achievement Getting Greedy -->
+    <string name="achievement_getting_greedy" translatable="false">CgkIyLuKyrkGEAIQEA</string>
+    <!-- achievement Ninjapreneur -->
+    <string name="achievement_ninjapreneur" translatable="false">CgkIyLuKyrkGEAIQEQ</string>
+    <!-- achievement Treasure Hunter -->
+    <string name="achievement_treasure_hunter" translatable="false">CgkIyLuKyrkGEAIQEg</string>
+    <!-- achievement Hoarder -->
+    <string name="achievement_hoarder" translatable="false">CgkIyLuKyrkGEAIQEw</string>
+    <!-- achievement Kleptomaniac -->
+    <string name="achievement_kleptomaniac" translatable="false">CgkIyLuKyrkGEAIQFA</string>
     <!-- leaderboard High Scores -->
     <string name="leaderboard_high_scores" translatable="false">CgkIyLuKyrkGEAIQAg</string>
 
-
     <string name="banner_ad_unit_id">ca-app-pub-3019710358791217/4442877398</string>
     <string name="interstitual_ad_unit_id">ca-app-pub-3019710358791217/9536912665</string>
-
 </resources>
+

@@ -9,7 +9,7 @@ import com.elevationstudios.framework.Screen;
 
 import android.graphics.Color;
 import android.os.Handler;
-import android.util.Log;
+//import android.util.Log;
 import java.util.List;
 import java.util.Random;
 
@@ -157,7 +157,7 @@ public class GameScreen extends Screen {
                             uiBarHeight-1,
                             uiBarHeight-1)) {
                         ninja.takeDamage(25);
-                        Log.d("GameScreen", "Clicked Die button");
+                        //Log.d("GameScreen", "Clicked Die button");
                         return;
                     }
                     if (inBounds(event, pauseButtonXPos, pauseButtonYPos,
@@ -165,7 +165,7 @@ public class GameScreen extends Screen {
                         isPaused = !isPaused;
                         //CheckPause(isPaused);
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                        Log.d("GameScreen", "Clicked Pause button");
+                        //Log.d("GameScreen", "Clicked Pause button");
                         return;
                     }
                 } else if (isPaused) {
@@ -173,7 +173,7 @@ public class GameScreen extends Screen {
                             Assets.playButton.getWidth(), Assets.playButton.getHeight())) {
                         isPaused = !isPaused;
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
-                        Log.d("GameScreen", "Clicked Play button");
+                        //Log.d("GameScreen", "Clicked Play button");
 
                     }
                     if (inBounds(event, exitButtonXPos, exitButtonYPos,
@@ -181,7 +181,7 @@ public class GameScreen extends Screen {
                         isPaused = !isPaused;
                         SoundEffect.PlaySound(SoundEffect.BUTTON_CLICK);
                         game.setScreen(new ShopScreen(game));
-                        Log.d("GameScreen", "Clicked Return button");
+                        //Log.d("GameScreen", "Clicked Return button");
 
                     }
                 }
@@ -196,19 +196,19 @@ public class GameScreen extends Screen {
                 SoundEffect.PlaySound(SoundEffect.LEDGE_CLIMB);
             }
             if (event.type == TouchEvent.TOUCH_SWIPED_RIGHT) {
-                Log.d("SwipeEvent", "Swiped Right");
+                //Log.d("SwipeEvent", "Swiped Right");
                 ninja.setAction(Ninja.Action.MeleeAttack);
                 SoundEffect.PlaySound(SoundEffect.STRONG_ATTACK);
             }
 
             if(event.type == TouchEvent.TOUCH_SWIPED_LEFT && ninja.isAlive()){
-                Log.d("SwipeEvent", "Swiped Left");
+                //Log.d("SwipeEvent", "Swiped Left");
                 if(knife != null)
                     return;
                 ninja.setAction(Ninja.Action.RangedAttack);
                 SoundEffect.PlaySound(SoundEffect.ATTACK);
                 if(knife == null) {
-                    Log.d("Knife", "Spawned knife");
+                    //Log.d("Knife", "Spawned knife");
                     moneyEarned -= 20;
                     knife = new Knife(this);
                     knife.yLocation = ninjaYPos - game.getGraphics().getHeight() / 20;
@@ -477,20 +477,26 @@ public class GameScreen extends Screen {
             }
         }
         if (!ninja.isAlive() && ninja.getState() != Ninja.State.Dead) {
-            Log.d("GameScreen", "Ninja Health <= 0, dead");
+            //Log.d("GameScreen", "Ninja Health <= 0, dead");
             isRunning = false;
             ninja.setState(Ninja.State.Dead);
             ninja.frame = 0;
-            Log.d("GameScreen", "Setting dead");
+           // Log.d("GameScreen", "Setting dead");
         }
         if( ninja.getState()== Ninja.State.Dead) {
-            Log.d("GameScreen", "Setting frameDead");
+           // Log.d("GameScreen", "Setting frameDead");
             ninja.addFrame();
-            if(ninja.getFrameNum() == 100) {
-                game.unlockDeathAchieve();
-                game.setScreen(new GameOverScreen(game));
+            if(ninja.getFrameNum() == 100)
+            {
+               // Log.d("GameScreen", "submitting score");
                 game.submitScore(points);
+               // Log.d("GameScreen", "inc run");
                 game.incrementRunDistance(points);
+               // Log.d("GameScreen", "inc death");
+                game.incrementDeaths();
+               // Log.d("GameScreen", "inc gold");
+                game.incrementGoldCollected(moneyEarned);
+                game.setScreen(new GameOverScreen(game));
             }
         }
     }
@@ -514,7 +520,7 @@ public class GameScreen extends Screen {
                 for (int i = 0; i < obstacle.length; i++) {
                     if (obstacle[i] == null) {
                         obstacle[i] = new Obstacle(g, r.nextBoolean());
-                        Log.d("GameScreen", "Spawned new obstacle");
+                        //Log.d("GameScreen", "Spawned new obstacle");
                         break;
                     }
                 }
@@ -524,7 +530,7 @@ public class GameScreen extends Screen {
                 for (int i = 0; i < zombies.length; i++) {
                     if (zombies[i] == null) {
                         zombies[i] = new Enemy(g);
-                        Log.d("GameScreen", "Spawned new zombie");
+                        //Log.d("GameScreen", "Spawned new zombie");
                         break;
                     }
                 }
@@ -540,7 +546,7 @@ public class GameScreen extends Screen {
                 hpPickup[i].xLocation -= g.getWidth() * 2 / 3 * deltaTime;
 
         }
-        if (hpTimer >= 3.0f )
+        if (hpTimer >= 4.17f )
         {
             hpTimer = 0;
             for (int i = 0; i < hpPickup.length; i++)
@@ -550,10 +556,10 @@ public class GameScreen extends Screen {
                     if (rand.nextBoolean())
                     {
                         hpPickup[i] = new HealthPickup(g, rand.nextBoolean());
-                        Log.d("GameScreen", "Spawned Health");
+                        //Log.d("GameScreen", "Spawned Health");
                     }
                     else
-                        Log.d("GameScreen", "Did not spawn Health");
+                        //Log.d("GameScreen", "Did not spawn Health");
                     break;
                 }
             }
@@ -643,7 +649,7 @@ public class GameScreen extends Screen {
                             (zombies[i].xLocation > (knife.xLocation)) &&
                             knife.yLocation >= (zombies[i].yLocation - zombies[i].getCurrentSprite().getHeight() * ninjaScale / 2))
                     {
-                        Log.d("GameScreen.java", "Knife hit");
+                        //Log.d("GameScreen.java", "Knife hit");
                         zombies[i].takeDamage(50);
                         if (zombies[i].isAlive() == false)
                         {
@@ -651,7 +657,7 @@ public class GameScreen extends Screen {
                             zombies[i].setAction(Enemy.Action.Dead);
                         }
                         knife = null;
-                        Log.d("GameScreen.java", "Knife deleted");
+                        //Log.d("GameScreen.java", "Knife deleted");
                         break;
                     }
                 }
@@ -664,6 +670,7 @@ public class GameScreen extends Screen {
                         else
                             moneyEarned += (100 + ExtraGold * 5);
                         zombies[i] = null;
+                        game.incrementZombieKills();
                     }
                 }
             }
